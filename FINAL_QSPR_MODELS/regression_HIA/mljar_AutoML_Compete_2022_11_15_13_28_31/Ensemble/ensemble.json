@@ -1,0 +1,40 @@
+{
+    "name": "Ensemble",
+    "ml_task": "regression",
+    "optimize_metric": "rmse",
+    "selected_models": [
+        {
+            "model": "39_RandomForest",
+            "repeat": 19.0
+        },
+        {
+            "model": "39_RandomForest_GoldenFeatures",
+            "repeat": 1.0
+        },
+        {
+            "model": "60_NeuralNetwork",
+            "repeat": 4.0
+        },
+        {
+            "model": "64_NeuralNetwork",
+            "repeat": 2.0
+        },
+        {
+            "model": "65_RandomForest_GoldenFeatures",
+            "repeat": 43.0
+        },
+        {
+            "model": "66_RandomForest_GoldenFeatures",
+            "repeat": 3.0
+        },
+        {
+            "model": "94_RandomForest_GoldenFeatures",
+            "repeat": 39.0
+        }
+    ],
+    "predictions_fname": "Ensemble/predictions_ensemble.csv",
+    "metric_name": "rmse",
+    "final_loss": 17.62635450563578,
+    "train_time": 44.759777784347534,
+    "is_stacked": false
+}
