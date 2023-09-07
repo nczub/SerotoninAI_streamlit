@@ -1,0 +1,2224 @@
+{
+    "uid": "97b58d5f-5ff4-4fa1-b04c-cfc75636143b",
+    "name": "23_LightGBM",
+    "preprocessing": [
+        {
+            "remove_columns": [
+                "nP",
+                "NtCH",
+                "NssNH2",
+                "NsssNH",
+                "NssssN",
+                "NssssSi",
+                "NdsssP",
+                "NdssS",
+                "StCH",
+                "SssNH2",
+                "SsssNH",
+                "SssssN",
+                "SssssSi",
+                "SdsssP",
+                "SdssS",
+                "MAXtCH",
+                "MAXssNH2",
+                "MAXsssNH",
+                "MAXssssN",
+                "MAXssssSi",
+                "MAXdsssP",
+                "MAXdssS",
+                "MINtCH",
+                "MINssNH2",
+                "MINsssNH",
+                "MINssssN",
+                "MINssssSi",
+                "MINdsssP",
+                "MINdssS",
+                "n12Ring",
+                "nG12Ring",
+                "n3HRing",
+                "n12ARing",
+                "nG12ARing",
+                "n3AHRing",
+                "n12FaRing",
+                "n12FaHRing"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.2595664306800274
+                ],
+                "mean": [
+                    1.7282869504624467
+                ],
+                "var": [
+                    0.06737473193596946
+                ],
+                "n_samples_seen": 1491,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    2.62
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "nP": [
+                        "remove_column"
+                    ],
+                    "NtCH": [
+                        "remove_column"
+                    ],
+                    "NssNH2": [
+                        "remove_column"
+                    ],
+                    "NsssNH": [
+                        "remove_column"
+                    ],
+                    "NssssN": [
+                        "remove_column"
+                    ],
+                    "NssssSi": [
+                        "remove_column"
+                    ],
+                    "NdsssP": [
+                        "remove_column"
+                    ],
+                    "NdssS": [
+                        "remove_column"
+                    ],
+                    "StCH": [
+                        "remove_column"
+                    ],
+                    "SssNH2": [
+                        "remove_column"
+                    ],
+                    "SsssNH": [
+                        "remove_column"
+                    ],
+                    "SssssN": [
+                        "remove_column"
+                    ],
+                    "SssssSi": [
+                        "remove_column"
+                    ],
+                    "SdsssP": [
+                        "remove_column"
+                    ],
+                    "SdssS": [
+                        "remove_column"
+                    ],
+                    "MAXtCH": [
+                        "remove_column"
+                    ],
+                    "MAXssNH2": [
+                        "remove_column"
+                    ],
+                    "MAXsssNH": [
+                        "remove_column"
+                    ],
+                    "MAXssssN": [
+                        "remove_column"
+                    ],
+                    "MAXssssSi": [
+                        "remove_column"
+                    ],
+                    "MAXdsssP": [
+                        "remove_column"
+                    ],
+                    "MAXdssS": [
+                        "remove_column"
+                    ],
+                    "MINtCH": [
+                        "remove_column"
+                    ],
+                    "MINssNH2": [
+                        "remove_column"
+                    ],
+                    "MINsssNH": [
+                        "remove_column"
+                    ],
+                    "MINssssN": [
+                        "remove_column"
+                    ],
+                    "MINssssSi": [
+                        "remove_column"
+                    ],
+                    "MINdsssP": [
+                        "remove_column"
+                    ],
+                    "MINdssS": [
+                        "remove_column"
+                    ],
+                    "n12Ring": [
+                        "remove_column"
+                    ],
+                    "nG12Ring": [
+                        "remove_column"
+                    ],
+                    "n3HRing": [
+                        "remove_column"
+                    ],
+                    "n12ARing": [
+                        "remove_column"
+                    ],
+                    "nG12ARing": [
+                        "remove_column"
+                    ],
+                    "n3AHRing": [
+                        "remove_column"
+                    ],
+                    "n12FaRing": [
+                        "remove_column"
+                    ],
+                    "n12FaHRing": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "nP",
+                "NtCH",
+                "NssNH2",
+                "NsssNH",
+                "NssssN",
+                "NssssSi",
+                "NdsssP",
+                "NdssS",
+                "StCH",
+                "SssNH2",
+                "SsssNH",
+                "SssssN",
+                "SssssSi",
+                "SdsssP",
+                "SdssS",
+                "MAXtCH",
+                "MAXssNH2",
+                "MAXsssNH",
+                "MAXssssN",
+                "MAXssssSi",
+                "MAXdsssP",
+                "MAXdssS",
+                "MINtCH",
+                "MINssNH2",
+                "MINsssNH",
+                "MINssssN",
+                "MINssssSi",
+                "MINdsssP",
+                "MINdssS",
+                "n12Ring",
+                "nG12Ring",
+                "n3HRing",
+                "n12ARing",
+                "nG12ARing",
+                "n3AHRing",
+                "n12FaRing",
+                "n12FaHRing"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.25931632357507445
+                ],
+                "mean": [
+                    1.730173680672186
+                ],
+                "var": [
+                    0.06724495567249272
+                ],
+                "n_samples_seen": 1491,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    2.62
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "nP": [
+                        "remove_column"
+                    ],
+                    "NtCH": [
+                        "remove_column"
+                    ],
+                    "NssNH2": [
+                        "remove_column"
+                    ],
+                    "NsssNH": [
+                        "remove_column"
+                    ],
+                    "NssssN": [
+                        "remove_column"
+                    ],
+                    "NssssSi": [
+                        "remove_column"
+                    ],
+                    "NdsssP": [
+                        "remove_column"
+                    ],
+                    "NdssS": [
+                        "remove_column"
+                    ],
+                    "StCH": [
+                        "remove_column"
+                    ],
+                    "SssNH2": [
+                        "remove_column"
+                    ],
+                    "SsssNH": [
+                        "remove_column"
+                    ],
+                    "SssssN": [
+                        "remove_column"
+                    ],
+                    "SssssSi": [
+                        "remove_column"
+                    ],
+                    "SdsssP": [
+                        "remove_column"
+                    ],
+                    "SdssS": [
+                        "remove_column"
+                    ],
+                    "MAXtCH": [
+                        "remove_column"
+                    ],
+                    "MAXssNH2": [
+                        "remove_column"
+                    ],
+                    "MAXsssNH": [
+                        "remove_column"
+                    ],
+                    "MAXssssN": [
+                        "remove_column"
+                    ],
+                    "MAXssssSi": [
+                        "remove_column"
+                    ],
+                    "MAXdsssP": [
+                        "remove_column"
+                    ],
+                    "MAXdssS": [
+                        "remove_column"
+                    ],
+                    "MINtCH": [
+                        "remove_column"
+                    ],
+                    "MINssNH2": [
+                        "remove_column"
+                    ],
+                    "MINsssNH": [
+                        "remove_column"
+                    ],
+                    "MINssssN": [
+                        "remove_column"
+                    ],
+                    "MINssssSi": [
+                        "remove_column"
+                    ],
+                    "MINdsssP": [
+                        "remove_column"
+                    ],
+                    "MINdssS": [
+                        "remove_column"
+                    ],
+                    "n12Ring": [
+                        "remove_column"
+                    ],
+                    "nG12Ring": [
+                        "remove_column"
+                    ],
+                    "n3HRing": [
+                        "remove_column"
+                    ],
+                    "n12ARing": [
+                        "remove_column"
+                    ],
+                    "nG12ARing": [
+                        "remove_column"
+                    ],
+                    "n3AHRing": [
+                        "remove_column"
+                    ],
+                    "n12FaRing": [
+                        "remove_column"
+                    ],
+                    "n12FaHRing": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "nP",
+                "NtCH",
+                "NssNH2",
+                "NsssNH",
+                "NssssN",
+                "NssssSi",
+                "NdsssP",
+                "NdssS",
+                "StCH",
+                "SssNH2",
+                "SsssNH",
+                "SssssN",
+                "SssssSi",
+                "SdsssP",
+                "SdssS",
+                "MAXtCH",
+                "MAXssNH2",
+                "MAXsssNH",
+                "MAXssssN",
+                "MAXssssSi",
+                "MAXdsssP",
+                "MAXdssS",
+                "MINtCH",
+                "MINssNH2",
+                "MINsssNH",
+                "MINssssN",
+                "MINssssSi",
+                "MINdsssP",
+                "MINdssS",
+                "n12Ring",
+                "nG12Ring",
+                "n3HRing",
+                "n12ARing",
+                "nG12ARing",
+                "n3AHRing",
+                "n12FaRing",
+                "n12FaHRing"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.2591269005857593
+                ],
+                "mean": [
+                    1.7300524175060563
+                ],
+                "var": [
+                    0.06714675060718199
+                ],
+                "n_samples_seen": 1491,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    2.62
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "nP": [
+                        "remove_column"
+                    ],
+                    "NtCH": [
+                        "remove_column"
+                    ],
+                    "NssNH2": [
+                        "remove_column"
+                    ],
+                    "NsssNH": [
+                        "remove_column"
+                    ],
+                    "NssssN": [
+                        "remove_column"
+                    ],
+                    "NssssSi": [
+                        "remove_column"
+                    ],
+                    "NdsssP": [
+                        "remove_column"
+                    ],
+                    "NdssS": [
+                        "remove_column"
+                    ],
+                    "StCH": [
+                        "remove_column"
+                    ],
+                    "SssNH2": [
+                        "remove_column"
+                    ],
+                    "SsssNH": [
+                        "remove_column"
+                    ],
+                    "SssssN": [
+                        "remove_column"
+                    ],
+                    "SssssSi": [
+                        "remove_column"
+                    ],
+                    "SdsssP": [
+                        "remove_column"
+                    ],
+                    "SdssS": [
+                        "remove_column"
+                    ],
+                    "MAXtCH": [
+                        "remove_column"
+                    ],
+                    "MAXssNH2": [
+                        "remove_column"
+                    ],
+                    "MAXsssNH": [
+                        "remove_column"
+                    ],
+                    "MAXssssN": [
+                        "remove_column"
+                    ],
+                    "MAXssssSi": [
+                        "remove_column"
+                    ],
+                    "MAXdsssP": [
+                        "remove_column"
+                    ],
+                    "MAXdssS": [
+                        "remove_column"
+                    ],
+                    "MINtCH": [
+                        "remove_column"
+                    ],
+                    "MINssNH2": [
+                        "remove_column"
+                    ],
+                    "MINsssNH": [
+                        "remove_column"
+                    ],
+                    "MINssssN": [
+                        "remove_column"
+                    ],
+                    "MINssssSi": [
+                        "remove_column"
+                    ],
+                    "MINdsssP": [
+                        "remove_column"
+                    ],
+                    "MINdssS": [
+                        "remove_column"
+                    ],
+                    "n12Ring": [
+                        "remove_column"
+                    ],
+                    "nG12Ring": [
+                        "remove_column"
+                    ],
+                    "n3HRing": [
+                        "remove_column"
+                    ],
+                    "n12ARing": [
+                        "remove_column"
+                    ],
+                    "nG12ARing": [
+                        "remove_column"
+                    ],
+                    "n3AHRing": [
+                        "remove_column"
+                    ],
+                    "n12FaRing": [
+                        "remove_column"
+                    ],
+                    "n12FaHRing": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "nP",
+                "NtCH",
+                "NssNH2",
+                "NsssNH",
+                "NssssN",
+                "NssssSi",
+                "NdsssP",
+                "NdssS",
+                "StCH",
+                "SssNH2",
+                "SsssNH",
+                "SssssN",
+                "SssssSi",
+                "SdsssP",
+                "SdssS",
+                "MAXtCH",
+                "MAXssNH2",
+                "MAXsssNH",
+                "MAXssssN",
+                "MAXssssSi",
+                "MAXdsssP",
+                "MAXdssS",
+                "MINtCH",
+                "MINssNH2",
+                "MINsssNH",
+                "MINssssN",
+                "MINssssSi",
+                "MINdsssP",
+                "MINdssS",
+                "n12Ring",
+                "nG12Ring",
+                "n3HRing",
+                "n12ARing",
+                "nG12ARing",
+                "n3AHRing",
+                "n12FaRing",
+                "n12FaHRing"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.2609573916287745
+                ],
+                "mean": [
+                    1.7298628138891115
+                ],
+                "var": [
+                    0.06809876024569358
+                ],
+                "n_samples_seen": 1491,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    2.62
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "nP": [
+                        "remove_column"
+                    ],
+                    "NtCH": [
+                        "remove_column"
+                    ],
+                    "NssNH2": [
+                        "remove_column"
+                    ],
+                    "NsssNH": [
+                        "remove_column"
+                    ],
+                    "NssssN": [
+                        "remove_column"
+                    ],
+                    "NssssSi": [
+                        "remove_column"
+                    ],
+                    "NdsssP": [
+                        "remove_column"
+                    ],
+                    "NdssS": [
+                        "remove_column"
+                    ],
+                    "StCH": [
+                        "remove_column"
+                    ],
+                    "SssNH2": [
+                        "remove_column"
+                    ],
+                    "SsssNH": [
+                        "remove_column"
+                    ],
+                    "SssssN": [
+                        "remove_column"
+                    ],
+                    "SssssSi": [
+                        "remove_column"
+                    ],
+                    "SdsssP": [
+                        "remove_column"
+                    ],
+                    "SdssS": [
+                        "remove_column"
+                    ],
+                    "MAXtCH": [
+                        "remove_column"
+                    ],
+                    "MAXssNH2": [
+                        "remove_column"
+                    ],
+                    "MAXsssNH": [
+                        "remove_column"
+                    ],
+                    "MAXssssN": [
+                        "remove_column"
+                    ],
+                    "MAXssssSi": [
+                        "remove_column"
+                    ],
+                    "MAXdsssP": [
+                        "remove_column"
+                    ],
+                    "MAXdssS": [
+                        "remove_column"
+                    ],
+                    "MINtCH": [
+                        "remove_column"
+                    ],
+                    "MINssNH2": [
+                        "remove_column"
+                    ],
+                    "MINsssNH": [
+                        "remove_column"
+                    ],
+                    "MINssssN": [
+                        "remove_column"
+                    ],
+                    "MINssssSi": [
+                        "remove_column"
+                    ],
+                    "MINdsssP": [
+                        "remove_column"
+                    ],
+                    "MINdssS": [
+                        "remove_column"
+                    ],
+                    "n12Ring": [
+                        "remove_column"
+                    ],
+                    "nG12Ring": [
+                        "remove_column"
+                    ],
+                    "n3HRing": [
+                        "remove_column"
+                    ],
+                    "n12ARing": [
+                        "remove_column"
+                    ],
+                    "nG12ARing": [
+                        "remove_column"
+                    ],
+                    "n3AHRing": [
+                        "remove_column"
+                    ],
+                    "n12FaRing": [
+                        "remove_column"
+                    ],
+                    "n12FaHRing": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "nP",
+                "NtCH",
+                "NssNH2",
+                "NsssNH",
+                "NssssN",
+                "NssssSi",
+                "NdsssP",
+                "NdssS",
+                "StCH",
+                "SssNH2",
+                "SsssNH",
+                "SssssN",
+                "SssssSi",
+                "SdsssP",
+                "SdssS",
+                "MAXtCH",
+                "MAXssNH2",
+                "MAXsssNH",
+                "MAXssssN",
+                "MAXssssSi",
+                "MAXdsssP",
+                "MAXdssS",
+                "MINtCH",
+                "MINssNH2",
+                "MINsssNH",
+                "MINssssN",
+                "MINssssSi",
+                "MINdsssP",
+                "MINdssS",
+                "n12Ring",
+                "nG12Ring",
+                "n3HRing",
+                "n12ARing",
+                "nG12ARing",
+                "n3AHRing",
+                "n12FaRing",
+                "n12FaHRing"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.3505346669154473
+                ],
+                "mean": [
+                    1.439437370964041
+                ],
+                "var": [
+                    0.12287455270952359
+                ],
+                "n_samples_seen": 1491,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    4.0
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "nP": [
+                        "remove_column"
+                    ],
+                    "NtCH": [
+                        "remove_column"
+                    ],
+                    "NssNH2": [
+                        "remove_column"
+                    ],
+                    "NsssNH": [
+                        "remove_column"
+                    ],
+                    "NssssN": [
+                        "remove_column"
+                    ],
+                    "NssssSi": [
+                        "remove_column"
+                    ],
+                    "NdsssP": [
+                        "remove_column"
+                    ],
+                    "NdssS": [
+                        "remove_column"
+                    ],
+                    "StCH": [
+                        "remove_column"
+                    ],
+                    "SssNH2": [
+                        "remove_column"
+                    ],
+                    "SsssNH": [
+                        "remove_column"
+                    ],
+                    "SssssN": [
+                        "remove_column"
+                    ],
+                    "SssssSi": [
+                        "remove_column"
+                    ],
+                    "SdsssP": [
+                        "remove_column"
+                    ],
+                    "SdssS": [
+                        "remove_column"
+                    ],
+                    "MAXtCH": [
+                        "remove_column"
+                    ],
+                    "MAXssNH2": [
+                        "remove_column"
+                    ],
+                    "MAXsssNH": [
+                        "remove_column"
+                    ],
+                    "MAXssssN": [
+                        "remove_column"
+                    ],
+                    "MAXssssSi": [
+                        "remove_column"
+                    ],
+                    "MAXdsssP": [
+                        "remove_column"
+                    ],
+                    "MAXdssS": [
+                        "remove_column"
+                    ],
+                    "MINtCH": [
+                        "remove_column"
+                    ],
+                    "MINssNH2": [
+                        "remove_column"
+                    ],
+                    "MINsssNH": [
+                        "remove_column"
+                    ],
+                    "MINssssN": [
+                        "remove_column"
+                    ],
+                    "MINssssSi": [
+                        "remove_column"
+                    ],
+                    "MINdsssP": [
+                        "remove_column"
+                    ],
+                    "MINdssS": [
+                        "remove_column"
+                    ],
+                    "n12Ring": [
+                        "remove_column"
+                    ],
+                    "nG12Ring": [
+                        "remove_column"
+                    ],
+                    "n3HRing": [
+                        "remove_column"
+                    ],
+                    "n12ARing": [
+                        "remove_column"
+                    ],
+                    "nG12ARing": [
+                        "remove_column"
+                    ],
+                    "n3AHRing": [
+                        "remove_column"
+                    ],
+                    "n12FaRing": [
+                        "remove_column"
+                    ],
+                    "n12FaHRing": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "nP",
+                "NtCH",
+                "NssNH2",
+                "NsssNH",
+                "NssssN",
+                "NssssSi",
+                "NdsssP",
+                "NdssS",
+                "StCH",
+                "SssNH2",
+                "SsssNH",
+                "SssssN",
+                "SssssSi",
+                "SdsssP",
+                "SdssS",
+                "MAXtCH",
+                "MAXssNH2",
+                "MAXsssNH",
+                "MAXssssN",
+                "MAXssssSi",
+                "MAXdsssP",
+                "MAXdssS",
+                "MINtCH",
+                "MINssNH2",
+                "MINsssNH",
+                "MINssssN",
+                "MINssssSi",
+                "MINdsssP",
+                "MINdssS",
+                "n12Ring",
+                "nG12Ring",
+                "n3HRing",
+                "n12ARing",
+                "nG12ARing",
+                "n3AHRing",
+                "n12FaRing",
+                "n12FaHRing"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.25950228644099665
+                ],
+                "mean": [
+                    1.7312033974564893
+                ],
+                "var": [
+                    0.06734143666810508
+                ],
+                "n_samples_seen": 1491,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    2.62
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "nP": [
+                        "remove_column"
+                    ],
+                    "NtCH": [
+                        "remove_column"
+                    ],
+                    "NssNH2": [
+                        "remove_column"
+                    ],
+                    "NsssNH": [
+                        "remove_column"
+                    ],
+                    "NssssN": [
+                        "remove_column"
+                    ],
+                    "NssssSi": [
+                        "remove_column"
+                    ],
+                    "NdsssP": [
+                        "remove_column"
+                    ],
+                    "NdssS": [
+                        "remove_column"
+                    ],
+                    "StCH": [
+                        "remove_column"
+                    ],
+                    "SssNH2": [
+                        "remove_column"
+                    ],
+                    "SsssNH": [
+                        "remove_column"
+                    ],
+                    "SssssN": [
+                        "remove_column"
+                    ],
+                    "SssssSi": [
+                        "remove_column"
+                    ],
+                    "SdsssP": [
+                        "remove_column"
+                    ],
+                    "SdssS": [
+                        "remove_column"
+                    ],
+                    "MAXtCH": [
+                        "remove_column"
+                    ],
+                    "MAXssNH2": [
+                        "remove_column"
+                    ],
+                    "MAXsssNH": [
+                        "remove_column"
+                    ],
+                    "MAXssssN": [
+                        "remove_column"
+                    ],
+                    "MAXssssSi": [
+                        "remove_column"
+                    ],
+                    "MAXdsssP": [
+                        "remove_column"
+                    ],
+                    "MAXdssS": [
+                        "remove_column"
+                    ],
+                    "MINtCH": [
+                        "remove_column"
+                    ],
+                    "MINssNH2": [
+                        "remove_column"
+                    ],
+                    "MINsssNH": [
+                        "remove_column"
+                    ],
+                    "MINssssN": [
+                        "remove_column"
+                    ],
+                    "MINssssSi": [
+                        "remove_column"
+                    ],
+                    "MINdsssP": [
+                        "remove_column"
+                    ],
+                    "MINdssS": [
+                        "remove_column"
+                    ],
+                    "n12Ring": [
+                        "remove_column"
+                    ],
+                    "nG12Ring": [
+                        "remove_column"
+                    ],
+                    "n3HRing": [
+                        "remove_column"
+                    ],
+                    "n12ARing": [
+                        "remove_column"
+                    ],
+                    "nG12ARing": [
+                        "remove_column"
+                    ],
+                    "n3AHRing": [
+                        "remove_column"
+                    ],
+                    "n12FaRing": [
+                        "remove_column"
+                    ],
+                    "n12FaHRing": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "nP",
+                "NtCH",
+                "NssNH2",
+                "NsssNH",
+                "NssssN",
+                "NssssSi",
+                "NdsssP",
+                "NdssS",
+                "StCH",
+                "SssNH2",
+                "SsssNH",
+                "SssssN",
+                "SssssSi",
+                "SdsssP",
+                "SdssS",
+                "MAXtCH",
+                "MAXssNH2",
+                "MAXsssNH",
+                "MAXssssN",
+                "MAXssssSi",
+                "MAXdsssP",
+                "MAXdssS",
+                "MINtCH",
+                "MINssNH2",
+                "MINsssNH",
+                "MINssssN",
+                "MINssssSi",
+                "MINdsssP",
+                "MINdssS",
+                "n12Ring",
+                "nG12Ring",
+                "n3HRing",
+                "n12ARing",
+                "nG12ARing",
+                "n3AHRing",
+                "n12FaRing",
+                "n12FaHRing"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.2590926374538728
+                ],
+                "mean": [
+                    1.7304378075500806
+                ],
+                "var": [
+                    0.06712899478280397
+                ],
+                "n_samples_seen": 1491,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    2.62
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "nP": [
+                        "remove_column"
+                    ],
+                    "NtCH": [
+                        "remove_column"
+                    ],
+                    "NssNH2": [
+                        "remove_column"
+                    ],
+                    "NsssNH": [
+                        "remove_column"
+                    ],
+                    "NssssN": [
+                        "remove_column"
+                    ],
+                    "NssssSi": [
+                        "remove_column"
+                    ],
+                    "NdsssP": [
+                        "remove_column"
+                    ],
+                    "NdssS": [
+                        "remove_column"
+                    ],
+                    "StCH": [
+                        "remove_column"
+                    ],
+                    "SssNH2": [
+                        "remove_column"
+                    ],
+                    "SsssNH": [
+                        "remove_column"
+                    ],
+                    "SssssN": [
+                        "remove_column"
+                    ],
+                    "SssssSi": [
+                        "remove_column"
+                    ],
+                    "SdsssP": [
+                        "remove_column"
+                    ],
+                    "SdssS": [
+                        "remove_column"
+                    ],
+                    "MAXtCH": [
+                        "remove_column"
+                    ],
+                    "MAXssNH2": [
+                        "remove_column"
+                    ],
+                    "MAXsssNH": [
+                        "remove_column"
+                    ],
+                    "MAXssssN": [
+                        "remove_column"
+                    ],
+                    "MAXssssSi": [
+                        "remove_column"
+                    ],
+                    "MAXdsssP": [
+                        "remove_column"
+                    ],
+                    "MAXdssS": [
+                        "remove_column"
+                    ],
+                    "MINtCH": [
+                        "remove_column"
+                    ],
+                    "MINssNH2": [
+                        "remove_column"
+                    ],
+                    "MINsssNH": [
+                        "remove_column"
+                    ],
+                    "MINssssN": [
+                        "remove_column"
+                    ],
+                    "MINssssSi": [
+                        "remove_column"
+                    ],
+                    "MINdsssP": [
+                        "remove_column"
+                    ],
+                    "MINdssS": [
+                        "remove_column"
+                    ],
+                    "n12Ring": [
+                        "remove_column"
+                    ],
+                    "nG12Ring": [
+                        "remove_column"
+                    ],
+                    "n3HRing": [
+                        "remove_column"
+                    ],
+                    "n12ARing": [
+                        "remove_column"
+                    ],
+                    "nG12ARing": [
+                        "remove_column"
+                    ],
+                    "n3AHRing": [
+                        "remove_column"
+                    ],
+                    "n12FaRing": [
+                        "remove_column"
+                    ],
+                    "n12FaHRing": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "nP",
+                "NtCH",
+                "NssNH2",
+                "NsssNH",
+                "NssssN",
+                "NssssSi",
+                "NdsssP",
+                "NdssS",
+                "StCH",
+                "SssNH2",
+                "SsssNH",
+                "SssssN",
+                "SssssSi",
+                "SdsssP",
+                "SdssS",
+                "MAXtCH",
+                "MAXssNH2",
+                "MAXsssNH",
+                "MAXssssN",
+                "MAXssssSi",
+                "MAXdsssP",
+                "MAXdssS",
+                "MINtCH",
+                "MINssNH2",
+                "MINsssNH",
+                "MINssssN",
+                "MINssssSi",
+                "MINdsssP",
+                "MINdssS",
+                "n12Ring",
+                "nG12Ring",
+                "n3HRing",
+                "n12ARing",
+                "nG12ARing",
+                "n3AHRing",
+                "n12FaRing",
+                "n12FaHRing"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.26084773060279554
+                ],
+                "mean": [
+                    1.727075412501055
+                ],
+                "var": [
+                    0.06804153856062858
+                ],
+                "n_samples_seen": 1492,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    2.62
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "nP": [
+                        "remove_column"
+                    ],
+                    "NtCH": [
+                        "remove_column"
+                    ],
+                    "NssNH2": [
+                        "remove_column"
+                    ],
+                    "NsssNH": [
+                        "remove_column"
+                    ],
+                    "NssssN": [
+                        "remove_column"
+                    ],
+                    "NssssSi": [
+                        "remove_column"
+                    ],
+                    "NdsssP": [
+                        "remove_column"
+                    ],
+                    "NdssS": [
+                        "remove_column"
+                    ],
+                    "StCH": [
+                        "remove_column"
+                    ],
+                    "SssNH2": [
+                        "remove_column"
+                    ],
+                    "SsssNH": [
+                        "remove_column"
+                    ],
+                    "SssssN": [
+                        "remove_column"
+                    ],
+                    "SssssSi": [
+                        "remove_column"
+                    ],
+                    "SdsssP": [
+                        "remove_column"
+                    ],
+                    "SdssS": [
+                        "remove_column"
+                    ],
+                    "MAXtCH": [
+                        "remove_column"
+                    ],
+                    "MAXssNH2": [
+                        "remove_column"
+                    ],
+                    "MAXsssNH": [
+                        "remove_column"
+                    ],
+                    "MAXssssN": [
+                        "remove_column"
+                    ],
+                    "MAXssssSi": [
+                        "remove_column"
+                    ],
+                    "MAXdsssP": [
+                        "remove_column"
+                    ],
+                    "MAXdssS": [
+                        "remove_column"
+                    ],
+                    "MINtCH": [
+                        "remove_column"
+                    ],
+                    "MINssNH2": [
+                        "remove_column"
+                    ],
+                    "MINsssNH": [
+                        "remove_column"
+                    ],
+                    "MINssssN": [
+                        "remove_column"
+                    ],
+                    "MINssssSi": [
+                        "remove_column"
+                    ],
+                    "MINdsssP": [
+                        "remove_column"
+                    ],
+                    "MINdssS": [
+                        "remove_column"
+                    ],
+                    "n12Ring": [
+                        "remove_column"
+                    ],
+                    "nG12Ring": [
+                        "remove_column"
+                    ],
+                    "n3HRing": [
+                        "remove_column"
+                    ],
+                    "n12ARing": [
+                        "remove_column"
+                    ],
+                    "nG12ARing": [
+                        "remove_column"
+                    ],
+                    "n3AHRing": [
+                        "remove_column"
+                    ],
+                    "n12FaRing": [
+                        "remove_column"
+                    ],
+                    "n12FaHRing": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "nP",
+                "NtCH",
+                "NssNH2",
+                "NsssNH",
+                "NssssN",
+                "NssssSi",
+                "NdsssP",
+                "NdssS",
+                "StCH",
+                "SssNH2",
+                "SsssNH",
+                "SssssN",
+                "SssssSi",
+                "SdsssP",
+                "SdssS",
+                "MAXtCH",
+                "MAXssNH2",
+                "MAXsssNH",
+                "MAXssssN",
+                "MAXssssSi",
+                "MAXdsssP",
+                "MAXdssS",
+                "MINtCH",
+                "MINssNH2",
+                "MINsssNH",
+                "MINssssN",
+                "MINssssSi",
+                "MINdsssP",
+                "MINdssS",
+                "n12Ring",
+                "nG12Ring",
+                "n3HRing",
+                "n12ARing",
+                "nG12ARing",
+                "n3AHRing",
+                "n12FaRing",
+                "n12FaHRing"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.25861950934102135
+                ],
+                "mean": [
+                    1.7284025333659279
+                ],
+                "var": [
+                    0.06688405061179062
+                ],
+                "n_samples_seen": 1492,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    2.62
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "nP": [
+                        "remove_column"
+                    ],
+                    "NtCH": [
+                        "remove_column"
+                    ],
+                    "NssNH2": [
+                        "remove_column"
+                    ],
+                    "NsssNH": [
+                        "remove_column"
+                    ],
+                    "NssssN": [
+                        "remove_column"
+                    ],
+                    "NssssSi": [
+                        "remove_column"
+                    ],
+                    "NdsssP": [
+                        "remove_column"
+                    ],
+                    "NdssS": [
+                        "remove_column"
+                    ],
+                    "StCH": [
+                        "remove_column"
+                    ],
+                    "SssNH2": [
+                        "remove_column"
+                    ],
+                    "SsssNH": [
+                        "remove_column"
+                    ],
+                    "SssssN": [
+                        "remove_column"
+                    ],
+                    "SssssSi": [
+                        "remove_column"
+                    ],
+                    "SdsssP": [
+                        "remove_column"
+                    ],
+                    "SdssS": [
+                        "remove_column"
+                    ],
+                    "MAXtCH": [
+                        "remove_column"
+                    ],
+                    "MAXssNH2": [
+                        "remove_column"
+                    ],
+                    "MAXsssNH": [
+                        "remove_column"
+                    ],
+                    "MAXssssN": [
+                        "remove_column"
+                    ],
+                    "MAXssssSi": [
+                        "remove_column"
+                    ],
+                    "MAXdsssP": [
+                        "remove_column"
+                    ],
+                    "MAXdssS": [
+                        "remove_column"
+                    ],
+                    "MINtCH": [
+                        "remove_column"
+                    ],
+                    "MINssNH2": [
+                        "remove_column"
+                    ],
+                    "MINsssNH": [
+                        "remove_column"
+                    ],
+                    "MINssssN": [
+                        "remove_column"
+                    ],
+                    "MINssssSi": [
+                        "remove_column"
+                    ],
+                    "MINdsssP": [
+                        "remove_column"
+                    ],
+                    "MINdssS": [
+                        "remove_column"
+                    ],
+                    "n12Ring": [
+                        "remove_column"
+                    ],
+                    "nG12Ring": [
+                        "remove_column"
+                    ],
+                    "n3HRing": [
+                        "remove_column"
+                    ],
+                    "n12ARing": [
+                        "remove_column"
+                    ],
+                    "nG12ARing": [
+                        "remove_column"
+                    ],
+                    "n3AHRing": [
+                        "remove_column"
+                    ],
+                    "n12FaRing": [
+                        "remove_column"
+                    ],
+                    "n12FaHRing": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "nP",
+                "NtCH",
+                "NssNH2",
+                "NsssNH",
+                "NssssN",
+                "NssssSi",
+                "NdsssP",
+                "NdssS",
+                "StCH",
+                "SssNH2",
+                "SsssNH",
+                "SssssN",
+                "SssssSi",
+                "SdsssP",
+                "SdssS",
+                "MAXtCH",
+                "MAXssNH2",
+                "MAXsssNH",
+                "MAXssssN",
+                "MAXssssSi",
+                "MAXdsssP",
+                "MAXdssS",
+                "MINtCH",
+                "MINssNH2",
+                "MINsssNH",
+                "MINssssN",
+                "MINssssSi",
+                "MINdsssP",
+                "MINdssS",
+                "n12Ring",
+                "nG12Ring",
+                "n3HRing",
+                "n12ARing",
+                "nG12ARing",
+                "n3AHRing",
+                "n12FaRing",
+                "n12FaHRing"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.2607707690298728
+                ],
+                "mean": [
+                    1.7264999675522263
+                ],
+                "var": [
+                    0.06800139398043126
+                ],
+                "n_samples_seen": 1492,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    2.62
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "nP": [
+                        "remove_column"
+                    ],
+                    "NtCH": [
+                        "remove_column"
+                    ],
+                    "NssNH2": [
+                        "remove_column"
+                    ],
+                    "NsssNH": [
+                        "remove_column"
+                    ],
+                    "NssssN": [
+                        "remove_column"
+                    ],
+                    "NssssSi": [
+                        "remove_column"
+                    ],
+                    "NdsssP": [
+                        "remove_column"
+                    ],
+                    "NdssS": [
+                        "remove_column"
+                    ],
+                    "StCH": [
+                        "remove_column"
+                    ],
+                    "SssNH2": [
+                        "remove_column"
+                    ],
+                    "SsssNH": [
+                        "remove_column"
+                    ],
+                    "SssssN": [
+                        "remove_column"
+                    ],
+                    "SssssSi": [
+                        "remove_column"
+                    ],
+                    "SdsssP": [
+                        "remove_column"
+                    ],
+                    "SdssS": [
+                        "remove_column"
+                    ],
+                    "MAXtCH": [
+                        "remove_column"
+                    ],
+                    "MAXssNH2": [
+                        "remove_column"
+                    ],
+                    "MAXsssNH": [
+                        "remove_column"
+                    ],
+                    "MAXssssN": [
+                        "remove_column"
+                    ],
+                    "MAXssssSi": [
+                        "remove_column"
+                    ],
+                    "MAXdsssP": [
+                        "remove_column"
+                    ],
+                    "MAXdssS": [
+                        "remove_column"
+                    ],
+                    "MINtCH": [
+                        "remove_column"
+                    ],
+                    "MINssNH2": [
+                        "remove_column"
+                    ],
+                    "MINsssNH": [
+                        "remove_column"
+                    ],
+                    "MINssssN": [
+                        "remove_column"
+                    ],
+                    "MINssssSi": [
+                        "remove_column"
+                    ],
+                    "MINdsssP": [
+                        "remove_column"
+                    ],
+                    "MINdssS": [
+                        "remove_column"
+                    ],
+                    "n12Ring": [
+                        "remove_column"
+                    ],
+                    "nG12Ring": [
+                        "remove_column"
+                    ],
+                    "n3HRing": [
+                        "remove_column"
+                    ],
+                    "n12ARing": [
+                        "remove_column"
+                    ],
+                    "nG12ARing": [
+                        "remove_column"
+                    ],
+                    "n3AHRing": [
+                        "remove_column"
+                    ],
+                    "n12FaRing": [
+                        "remove_column"
+                    ],
+                    "n12FaHRing": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        }
+    ],
+    "learners": [
+        {
+            "library_version": "3.2.1",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "6a8022e1-b434-4946-9ec4-29a7fc429c5f",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 692752,
+                "objective": "regression",
+                "num_leaves": 63,
+                "learning_rate": 0.05,
+                "feature_fraction": 0.8,
+                "bagging_fraction": 1.0,
+                "min_data_in_leaf": 15,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_0"
+        },
+        {
+            "library_version": "3.2.1",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "b9a9cc9c-6de2-4100-b192-e48dcbba2828",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 692752,
+                "objective": "regression",
+                "num_leaves": 63,
+                "learning_rate": 0.05,
+                "feature_fraction": 0.8,
+                "bagging_fraction": 1.0,
+                "min_data_in_leaf": 15,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_1"
+        },
+        {
+            "library_version": "3.2.1",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "bb75c0f3-82e1-4b21-8ccb-32449230fd0d",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 692752,
+                "objective": "regression",
+                "num_leaves": 63,
+                "learning_rate": 0.05,
+                "feature_fraction": 0.8,
+                "bagging_fraction": 1.0,
+                "min_data_in_leaf": 15,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_2"
+        },
+        {
+            "library_version": "3.2.1",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "1568741a-d1c1-4f81-862a-598c5d43c0b5",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 692752,
+                "objective": "regression",
+                "num_leaves": 63,
+                "learning_rate": 0.05,
+                "feature_fraction": 0.8,
+                "bagging_fraction": 1.0,
+                "min_data_in_leaf": 15,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_3"
+        },
+        {
+            "library_version": "3.2.1",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "9a18fd27-f5ed-4abb-a3f3-2e42e0805e75",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 692752,
+                "objective": "regression",
+                "num_leaves": 63,
+                "learning_rate": 0.05,
+                "feature_fraction": 0.8,
+                "bagging_fraction": 1.0,
+                "min_data_in_leaf": 15,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_4"
+        },
+        {
+            "library_version": "3.2.1",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "539f281c-246f-4dac-9481-1f2fcdb9e537",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 692752,
+                "objective": "regression",
+                "num_leaves": 63,
+                "learning_rate": 0.05,
+                "feature_fraction": 0.8,
+                "bagging_fraction": 1.0,
+                "min_data_in_leaf": 15,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_5"
+        },
+        {
+            "library_version": "3.2.1",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "6395cbd0-fe63-44a8-9e2f-ce149f2b3fde",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 692752,
+                "objective": "regression",
+                "num_leaves": 63,
+                "learning_rate": 0.05,
+                "feature_fraction": 0.8,
+                "bagging_fraction": 1.0,
+                "min_data_in_leaf": 15,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_6"
+        },
+        {
+            "library_version": "3.2.1",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "e8bd7f12-6538-43cc-a33e-970d68c2916c",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 692752,
+                "objective": "regression",
+                "num_leaves": 63,
+                "learning_rate": 0.05,
+                "feature_fraction": 0.8,
+                "bagging_fraction": 1.0,
+                "min_data_in_leaf": 15,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_7"
+        },
+        {
+            "library_version": "3.2.1",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "289cb7e2-814c-4b6a-8374-de76f504f03c",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 692752,
+                "objective": "regression",
+                "num_leaves": 63,
+                "learning_rate": 0.05,
+                "feature_fraction": 0.8,
+                "bagging_fraction": 1.0,
+                "min_data_in_leaf": 15,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_8"
+        },
+        {
+            "library_version": "3.2.1",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "063b1cc6-beb1-436e-bb7c-acbc26ff8169",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 692752,
+                "objective": "regression",
+                "num_leaves": 63,
+                "learning_rate": 0.05,
+                "feature_fraction": 0.8,
+                "bagging_fraction": 1.0,
+                "min_data_in_leaf": 15,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_9"
+        }
+    ],
+    "params": {
+        "additional": {
+            "max_rounds": 10000,
+            "early_stopping_rounds": 50,
+            "max_rows_limit": null,
+            "max_cols_limit": null
+        },
+        "preprocessing": {
+            "columns_preprocessing": {
+                "nP": [
+                    "remove_column"
+                ],
+                "NtCH": [
+                    "remove_column"
+                ],
+                "NssNH2": [
+                    "remove_column"
+                ],
+                "NsssNH": [
+                    "remove_column"
+                ],
+                "NssssN": [
+                    "remove_column"
+                ],
+                "NssssSi": [
+                    "remove_column"
+                ],
+                "NdsssP": [
+                    "remove_column"
+                ],
+                "NdssS": [
+                    "remove_column"
+                ],
+                "StCH": [
+                    "remove_column"
+                ],
+                "SssNH2": [
+                    "remove_column"
+                ],
+                "SsssNH": [
+                    "remove_column"
+                ],
+                "SssssN": [
+                    "remove_column"
+                ],
+                "SssssSi": [
+                    "remove_column"
+                ],
+                "SdsssP": [
+                    "remove_column"
+                ],
+                "SdssS": [
+                    "remove_column"
+                ],
+                "MAXtCH": [
+                    "remove_column"
+                ],
+                "MAXssNH2": [
+                    "remove_column"
+                ],
+                "MAXsssNH": [
+                    "remove_column"
+                ],
+                "MAXssssN": [
+                    "remove_column"
+                ],
+                "MAXssssSi": [
+                    "remove_column"
+                ],
+                "MAXdsssP": [
+                    "remove_column"
+                ],
+                "MAXdssS": [
+                    "remove_column"
+                ],
+                "MINtCH": [
+                    "remove_column"
+                ],
+                "MINssNH2": [
+                    "remove_column"
+                ],
+                "MINsssNH": [
+                    "remove_column"
+                ],
+                "MINssssN": [
+                    "remove_column"
+                ],
+                "MINssssSi": [
+                    "remove_column"
+                ],
+                "MINdsssP": [
+                    "remove_column"
+                ],
+                "MINdssS": [
+                    "remove_column"
+                ],
+                "n12Ring": [
+                    "remove_column"
+                ],
+                "nG12Ring": [
+                    "remove_column"
+                ],
+                "n3HRing": [
+                    "remove_column"
+                ],
+                "n12ARing": [
+                    "remove_column"
+                ],
+                "nG12ARing": [
+                    "remove_column"
+                ],
+                "n3AHRing": [
+                    "remove_column"
+                ],
+                "n12FaRing": [
+                    "remove_column"
+                ],
+                "n12FaHRing": [
+                    "remove_column"
+                ]
+            },
+            "target_preprocessing": [
+                "na_exclude",
+                "scale_log_and_normal"
+            ],
+            "ml_task": "regression"
+        },
+        "validation_strategy": {
+            "validation_type": "custom",
+            "X_path": "mljar_AutoML_Compete_2023_07_22_05_05_38/X.data",
+            "y_path": "mljar_AutoML_Compete_2023_07_22_05_05_38/y.data",
+            "results_path": "mljar_AutoML_Compete_2023_07_22_05_05_38",
+            "cv_path": "mljar_AutoML_Compete_2023_07_22_05_05_38/cv.data"
+        },
+        "learner": {
+            "model_type": "LightGBM",
+            "ml_task": "regression",
+            "n_jobs": -1,
+            "seed": 692752,
+            "objective": "regression",
+            "num_leaves": 63,
+            "learning_rate": 0.05,
+            "feature_fraction": 0.8,
+            "bagging_fraction": 1.0,
+            "min_data_in_leaf": 15,
+            "metric": "rmse",
+            "custom_eval_metric_name": null,
+            "explain_level": 0
+        },
+        "automl_random_state": 692749,
+        "ml_task": "regression",
+        "explain_level": 0,
+        "name": "23_LightGBM",
+        "status": "initialized",
+        "final_loss": null,
+        "train_time": null,
+        "data_type": "original",
+        "max_time_for_learner": 720.0
+    },
+    "saved": [
+        "23_LightGBM/learner_fold_0.lightgbm",
+        "23_LightGBM/learner_fold_1.lightgbm",
+        "23_LightGBM/learner_fold_2.lightgbm",
+        "23_LightGBM/learner_fold_3.lightgbm",
+        "23_LightGBM/learner_fold_4.lightgbm",
+        "23_LightGBM/learner_fold_5.lightgbm",
+        "23_LightGBM/learner_fold_6.lightgbm",
+        "23_LightGBM/learner_fold_7.lightgbm",
+        "23_LightGBM/learner_fold_8.lightgbm",
+        "23_LightGBM/learner_fold_9.lightgbm"
+    ],
+    "predictions_fname": "23_LightGBM/predictions_validation.csv",
+    "metric_name": "rmse",
+    "final_loss": 0.5947570803973589,
+    "train_time": 74.74089193344116,
+    "is_stacked": false
+}
