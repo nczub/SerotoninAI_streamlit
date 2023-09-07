@@ -1,0 +1,675 @@
+{
+    "uid": "8a31691e-918b-40be-8d11-a7a37e19ba78",
+    "name": "60_Xgboost",
+    "preprocessing": [
+        {
+            "remove_columns": [
+                "MAXdCH2"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.33250733094091733
+                ],
+                "mean": [
+                    1.5045208818363782
+                ],
+                "var": [
+                    0.11056112512945271
+                ],
+                "n_samples_seen": 404,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    3.06
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "MAXdCH2": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "MAXdCH2"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.33126399566025977
+                ],
+                "mean": [
+                    1.5117521149192763
+                ],
+                "var": [
+                    0.1097358348208006
+                ],
+                "n_samples_seen": 404,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    3.06
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "MAXdCH2": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "MAXdCH2"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.3280624149529129
+                ],
+                "mean": [
+                    1.5039139538481634
+                ],
+                "var": [
+                    0.10762494810473722
+                ],
+                "n_samples_seen": 404,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    3.06
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "MAXdCH2": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "MAXdCH2"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.3321911377160173
+                ],
+                "mean": [
+                    1.5056402811926106
+                ],
+                "var": [
+                    0.110350951977062
+                ],
+                "n_samples_seen": 404,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    3.06
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "MAXdCH2": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "MAXdCH2"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.3294821253252729
+                ],
+                "mean": [
+                    1.4984036477921956
+                ],
+                "var": [
+                    0.10855847090885883
+                ],
+                "n_samples_seen": 404,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    3.06
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "MAXdCH2": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "MAXdCH2"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.33068837110784727
+                ],
+                "mean": [
+                    1.5133914738918037
+                ],
+                "var": [
+                    0.1093547987859613
+                ],
+                "n_samples_seen": 404,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    3.06
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "MAXdCH2": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "MAXdCH2"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.33018426782160903
+                ],
+                "mean": [
+                    1.5086286522039685
+                ],
+                "var": [
+                    0.10902165071689204
+                ],
+                "n_samples_seen": 404,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    3.06
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "MAXdCH2": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "MAXdCH2"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.3265815752686056
+                ],
+                "mean": [
+                    1.5100900850944374
+                ],
+                "var": [
+                    0.1066555253049239
+                ],
+                "n_samples_seen": 404,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    3.06
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "MAXdCH2": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "MAXdCH2"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.4237670630605102
+                ],
+                "mean": [
+                    1.253716422224481
+                ],
+                "var": [
+                    0.1795785237349304
+                ],
+                "n_samples_seen": 404,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    4.0
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "MAXdCH2": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "MAXdCH2"
+            ],
+            "scale_y": {
+                "scale": [
+                    0.33342647764024896
+                ],
+                "mean": [
+                    1.5060229847315305
+                ],
+                "var": [
+                    0.11117321599158343
+                ],
+                "n_samples_seen": 405,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_log_and_normal",
+                "X_min_values": [
+                    3.06
+                ]
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "MAXdCH2": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_log_and_normal"
+                ],
+                "ml_task": "regression"
+            }
+        }
+    ],
+    "learners": [
+        {
+            "library_version": "1.4.0",
+            "algorithm_name": "Extreme Gradient Boosting",
+            "algorithm_short_name": "Xgboost",
+            "uid": "cfb221d4-70c4-46a8-b670-9cf206bfd9b4",
+            "params": {
+                "model_type": "Xgboost",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 593734,
+                "objective": "reg:squarederror",
+                "eta": 0.05,
+                "max_depth": 9,
+                "min_child_weight": 25,
+                "subsample": 0.8,
+                "colsample_bytree": 0.5,
+                "eval_metric": "rmse",
+                "explain_level": 0
+            },
+            "name": "learner_fold_0",
+            "best_ntree_limit": 230
+        },
+        {
+            "library_version": "1.4.0",
+            "algorithm_name": "Extreme Gradient Boosting",
+            "algorithm_short_name": "Xgboost",
+            "uid": "a0ec8fc5-909a-4d28-b7c3-5cffe7c10925",
+            "params": {
+                "model_type": "Xgboost",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 593734,
+                "objective": "reg:squarederror",
+                "eta": 0.05,
+                "max_depth": 9,
+                "min_child_weight": 25,
+                "subsample": 0.8,
+                "colsample_bytree": 0.5,
+                "eval_metric": "rmse",
+                "explain_level": 0
+            },
+            "name": "learner_fold_1",
+            "best_ntree_limit": 252
+        },
+        {
+            "library_version": "1.4.0",
+            "algorithm_name": "Extreme Gradient Boosting",
+            "algorithm_short_name": "Xgboost",
+            "uid": "2c3296a2-6310-46c1-be88-39ae6c9768e0",
+            "params": {
+                "model_type": "Xgboost",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 593734,
+                "objective": "reg:squarederror",
+                "eta": 0.05,
+                "max_depth": 9,
+                "min_child_weight": 25,
+                "subsample": 0.8,
+                "colsample_bytree": 0.5,
+                "eval_metric": "rmse",
+                "explain_level": 0
+            },
+            "name": "learner_fold_2",
+            "best_ntree_limit": 417
+        },
+        {
+            "library_version": "1.4.0",
+            "algorithm_name": "Extreme Gradient Boosting",
+            "algorithm_short_name": "Xgboost",
+            "uid": "cbbd142e-71b0-4bd8-80ee-0ec4bb2016b4",
+            "params": {
+                "model_type": "Xgboost",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 593734,
+                "objective": "reg:squarederror",
+                "eta": 0.05,
+                "max_depth": 9,
+                "min_child_weight": 25,
+                "subsample": 0.8,
+                "colsample_bytree": 0.5,
+                "eval_metric": "rmse",
+                "explain_level": 0
+            },
+            "name": "learner_fold_3",
+            "best_ntree_limit": 352
+        },
+        {
+            "library_version": "1.4.0",
+            "algorithm_name": "Extreme Gradient Boosting",
+            "algorithm_short_name": "Xgboost",
+            "uid": "9874ae68-714a-4799-a004-2124c7d50eb6",
+            "params": {
+                "model_type": "Xgboost",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 593734,
+                "objective": "reg:squarederror",
+                "eta": 0.05,
+                "max_depth": 9,
+                "min_child_weight": 25,
+                "subsample": 0.8,
+                "colsample_bytree": 0.5,
+                "eval_metric": "rmse",
+                "explain_level": 0
+            },
+            "name": "learner_fold_4",
+            "best_ntree_limit": 305
+        },
+        {
+            "library_version": "1.4.0",
+            "algorithm_name": "Extreme Gradient Boosting",
+            "algorithm_short_name": "Xgboost",
+            "uid": "e0dbc8ae-5cc5-40f8-904d-660a47ab850d",
+            "params": {
+                "model_type": "Xgboost",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 593734,
+                "objective": "reg:squarederror",
+                "eta": 0.05,
+                "max_depth": 9,
+                "min_child_weight": 25,
+                "subsample": 0.8,
+                "colsample_bytree": 0.5,
+                "eval_metric": "rmse",
+                "explain_level": 0
+            },
+            "name": "learner_fold_5",
+            "best_ntree_limit": 492
+        },
+        {
+            "library_version": "1.4.0",
+            "algorithm_name": "Extreme Gradient Boosting",
+            "algorithm_short_name": "Xgboost",
+            "uid": "5c7badb7-a693-4c03-9a5f-3cfc8e063061",
+            "params": {
+                "model_type": "Xgboost",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 593734,
+                "objective": "reg:squarederror",
+                "eta": 0.05,
+                "max_depth": 9,
+                "min_child_weight": 25,
+                "subsample": 0.8,
+                "colsample_bytree": 0.5,
+                "eval_metric": "rmse",
+                "explain_level": 0
+            },
+            "name": "learner_fold_6",
+            "best_ntree_limit": 1227
+        },
+        {
+            "library_version": "1.4.0",
+            "algorithm_name": "Extreme Gradient Boosting",
+            "algorithm_short_name": "Xgboost",
+            "uid": "38ee664f-eb74-4870-ba24-230782271f32",
+            "params": {
+                "model_type": "Xgboost",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 593734,
+                "objective": "reg:squarederror",
+                "eta": 0.05,
+                "max_depth": 9,
+                "min_child_weight": 25,
+                "subsample": 0.8,
+                "colsample_bytree": 0.5,
+                "eval_metric": "rmse",
+                "explain_level": 0
+            },
+            "name": "learner_fold_7",
+            "best_ntree_limit": 319
+        },
+        {
+            "library_version": "1.4.0",
+            "algorithm_name": "Extreme Gradient Boosting",
+            "algorithm_short_name": "Xgboost",
+            "uid": "920b7752-04d1-497d-b9ce-9f3a426a508d",
+            "params": {
+                "model_type": "Xgboost",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 593734,
+                "objective": "reg:squarederror",
+                "eta": 0.05,
+                "max_depth": 9,
+                "min_child_weight": 25,
+                "subsample": 0.8,
+                "colsample_bytree": 0.5,
+                "eval_metric": "rmse",
+                "explain_level": 0
+            },
+            "name": "learner_fold_8",
+            "best_ntree_limit": 350
+        },
+        {
+            "library_version": "1.4.0",
+            "algorithm_name": "Extreme Gradient Boosting",
+            "algorithm_short_name": "Xgboost",
+            "uid": "5c06958f-61b6-4887-9d9a-20ddb3413eb3",
+            "params": {
+                "model_type": "Xgboost",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 593734,
+                "objective": "reg:squarederror",
+                "eta": 0.05,
+                "max_depth": 9,
+                "min_child_weight": 25,
+                "subsample": 0.8,
+                "colsample_bytree": 0.5,
+                "eval_metric": "rmse",
+                "explain_level": 0
+            },
+            "name": "learner_fold_9",
+            "best_ntree_limit": 318
+        }
+    ],
+    "params": {
+        "additional": {
+            "max_rounds": 10000,
+            "early_stopping_rounds": 50,
+            "max_rows_limit": null,
+            "max_cols_limit": null
+        },
+        "preprocessing": {
+            "columns_preprocessing": {
+                "MAXdCH2": [
+                    "remove_column"
+                ]
+            },
+            "target_preprocessing": [
+                "na_exclude",
+                "scale_log_and_normal"
+            ],
+            "ml_task": "regression"
+        },
+        "validation_strategy": {
+            "validation_type": "custom",
+            "X_path": "mljar_AutoML_Compete_2023_07_21_16_02_20/X.data",
+            "y_path": "mljar_AutoML_Compete_2023_07_21_16_02_20/y.data",
+            "results_path": "mljar_AutoML_Compete_2023_07_21_16_02_20",
+            "cv_path": "mljar_AutoML_Compete_2023_07_21_16_02_20/cv.data"
+        },
+        "learner": {
+            "model_type": "Xgboost",
+            "ml_task": "regression",
+            "n_jobs": -1,
+            "seed": 593734,
+            "objective": "reg:squarederror",
+            "eta": 0.05,
+            "max_depth": 9,
+            "min_child_weight": 25,
+            "subsample": 0.8,
+            "colsample_bytree": 0.5,
+            "eval_metric": "rmse",
+            "explain_level": 0
+        },
+        "automl_random_state": 593732,
+        "ml_task": "regression",
+        "explain_level": 0,
+        "name": "60_Xgboost",
+        "status": "initialized",
+        "final_loss": null,
+        "train_time": null,
+        "data_type": "original",
+        "max_time_for_learner": 360.0
+    },
+    "saved": [
+        "60_Xgboost/learner_fold_0.xgboost",
+        "60_Xgboost/learner_fold_1.xgboost",
+        "60_Xgboost/learner_fold_2.xgboost",
+        "60_Xgboost/learner_fold_3.xgboost",
+        "60_Xgboost/learner_fold_4.xgboost",
+        "60_Xgboost/learner_fold_5.xgboost",
+        "60_Xgboost/learner_fold_6.xgboost",
+        "60_Xgboost/learner_fold_7.xgboost",
+        "60_Xgboost/learner_fold_8.xgboost",
+        "60_Xgboost/learner_fold_9.xgboost"
+    ],
+    "predictions_fname": "60_Xgboost/predictions_validation.csv",
+    "metric_name": "rmse",
+    "final_loss": 0.8575874731939372,
+    "train_time": 68.82913994789124,
+    "is_stacked": false
+}
