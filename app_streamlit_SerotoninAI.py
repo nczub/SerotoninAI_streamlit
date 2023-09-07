@@ -1920,33 +1920,4 @@ elif selected == "Contact":
     st.markdown('<i class="fab fa-github-square"></i>  https://github.com/nczub', unsafe_allow_html=True)
     st.write('You can also contact using the form below.')
     
-    def send_email(subject, body, to_email):
-        msg = EmailMessage()
-        msg.set_content(body)
-        msg['Subject'] = subject
-        msg['From'] ='lapinska.natalia100@gmail.com'
-        msg['To'] = to_email
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login("lapinska.natalia100@gmail.com", "qdkydvbcksneluqs")
-        server.send_message(msg)
-        server.quit()
-        
-    def main():      
-        topic = st.text_input(label='Subject', placeholder='Please enter the subject of your issue')
-        fullName = st.text_input(label='Name', placeholder='Please enter your name')
-        email = st.text_input(label='Email Address', placeholder='Please enter your email address')
-        message = st.text_area(label='Email text', placeholder='Please enter your text here', max_chars=200)
-        if st.button(label='Send'):
-            subject = f"New message: {topic}"
-            body = f"Full name: {fullName}\nE-mail: {email}\nText:\n{message}"
-            send_email(subject, body, "lapinska.natalia100@gmail.com")
-                    
-            user_subject = f"Thank you for your message: {topic}"
-            user_body = f"Dear {fullName},\n\nWe have received your message with the content:\n\n{message}\n\nand we will try to answer as soon as possible.\n\nBest regards,\nSerotoninAI team"
-            send_email(user_subject, user_body, email)
-                    
-            st.success("Your message has been sent successfully.")
-        
-    if __name__ == "__main__":
-        main()
+#This section of code has been removed due to sensitive and private information.
