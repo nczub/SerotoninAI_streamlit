@@ -16,9 +16,12 @@ During installation you create conda enviroment 'for_serotoninAI'
 
 3. **Activate enviroment**
 In console activate conda environment:
-conda activate for_serotoninAI
 
-4. Now, you can run the application:
+```bash
+conda activate for_serotoninAI
+```
+
+5. Now, you can run the application:
 streamlit run app_streamlit_SerotoninAI.py
 
 App should open in browser or you will be available at '...'.
