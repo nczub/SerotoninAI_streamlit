@@ -18,7 +18,7 @@ During installation you create conda enviroment 'for_serotoninAI'
 In console activate conda environment:
 
 ```bash
-conda activate for_serotoninAI
+$ conda activate for_serotoninAI
 ```
 
 5. Now, you can run the application:
