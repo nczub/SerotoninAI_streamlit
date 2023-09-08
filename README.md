@@ -11,10 +11,13 @@ You can find the application at the following link:
 To run the application locally, follow these steps:
 1. **Clone the repository**
 2. **Install dependencies**:
+
 Needed packages are in file enviroment.txt
+
 During installation you create conda enviroment 'for_serotoninAI'
 
-3. **Activate enviroment**
+4. **Activate enviroment**
+   
 In console activate conda environment:
 
 ```bash
@@ -22,6 +25,7 @@ $ conda activate for_serotoninAI
 ```
 
 5. Now, you can run the application:
+   
 streamlit run app_streamlit_SerotoninAI.py
 
 App should open in browser or you will be available at '...'.
@@ -30,14 +34,18 @@ App should open in browser or you will be available at '...'.
 
 
 ## Batch mode
+
 In batch mode you can calculate predictions for multiple molecules.
 
 Please, remember to upload CSV file with column names 'smiles', because based on this system will predict affinity or property.
 
 ## Author
-I'm Natalia Czub and I'm author of SerotoninAI
-GitHub: https://github.com/nczub
-LinkedIn: https://www.linkedin.com/in/natalia-czub/
+
+I'm Natalia Czub and I'm the author of SerotoninAI
+
+- GitHub: https://github.com/nczub
+
+- LinkedIn: https://www.linkedin.com/in/natalia-czub/
 
 ## License
 
