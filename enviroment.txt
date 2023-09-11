@@ -1,22 +1,15 @@
 conda create --name for_serotoninAI
 conda activate for_serotoninAI
-conda install -y -c conda-forge jupyterlab
-conda install -y -c conda-forge rdkit
+conda install -y -c conda-forge rdkit==2023.03.2
 
-conda install -y -c anaconda scikit-learn
-conda install -y -c conda-forge mljar-supervised
-conda install -y -c anaconda numpy, pandas, seaborn
-conda install -y -c conda-forge matplotlib
-conda install -y -c conda-forge mordred
+conda install -y -c anaconda scikit-learn==1.2.2
+conda install -y -c conda-forge mljar-supervised==1.0.0
+conda install -y -c anaconda numpy==1.24.3
+conda install -y -c anaconda pandas==1.5.3
+conda install -y -c anaconda seaborn==0.12.2
+conda install -y -c conda-forge matplotlib==3.7.1
+conda install -y -c conda-forge mordred==1.2.0
 
 pip install streamlit
-pip install streamlit-option-menu
-pip install streamlit-ketcher
-
-
-
-
-
-
-
-
+pip install streamlit-option-menu==0.3.6
+pip install streamlit-ketcher==0.0.1
