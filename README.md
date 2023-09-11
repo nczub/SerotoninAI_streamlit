@@ -25,9 +25,10 @@ $ conda activate for_serotoninAI
 ```
 
 5. Now, you can run the application:
-   
-streamlit run app_streamlit_SerotoninAI.py
 
+```bash   
+$ streamlit run app_streamlit_SerotoninAI.py
+```
 App should open in browser or you will be available at '...'.
 
 5. Finally, have fun and test my app!
