@@ -36,9 +36,9 @@ App should open in the browser or it will be available at 'http://localhost:8501
 
 ## Batch mode
 
-In batch mode, you can calculate predictions for multiple molecules.
+In batch mode, you can calculate predictions for multiple molecules. The online version of SerotoninAI has limitations based on Streamlit Cloud. The local app is much better to use for larger database.
 
-Please, remember to upload CSV file with column names 'smiles', because based on this system will predict affinity or property.
+Please, remember to upload CSV file with the column names 'smiles', because based on this system will predict affinity or property.
 
 ## Author
 
