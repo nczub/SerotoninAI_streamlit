@@ -16,7 +16,7 @@ Needed packages are in file enviroment.txt
 
 During installation you create conda enviroment 'for_serotoninAI'
 
-4. **Activate enviroment**
+3. **Activate enviroment**
    
 In console activate conda environment:
 
@@ -24,7 +24,7 @@ In console activate conda environment:
 $ conda activate for_serotoninAI
 ```
 
-5. Now, you can run the application:
+4. Now, you can run the application:
 
 ```bash   
 $ streamlit run app_streamlit_SerotoninAI.py
