@@ -12,13 +12,13 @@ To run the application locally, follow these steps:
 1. **Clone the repository**
 2. **Install dependencies**:
 
-Needed packages are in file enviroment.txt
+The needed packages are in file enviroment.txt
 
-During installation you create conda enviroment 'for_serotoninAI'
+During installation you create conda environment 'for_serotoninAI'
 
-3. **Activate enviroment**
+3. **Activate environment**
    
-In console activate conda environment:
+In the console activate conda environment:
 
 ```bash
 $ conda activate for_serotoninAI
@@ -29,14 +29,14 @@ $ conda activate for_serotoninAI
 ```bash   
 $ streamlit run app_streamlit_SerotoninAI.py
 ```
-App should open in browser or it will be available at 'http://localhost:8501'.
+App should open in the browser or it will be available at 'http://localhost:8501'.
 
 5. Finally, have fun and test my app!
 
 
 ## Batch mode
 
-In batch mode you can calculate predictions for multiple molecules.
+In batch mode, you can calculate predictions for multiple molecules.
 
 Please, remember to upload CSV file with column names 'smiles', because based on this system will predict affinity or property.
 
