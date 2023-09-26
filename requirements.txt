@@ -1,6 +1,7 @@
 rdkit==2023.03.2
 scikit-learn==1.2.2
 mljar-supervised==1.0.0
+pip install numba --upgrade
 numpy==1.24.3
 pandas==1.5.3
 seaborn==0.12.2
