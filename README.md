@@ -44,7 +44,7 @@ Please, remember to upload CSV file with the column names 'smiles', because base
 
 ## Author
 
-I'm Natalia Czub and I'm the author of SerotoninAI
+I'm Natalia Łapińska (maiden name Czub) and I'm the author of SerotoninAI
 
 - GitHub: https://github.com/nczub
 
