@@ -1,4 +1,4 @@
-#Natalia Czub 
+#Natalia Łapińska
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -90,6 +90,10 @@ best_model_5HT2C = AutoML(best_model_path_5HT2C)
 #5-HT3
 best_model_path_5HT3 = 'FINAL_QSAR_MODELS/model_5-HT3/mljar_AutoML_Compete_2023_07_21_16_02_20' 
 best_model_5HT3 = AutoML(best_model_path_5HT3)
+
+#5-HT4
+best_model_path_5HT4 = 'FINAL_QSAR_MODELS/model_5-HT4/mljar_AutoML_Compete_2023_11_08_16_50_53'
+best_model_5HT4 = AutoML(best_model_path_5HT4)
 
 #5-HT5A
 best_model_path_5HT5A = 'FINAL_QSAR_MODELS/model_5-HT5A/mljar_AutoML_Compete_2023_07_21_17_43_12' 
@@ -196,7 +200,7 @@ footer_style = """
     font-size: 16px;
 """
 st.markdown(
-    f'<div style="{footer_style}">Copyright (C) 2023 Natalia Czub</div>',
+    f'<div style="{footer_style}">Copyright (C) 2023 Natalia Łapińska (Czub)</div>',
     unsafe_allow_html=True
 )
 
@@ -224,8 +228,8 @@ if selected == "Home":
     st.write("This application provides the ability to predict the ligand affinity for a specific serotonergic target, as well as human intestinal absorption, which is important for orally administered drugs. Moreover, the app gives you predictions for blood-brain barrier penetration.")
     st.write("In the menu above you can find the main sections:")
     st.write(":small_blue_diamond: **5-HT receptors**")
-    st.write("The possibility of calculating the affinity for specific serotonergic receptors: 5-HT1A, 5-HT1B, 5-HT1D, 5-HT2A, 5-HT2B, 5-HT2C, 5-HT3, 5-HT5A, 5-HT6 and 5-HT7.")
-    st.write("As you probably have noticed this app does not calculate predictions for all serotonin receptors. The reason behind this is limited information about ligands and their affinity to 5-HT1E, 5-HT1F, 5-HT4 and 5-HT5B receptors. We decided not to provide models which were built on a dataset smaller that 500 molecules. If Quantitative structure–activity relationship models (QSAR models) are based on a minor database, such a model could be overfitted to  the training set. As these databases grow, the application will be updated.")
+    st.write("The possibility of calculating the affinity for specific serotonergic receptors: 5-HT1A, 5-HT1B, 5-HT1D, 5-HT2A, 5-HT2B, 5-HT2C, 5-HT3, 5-HT4, 5-HT5A, 5-HT6 and 5-HT7.")
+    st.write("As you probably have noticed this app does not calculate predictions for all serotonin receptors. The reason behind this is limited information about ligands and their affinity to 5-HT1E, 5-HT1F, and 5-HT5B receptors. We decided not to provide models which were built on a dataset smaller that 500 molecules. If Quantitative structure–activity relationship models (QSAR models) are based on a minor database, such a model could be overfitted to  the training set. As these databases grow, the application will be updated.")
     st.write('')
     st.write(":small_blue_diamond: **SERT**")
     st.write("Among serotonergic receptors, the affinity for the serotonin transporter can be predicted on this subpage.")
@@ -274,10 +278,12 @@ if selected == "Home":
 
 
 elif selected == "5-HT receptors":
+    calc = Calculator(descriptors, ignore_3D=True)
+    calc.descriptors = [d for d in calc.descriptors if str(d) in descriptors_for_QSAR] 
     st.markdown('<h1 class="text-second-title">Choose specific receptor</h1>', unsafe_allow_html=True)
     sub_option = st.selectbox("", ["5-HT1A receptor", "5-HT1B receptor","5-HT1D receptor",
                                                   "5-HT2A receptor","5-HT2B receptor","5-HT2C receptor",
-                                                  "5-HT3 receptor","5-HT5A receptor","5-HT6 receptor","5-HT7 receptor"])
+                                                  "5-HT3 receptor", "5-HT4 receptor", "5-HT5A receptor","5-HT6 receptor","5-HT7 receptor"])
     if sub_option == "5-HT1A receptor":
         smiles_input = st.text_input("Input SMILES", key="text")
         col1, col2 = st.columns(2)
@@ -913,6 +919,93 @@ elif selected == "5-HT receptors":
         st.write("Recent evidence has linked 5-HT3 receptors to emotions, behaviors, and cognitive functions, particularly through findings related to vortioxetine. Vortioxetine exhibits atypical pharmacology at the 5-HT3 receptor, initially acting as an agonist followed by long-lasting, irreversible receptor inhibition. These effects of vortioxetine are associated with its high affinity for binding sites of 5-HT1A, 5-HT1B, 5-HT1D, 5-HT7, and serotonin transporters. Vortioxetine has significant antidepressant and pro-cognitive activity in both rodent models and clinical studies and is currently marketed as an antidepressant with cognitive-enhancing properties. Despite its polymodal pharmacology, blocking 5-HT3 receptors is believed to play a significant role in the mechanism of action of vortioxetine, particularly regarding cognitive function.")
         st.write("The 5-HT3 receptors' involvement in various physiological and behavioral processes, including nausea and vomiting control, anxiety, cognitive function, pain processing, and sensitivity to addictive substances, highlights their significance as potential targets for therapeutic interventions. Further research and understanding of the complex functions of 5-HT3 receptors hold promise for the development of novel treatments addressing these conditions.")
         
+    elif sub_option == "5-HT4 receptor":
+        smiles_input = st.text_input("Input SMILES", key="text")
+        col1, col2 = st.columns(2)
+        if smiles_input:
+            try:
+                molecule = Chem.MolFromSmiles(smiles_input)
+                if molecule:
+                    img = Draw.MolToImage(molecule)
+                    with col1:
+                        st.image(img, caption='Chemical structure', use_column_width=True)
+                else:
+                    pass
+            except Exception as e:
+                st.error(f"Wystąpił błąd: {str(e)}")
+        if smiles_input:
+            try:
+                molecule = Chem.MolFromSmiles(smiles_input)
+                if molecule is not None:
+                    descriptors_value = calc.pandas([molecule])
+                    descriptors_value_df = pd.DataFrame(descriptors_value)
+                    for column in descriptors_value_df.select_dtypes(include=['object']).columns:
+                        descriptors_value_df[column] = 0
+                    with col2:
+                        with st.spinner('Calculation in progress'):
+                            predictions = best_model_5HT4.predict(descriptors_value_df)
+                        st.markdown(f'<div style="{success_style}">Done!</div>', unsafe_allow_html=True)
+                        prediction_float = round(float(predictions), 3)
+                        st.write("pKi value for 5-HT4 serotonin receptor: ", f'<span style="color: #5d93a3;">{ prediction_float}</span>', unsafe_allow_html=True)
+                        st.button("Clear SMILES", on_click=clear_text)
+                        list_of_important_descriptors = ['C1SP3', 'SMR_VSA4', 'NssCH2', 'ATSC0c', 'C3SP3', 'ATSC8c', 'AATS3i', 'ATSC1dv', 'AATS4i', 'ATSC4c']
+                        min_values ={'C1SP3': 0, 'SMR_VSA4': 0.0,  'NssCH2': 0,  'ATSC0c': 0.2838127021284238,
+                         'C3SP3': 0, 'ATSC8c': -1.152247769776361, 'AATS3i': 148.91780824944055, 'ATSC1dv': 4.117167133670763,
+                         'AATS4i': 150.77796634225993, 'ATSC4c': -0.6393548403766612}
+                        max_values = {'C1SP3': 20, 'SMR_VSA4': 41.42534232312975, 'NssCH2': 38, 'ATSC0c': 3.818084087512284,
+                         'C3SP3': 7, 'ATSC8c': 0.9405402774301158, 'AATS3i': 166.23324570851813, 'ATSC1dv': 238.99467400128788,
+                         'AATS4i': 177.48398206484842, 'ATSC4c': 1.6028283796421825}
+                        normalized_descriptors_df = (descriptors_value_df - pd.Series(min_values)) / (pd.Series(max_values) - pd.Series(min_values))
+                        values_1 = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+                        values_2 = normalized_descriptors_df[list_of_important_descriptors].max().to_list()
+                        values_3 = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                        labels = normalized_descriptors_df[list_of_important_descriptors].columns
+                        desc_condition = sum([val_3 <= val_2 <= val_1 for val_1, val_2, val_3 in zip(values_1, values_2, values_3)])
+                        values_1 += values_1[:1]
+                        values_2 += values_2[:1]
+                        values_2 = [-1 if value < -1 else value for value in values_2]
+                        values_2 = [1.5 if value > 1.5 else value for value in values_2]
+                        values_3 += values_3[:1]
+                        num_labels = len(labels)
+                        angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
+                        angles += angles[:1]
+                        fig = plt.figure(figsize=(8,8))
+                        ax = fig.add_subplot(111, polar=True)
+                        color_1 = '#A6A6A6'
+                        color_2 = '#4282AA'
+                        ax.plot(angles, values_1, color=color_1, label="training set")
+                        ax.fill(angles, values_1, alpha=0.25, color=color_1)
+                        ax.plot(angles, values_3, color="white")
+                        ax.fill(angles, values_3, color='white', alpha=1, edgecolor="white")
+                        ax.plot(angles, values_2, color=color_2, label="tested compound", linewidth=3)
+                        ax.fill(angles, values_2, alpha=0)
+                        ax.set_thetagrids(np.degrees(angles[:-1]), labels)
+                        ax.set_ylim(min(min(values_1), min(values_2), min(values_3)), max(max(values_1), max(values_2), max(values_3)))
+                        ax.legend()
+                        plt.text(0.08, -0.09, "Min-max normalization was applied to descriptors' values based on the training set", ha='left', va='bottom', transform=plt.gca().transAxes, fontsize = 10, color="gray")
+                        plt.tight_layout()
+                        st.pyplot(fig)
+                        if desc_condition > 6:
+                            st.write("Compound is under applicability domain")
+                        else:
+                            st.write("Compound is not under applicability domain, prediction may be inaccurate")
+                else:
+                    st.write("Invalid SMILES")
+            except Exception as e:
+                st.write("Error:", e)
+        agree_draw_smiles = st.checkbox("Draw chemical structure")
+        if agree_draw_smiles:
+            smile_code = st_ketcher()
+            st.markdown(f"SMILES: {smile_code}")                
+        st.write("---")
+        st.subheader("5-HT4 in pharmacology")
+        st.write("The 5-HT4 receptor primarily resides in the brain, particularly in the hippocampus. It plays a crucial role in cognition, with 5-HT4 receptor agonists demonstrating pro-cognitive effects in various species and memory paradigms.")            
+        st.write("In addition to their well-established role in controlling nausea and vomiting (involving both central and peripheral mechanisms), the 5-HT3 receptors have been associated with various behavioral effects. These range from changes in anxiety and cognitive function to altered pain processing and sensitivity to addictive substances.")
+        st.write("Additionally, these receptors are implicated in regulating feeding behavior, as observed in studies with knockout mice.")
+        st.write("Despite promising cognitive benefits, the clinical development of 5-HT4 receptor agonists may face challenges, as evidenced by potential adverse effects and the need for further studies to assess general tolerability.")
+        
+
+
 
     elif sub_option == "5-HT5A receptor":
         smiles_input = st.text_input("Input SMILES", key="text")
@@ -1188,6 +1281,8 @@ elif selected == "5-HT receptors":
                 
      
 elif selected == "SERT":
+    calc = Calculator(descriptors, ignore_3D=True)
+    calc.descriptors = [d for d in calc.descriptors if str(d) in descriptors_for_QSAR] 
     st.markdown('<h1 class="text-second-title">Predictions for the serotonin transporter</h1>', unsafe_allow_html=True)
     smiles_input = st.text_input("Input SMILES", key="text")
     col1, col2 = st.columns(2)
@@ -1581,8 +1676,11 @@ elif selected == "BBB":
         st.image(image, use_column_width=True) 
 
 elif selected == "Batch calculation":
+    calc = Calculator(descriptors, ignore_3D=True)
+    calc.descriptors = [d for d in calc.descriptors if str(d) in descriptors_for_QSAR] 
     st.markdown('<h1 class="text-second-title">Batch mode calculation</h1>', unsafe_allow_html=True)
     st.write('Predictions for all serotonergic targets based on uploaded file')
+    st.write("*Unfortunately, via the online version of the application, it is not possible to obtain predictions for several molecules and several receptors. This is due to Streamlit's resource limitation and cannot be corrected. Therefore, we have prepared a version of the application available for use on the user's computer. All necessary information on the local use of SerotoninAI is available here: https://github.com/nczub/SerotoninAI_streamlit.*")
     uploaded_file = st.file_uploader('CSV file')
     if uploaded_file is not None:
         data_file = pd.read_csv(uploaded_file)
@@ -1599,7 +1697,7 @@ elif selected == "Batch calculation":
         descriptors_df = descriptors_df.astype(float)
         descriptors_df = descriptors_df.fillna(0)
         st.write("Select the biological targets whose affinity you want to predict")
-        options = ["5-HT1A", "5-HT1B", "5-HT1D", "5-HT2A", "5-HT2B", "5-HT2C", "5-HT3", "5-HT5A", "5-HT6", "5-HT7", "SERT"]
+        options = ["5-HT1A", "5-HT1B", "5-HT1D", "5-HT2A", "5-HT2B", "5-HT2C", "5-HT3", "5-HT4", "5-HT5A", "5-HT6", "5-HT7", "SERT"]
         all_selected = st.checkbox("All serotonergic targets")
         default_options = options if all_selected else []
         selected_options = st.multiselect("Choose options", options, default=default_options)
@@ -1758,7 +1856,29 @@ elif selected == "Batch calculation":
                             if desc_condition > 6:
                                 data.loc[i, f"{option}_applicability_domain"] = True  
                             else:
-                                data.loc[i, f"{option}_applicability_domain"] = False                        
+                                data.loc[i, f"{option}_applicability_domain"] = False  
+
+                    elif option == "5-HT4":
+                        predictions = best_model_5HT4.predict(descriptors_df)
+                        data[option] = predictions
+                        list_of_important_descriptors = ['C1SP3', 'SMR_VSA4', 'NssCH2', 'ATSC0c', 'C3SP3', 'ATSC8c', 'AATS3i', 'ATSC1dv', 'AATS4i', 'ATSC4c']
+                        min_values ={'C1SP3': 0, 'SMR_VSA4': 0.0,  'NssCH2': 0,  'ATSC0c': 0.2838127021284238,
+                         'C3SP3': 0, 'ATSC8c': -1.152247769776361, 'AATS3i': 148.91780824944055, 'ATSC1dv': 4.117167133670763,
+                         'AATS4i': 150.77796634225993, 'ATSC4c': -0.6393548403766612} 
+                        max_values = {'C1SP3': 20, 'SMR_VSA4': 41.42534232312975, 'NssCH2': 38, 'ATSC0c': 3.818084087512284,
+                         'C3SP3': 7, 'ATSC8c': 0.9405402774301158, 'AATS3i': 166.23324570851813, 'ATSC1dv': 238.99467400128788,
+                         'AATS4i': 177.48398206484842, 'ATSC4c': 1.6028283796421825}
+                        descriptors_value_df = descriptors_df[list_of_important_descriptors]
+                        normalized_descriptors_df = (descriptors_value_df - pd.Series(min_values)) / (pd.Series(max_values) - pd.Series(min_values))
+                        values_1 = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+                        values_3 = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                        for i in range(len(descriptors_df)):
+                            values_2 = normalized_descriptors_df[list_of_important_descriptors].iloc[i]
+                            desc_condition = sum([val_3 <= val_2 <= val_1 for val_1, val_2, val_3 in zip(values_1, values_2, values_3)])
+                            if desc_condition > 6:
+                                data.loc[i, f"{option}_applicability_domain"] = True  
+                            else:
+                                data.loc[i, f"{option}_applicability_domain"] = False  
                         
                     elif option == "5-HT5A":
                         predictions = best_model_5HT5A.predict(descriptors_df)
@@ -1901,6 +2021,7 @@ elif selected == "Q&A":
         st.write("- **5-HT2B** - Ensemble model (6 x Xgboost, 2 x LightGBM, 5 x CatBoost)")
         st.write("- **5-HT2C** - LightGBM")
         st.write("- **5-HT3** - Ensemble model (2 x Xgboost, 3 x CatBoost, 1 x LightGBM)")
+        st.write("- **5-HT4** - Xgboost")
         st.write("- **5-HT5A** - Ensemble model (3 x Xgboost, 3 x CatBoost, 1 x EstraTrees, 1 x LightGBM)")
         st.write("- **5-HT6** - Xgboost")
         st.write("- **5-HT7** - CatBoost")
