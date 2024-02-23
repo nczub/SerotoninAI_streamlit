@@ -1,6 +1,5 @@
 conda create -y --name for_serotoninAI
 conda activate for_serotoninAI
-
 conda install -y -c conda-forge rdkit==2023.03.2
 conda install -y -c anaconda scikit-learn==1.2.2
 pip install ipython
