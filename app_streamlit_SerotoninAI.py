@@ -124,6 +124,13 @@ best_model_hia_classification = AutoML(best_model_path_hia_classification)
 best_model_path_BBB = 'FINAL_QSPR_MODELS/BBB_model/mljar_AutoML_Compete_2023_08_17_14_17_34'
 best_model_BBB = AutoML(best_model_path_BBB)
 
+#binary model for active and inactive compounds - serotonergic activity
+binary_model_path = 'FINAL_QSAR_MODELS/serotonergic_activity'
+
+#selectivity path
+selective_model_path = 'FINAL_QSAR_MODELS/selectivity'
+
+
 
 #for mordred descriptors calculations
 descriptors_for_QSAR = pd.read_table("descriptors_QSAR.txt", header = None)[0][0]
@@ -1969,8 +1976,218 @@ elif selected == "Batch calculation":
                 if data.empty:
                     st.write("No predictions to download.")
                 else:
-                    st.download_button(label="Download predictions as csv file", data=data_new.to_csv(index=False), file_name="predictions.csv")     
-                
+                    st.download_button(label="Download predictions as csv file", data=data_new.to_csv(index=False), file_name="predictions.csv")   
+
+elif selected == "Serotonergic activity":
+    binary_model = AutoML(binary_model_path)
+    st.markdown('<h1 class="text-second-title">Serotonergic activity predictions</h1>', unsafe_allow_html=True)
+    descriptors_for_QSPR = pd.read_table("binary_active_inactive_descriptors.txt", header = None)[0][0]
+    calc = Calculator(descriptors, ignore_3D=True)
+    calc.descriptors = [d for d in calc.descriptors if str(d) in descriptors_for_QSPR] 
+    with st.container():
+        smiles_input = st.text_input("Input SMILES", key="text")
+        col1, col2 = st.columns(2)
+        if smiles_input:
+            try:
+                molecule = Chem.MolFromSmiles(smiles_input)
+                if molecule:
+                    img = Draw.MolToImage(molecule)
+                    with col1:
+                        st.image(img, caption='Chemical structure', use_column_width=True)
+                else:
+                    pass
+            except Exception as e:
+                st.error(f"Wystąpił błąd: {str(e)}")
+        if smiles_input:
+            try:
+                molecule = Chem.MolFromSmiles(smiles_input)
+                if molecule is not None:
+                    calc = Calculator(descriptors, ignore_3D=True)
+                    descriptors_value = calc.pandas([molecule])
+                    descriptors_value_df = pd.DataFrame(descriptors_value)
+                    for column in descriptors_value_df.select_dtypes(include=['object']).columns:
+                        descriptors_value_df[column] = 0
+                    with col2:
+                        with st.spinner('Calculation in progress'):
+                            probability = binary_model.predict_proba(descriptors_value_df)
+                            if probability[0][1] > 0.568706:
+                                st.write("Compound has a serotonergic activity")
+                            else:
+                                st.write('Compound may not have serotonergic activity')
+
+                        st.button("Clear SMILES", on_click=clear_text)
+                        list_of_important_descriptors = ['nBase', 'MATS1v', 'PEOE_VSA7','SlogP_VSA1', 'AXp-7dv', 'PEOE_VSA9', 'Xch-7dv','AATSC2dv', 'VSA_EState2','ATSC6v']
+                        min_values = {'nBase': 0, 'MATS1v': -0.1497204202184233, 'PEOE_VSA7': 0.0, 'SlogP_VSA1': 0.0,
+ 'AXp-7dv': 0.0040737032751538, 'PEOE_VSA9': 0.0, 'Xch-7dv': 0.0, 'AATSC2dv': -0.7227527873894656,
+ 'VSA_EState2': -1.3062069767453963, 'ATSC6v': -3489.3195470956503}
+                        max_values = {'nBase': 5, 'MATS1v': 0.2019023062607182, 'PEOE_VSA7': 154.4803930624426, 'SlogP_VSA1': 91.3750762459032,
+ 'AXp-7dv': 0.0565596697830878, 'PEOE_VSA9': 163.71203852694237, 'Xch-7dv': 10.33296316622819, 'AATSC2dv': 2.582222222222222,
+ 'VSA_EState2': 87.06048435105046, 'ATSC6v': 3956.085710356009}
+                        normalized_descriptors_df = (descriptors_value_df - pd.Series(min_values)) / (pd.Series(max_values) - pd.Series(min_values))
+                        values_1 = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+                        values_2 = normalized_descriptors_df[list_of_important_descriptors].max().to_list()
+                        values_3 = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                        labels = normalized_descriptors_df[list_of_important_descriptors].columns
+                        desc_condition = sum([val_3 <= val_2 <= val_1 for val_1, val_2, val_3 in zip(values_1, values_2, values_3)])
+                        values_1 += values_1[:1]
+                        values_2 += values_2[:1]
+                        values_2 = [-1 if value < -1 else value for value in values_2]
+                        values_2 = [1.5 if value > 1.5 else value for value in values_2]
+                        values_3 += values_3[:1]
+                        num_labels = len(labels)
+                        angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
+                        angles += angles[:1]
+                        fig = plt.figure(figsize=(8,8))
+                        ax = fig.add_subplot(111, polar=True)
+                        color_1 = '#A6A6A6'
+                        color_2 = '#4282AA'
+                        ax.plot(angles, values_1, color=color_1, label="training set")
+                        ax.fill(angles, values_1, alpha=0.25, color=color_1)
+                        ax.plot(angles, values_3, color="white")
+                        ax.fill(angles, values_3, color='white', alpha=1, edgecolor="white")
+                        ax.plot(angles, values_2, color=color_2, label="tested compound", linewidth=3)
+                        ax.fill(angles, values_2, alpha=0)
+                        ax.set_thetagrids(np.degrees(angles[:-1]), labels)
+                        ax.set_ylim(min(min(values_1), min(values_2), min(values_3)), max(max(values_1), max(values_2), max(values_3)))
+                        ax.legend()
+                        plt.text(0.08, -0.09, "Min-max normalization was applied to descriptors' values based on the training set", ha='left', va='bottom', transform=plt.gca().transAxes, fontsize = 10, color="gray")
+                        plt.tight_layout()
+                        st.pyplot(fig)    
+                        if desc_condition > 6:
+                            st.write("Compound is under applicability domain")
+                        else:
+                            st.write("Compound is not under applicability domain, prediction may be inaccurate")
+                else:
+                    st.write("Invalid SMILES")
+            except Exception as e:
+                st.write("Error:", e)        
+    agree_draw_smiles = st.checkbox("Draw chemical structure")
+    if agree_draw_smiles:
+        smile_code = st_ketcher()
+        st.markdown(f"SMILES: {smile_code}")   
+    st.write('Serotonergic activity specifically pertains to the functioning of serotonin receptors, integral components of the central nervous system. These receptors play a pivotal role in mediating the effects of serotonin, influencing mood, sleep, and cognitive processes.')
+    st.write('Developing a model that discerns the serotoninergic activity of molecules, with a focus on serotonin receptors, is essential for advancing targeted interventions in psychiatric and neurological conditions.')
+    st.write('Such a model holds promise in streamlining drug discovery efforts and facilitating personalized approaches by specifically assessing the impact on serotonin receptor function.')
+    st.write("Based on the activity model, you can determine whether the molecule is serotonergically active. In the next step, you can check the selectivity to a given serotonin receptor - the **'Selectivity'** tab.")
+    st.write("In the case of predictable effective affinity for multiple receptors, one should move on to **'5-HT receptors'** section and, based on these models, check the affinity for all types of serotonin receptors.")
+    
+    
+
+
+elif selected == "Selectivity":
+    selectivity_model = AutoML(selective_model_path)
+    descriptors_for_QSPR = pd.read_table("multiclass_serotonin_receptors_descriptors.txt", header=None)[0][0]
+    calc = Calculator(descriptors, ignore_3D=True)
+    calc.descriptors = [d for d in calc.descriptors if str(d) in descriptors_for_QSPR] 
+    st.markdown('<h1 class="text-second-title">Predictions of selectivity towards serotonin receptors</h1>', unsafe_allow_html=True)
+    st.write("Model was built only on active compounds, before using this module check **'Serotonergic activity'**.")
+    smiles_input = st.text_input("Input SMILES", key="text")
+    col1, col2 = st.columns(2)
+    if smiles_input:
+        try:
+            molecule = Chem.MolFromSmiles(smiles_input)
+            if molecule:
+                img = Draw.MolToImage(molecule)
+                with col1:
+                    st.image(img, caption='Chemical structure', use_column_width=True)
+            else:
+                pass
+        except Exception as e:
+            st.error(f"Wystąpił błąd: {str(e)}")
+    if smiles_input:
+        try:
+            molecule = Chem.MolFromSmiles(smiles_input)
+            if molecule is not None:
+                descriptors_value = calc.pandas([molecule])
+                descriptors_value_df = pd.DataFrame(descriptors_value)
+                for column in descriptors_value_df.select_dtypes(include=['object']).columns:
+                    descriptors_value_df[column] = 0
+                with col2:
+                    with st.spinner('Calculation in progress'):
+                        prediction = selectivity_model.predict(descriptors_value_df)
+                    def assign_category(value):
+                        if value <= 1.5:
+                            return '5-HT1A'
+                        elif value <= 2.5:
+                            return '5-HT1B'
+                        elif value <= 3.5:
+                            return '5-HT1D'
+                        elif value <= 4.5:
+                            return '5-HT2A'
+                        elif value <= 5.5:
+                            return '5-HT2B'    
+                        elif value <= 6.5:
+                            return '5-HT2C'
+                        elif value <= 7.5:
+                            return '5-HT3'    
+                        elif value <= 8.5:
+                            return '5-HT4'
+                        elif value <= 9.5:
+                            return '5-HT5A' 
+                        elif value <= 10.5:
+                            return '5-HT6' 
+                        else: 
+                            return '5-HT7'
+                            value <= 11.0
+                    prediction_class = assign_category(prediction)
+                    st.markdown(f'<div style="{success_style}">Done!</div>', unsafe_allow_html=True)
+                    st.write(f"Compound is selective towards **{prediction_class}** serotonin receptor")
+                    st.button("Clear SMILES", on_click=clear_text)
+                    list_of_important_descriptors = ['SddssS', 'Xch-5d', 'AATSC2s', 'MDEC-33', 'ETA_dPsi_B', 'AATS6s', 'SpMAD_DzZ', 'ATSC3c', 'NsssCH', 
+                                 'SaasN']
+                    min_values = {'SddssS': -11.181565977471235, 'Xch-5d': 0.0,'AATSC2s': -0.1405448574581022, 'MDEC-33': 0.0004432315575864,
+                                  'ETA_dPsi_B': 0.0, 'AATS6s': 1.2037037037037035, 'SpMAD_DzZ': 3.821325332751482,
+                                  'ATSC3c': -1.1030119940855148, 'NsssCH': 0, 'SaasN': -0.0249944392971501}
+                    max_values = {'SddssS': 0.0, 'Xch-5d': 1.6594659464934112, 'AATSC2s': 2.496406933751847,  'MDEC-33': 27.18089934675436,
+                                   'ETA_dPsi_B': 0.0367598784194531,  'AATS6s': 7.930007604222582, 'SpMAD_DzZ': 32.06044269906967,
+                                   'ATSC3c': 1.570147655872653, 'NsssCH': 19, 'SaasN': 6.622971712668626}
+                    normalized_descriptors_df = (descriptors_value_df - pd.Series(min_values)) / (pd.Series(max_values) - pd.Series(min_values))
+                    values_1 = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+                    values_2 = normalized_descriptors_df[list_of_important_descriptors].max().to_list()
+                    values_3 = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                    labels = normalized_descriptors_df[list_of_important_descriptors].columns
+                    desc_condition = sum([val_3 <= val_2 <= val_1 for val_1, val_2, val_3 in zip(values_1, values_2, values_3)])
+                    values_1 += values_1[:1]
+                    values_2 += values_2[:1]
+                    values_2 = [-1 if value < -1 else value for value in values_2]
+                    values_2 = [1.5 if value > 1.5 else value for value in values_2]
+                    values_3 += values_3[:1]
+                    num_labels = len(labels)
+                    angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
+                    angles += angles[:1]
+                    fig = plt.figure(figsize=(8,8))
+                    ax = fig.add_subplot(111, polar=True)
+                    color_1 = '#A6A6A6'
+                    color_2 = '#4282AA'
+                    ax.plot(angles, values_1, color=color_1, label="training set")
+                    ax.fill(angles, values_1, alpha=0.25, color=color_1)
+                    ax.plot(angles, values_3, color="white")
+                    ax.fill(angles, values_3, color='white', alpha=1, edgecolor="white")
+                    ax.plot(angles, values_2, color=color_2, label="tested compound", linewidth=3)
+                    ax.fill(angles, values_2, alpha=0)
+                    ax.set_thetagrids(np.degrees(angles[:-1]), labels)
+                    ax.set_ylim(min(min(values_1), min(values_2), min(values_3)), max(max(values_1), max(values_2), max(values_3)))
+                    ax.legend()
+                    plt.text(0.08, -0.09, "Min-max normalization was applied to descriptors' values based on the training set", ha='left', va='bottom', transform=plt.gca().transAxes, fontsize = 10, color="gray")
+                    plt.tight_layout()
+                    st.pyplot(fig)    
+                    if desc_condition > 6:
+                        st.write("Compound is under applicability domain")
+                    else:
+                        st.write("Compound is not under applicability domain, prediction may be inaccurate")
+            else:
+                st.write("Invalid SMILES")
+        except Exception as e:
+            st.write("Error:", e)
+    agree_draw_smiles = st.checkbox("Draw chemical structure")
+    if agree_draw_smiles:
+        smile_code = st_ketcher()
+        st.markdown(f"SMILES: {smile_code}")
+    st.write('Selectivity towards serotonin receptors is crucial in drug development as it enables the targeted modulation of specific receptor subtypes, minimizing off-target effects and enhancing therapeutic efficacy.')
+    st.write('This selectivity allows for a more refined and tailored approach in treating various psychiatric and neurological disorders, such as depression and anxiety, by specifically influencing the serotonin pathways associated with these conditions.')
+    st.write('Achieving a high level of selectivity can also reduce the likelihood of adverse reactions, contributing to improved safety profiles and better patient outcomes in pharmacological interventions.')
+    st.write("The selectivity model has limitations for compounds that act on more than one serotonin receptor. For a ligand that acts on multiple serotonin receptors, check the affinity value for other types of serotonin receptors - the **'5-HT Receptors'** section.")
+             
     
 elif selected == "Q&A":
     st.markdown('<h1 class="text-second-title">Questions and answers</h1>', unsafe_allow_html=True)
