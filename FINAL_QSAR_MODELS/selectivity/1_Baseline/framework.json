@@ -1,0 +1,302 @@
+{
+    "uid": "0370e904-d381-4658-82ce-4bfdb1d287da",
+    "name": "1_Baseline",
+    "preprocessing": [
+        {
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {},
+                "target_preprocessing": [
+                    "na_exclude"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {},
+                "target_preprocessing": [
+                    "na_exclude"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {},
+                "target_preprocessing": [
+                    "na_exclude"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {},
+                "target_preprocessing": [
+                    "na_exclude"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {},
+                "target_preprocessing": [
+                    "na_exclude"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {},
+                "target_preprocessing": [
+                    "na_exclude"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {},
+                "target_preprocessing": [
+                    "na_exclude"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {},
+                "target_preprocessing": [
+                    "na_exclude"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {},
+                "target_preprocessing": [
+                    "na_exclude"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {},
+                "target_preprocessing": [
+                    "na_exclude"
+                ],
+                "ml_task": "regression"
+            }
+        }
+    ],
+    "learners": [
+        {
+            "library_version": "0.24.2",
+            "algorithm_name": "Baseline Regressor",
+            "algorithm_short_name": "Baseline",
+            "uid": "04af9074-10a5-42f1-98a8-bc4221e9230d",
+            "params": {
+                "model_type": "Baseline",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 31264,
+                "explain_level": 0
+            },
+            "name": "learner_fold_0"
+        },
+        {
+            "library_version": "0.24.2",
+            "algorithm_name": "Baseline Regressor",
+            "algorithm_short_name": "Baseline",
+            "uid": "fa54a1fa-ebfd-453d-ada1-2481112751f2",
+            "params": {
+                "model_type": "Baseline",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 31264,
+                "explain_level": 0
+            },
+            "name": "learner_fold_1"
+        },
+        {
+            "library_version": "0.24.2",
+            "algorithm_name": "Baseline Regressor",
+            "algorithm_short_name": "Baseline",
+            "uid": "050a52d8-9088-410c-b8fc-80dbc31b2573",
+            "params": {
+                "model_type": "Baseline",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 31264,
+                "explain_level": 0
+            },
+            "name": "learner_fold_2"
+        },
+        {
+            "library_version": "0.24.2",
+            "algorithm_name": "Baseline Regressor",
+            "algorithm_short_name": "Baseline",
+            "uid": "e9a70d7a-2332-4634-9c2b-78557976d6b4",
+            "params": {
+                "model_type": "Baseline",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 31264,
+                "explain_level": 0
+            },
+            "name": "learner_fold_3"
+        },
+        {
+            "library_version": "0.24.2",
+            "algorithm_name": "Baseline Regressor",
+            "algorithm_short_name": "Baseline",
+            "uid": "1079453f-f881-40ba-9617-17797e2e9e23",
+            "params": {
+                "model_type": "Baseline",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 31264,
+                "explain_level": 0
+            },
+            "name": "learner_fold_4"
+        },
+        {
+            "library_version": "0.24.2",
+            "algorithm_name": "Baseline Regressor",
+            "algorithm_short_name": "Baseline",
+            "uid": "1674b03f-bcb2-47c3-8c4c-a19a912d423f",
+            "params": {
+                "model_type": "Baseline",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 31264,
+                "explain_level": 0
+            },
+            "name": "learner_fold_5"
+        },
+        {
+            "library_version": "0.24.2",
+            "algorithm_name": "Baseline Regressor",
+            "algorithm_short_name": "Baseline",
+            "uid": "43ffd454-fcab-4fdd-822e-f7068e1f73a7",
+            "params": {
+                "model_type": "Baseline",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 31264,
+                "explain_level": 0
+            },
+            "name": "learner_fold_6"
+        },
+        {
+            "library_version": "0.24.2",
+            "algorithm_name": "Baseline Regressor",
+            "algorithm_short_name": "Baseline",
+            "uid": "3493feef-eb22-461b-99e4-ba9662c8e401",
+            "params": {
+                "model_type": "Baseline",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 31264,
+                "explain_level": 0
+            },
+            "name": "learner_fold_7"
+        },
+        {
+            "library_version": "0.24.2",
+            "algorithm_name": "Baseline Regressor",
+            "algorithm_short_name": "Baseline",
+            "uid": "556a0912-f8a6-4ab9-8c45-807e81581838",
+            "params": {
+                "model_type": "Baseline",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 31264,
+                "explain_level": 0
+            },
+            "name": "learner_fold_8"
+        },
+        {
+            "library_version": "0.24.2",
+            "algorithm_name": "Baseline Regressor",
+            "algorithm_short_name": "Baseline",
+            "uid": "9c6b1693-a7a1-4267-a359-23f5ce6764b2",
+            "params": {
+                "model_type": "Baseline",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 31264,
+                "explain_level": 0
+            },
+            "name": "learner_fold_9"
+        }
+    ],
+    "params": {
+        "additional": {
+            "max_steps": 1,
+            "max_rows_limit": null,
+            "max_cols_limit": null
+        },
+        "preprocessing": {
+            "columns_preprocessing": {},
+            "target_preprocessing": [
+                "na_exclude"
+            ],
+            "ml_task": "regression"
+        },
+        "validation_strategy": {
+            "validation_type": "custom",
+            "X_path": "mljar_AutoML_Compete_2024_01_15_09_40_27/X.data",
+            "y_path": "mljar_AutoML_Compete_2024_01_15_09_40_27/y.data",
+            "results_path": "mljar_AutoML_Compete_2024_01_15_09_40_27",
+            "cv_path": "mljar_AutoML_Compete_2024_01_15_09_40_27/cv.data"
+        },
+        "learner": {
+            "model_type": "Baseline",
+            "ml_task": "regression",
+            "n_jobs": -1,
+            "seed": 31264,
+            "explain_level": 0
+        },
+        "automl_random_state": 31263,
+        "ml_task": "regression",
+        "explain_level": 0,
+        "name": "1_Baseline",
+        "status": "initialized",
+        "final_loss": null,
+        "train_time": null,
+        "data_type": "original",
+        "max_time_for_learner": 360.0
+    },
+    "saved": [
+        "1_Baseline/learner_fold_0.baseline",
+        "1_Baseline/learner_fold_1.baseline",
+        "1_Baseline/learner_fold_2.baseline",
+        "1_Baseline/learner_fold_3.baseline",
+        "1_Baseline/learner_fold_4.baseline",
+        "1_Baseline/learner_fold_5.baseline",
+        "1_Baseline/learner_fold_6.baseline",
+        "1_Baseline/learner_fold_7.baseline",
+        "1_Baseline/learner_fold_8.baseline",
+        "1_Baseline/learner_fold_9.baseline"
+    ],
+    "predictions_fname": "1_Baseline/predictions_validation.csv",
+    "metric_name": "rmse",
+    "final_loss": 4.097170540553899,
+    "train_time": 9.46363377571106,
+    "is_stacked": false
+}
