@@ -210,13 +210,13 @@ if st.session_state.get('switch_button', False):
 else:
     manual_select = None
 
-selected = option_menu(None, ["Home", "5-HT receptors", "SERT", "Batch calculation", "HIA", "BBB", "Q&A",  "Contact"],
-                        icons=['house', "layers", "layers-fill",'cloud-upload', "capsule-pill","cloud-check", "question-diamond",'envelope-at'],
-                        orientation="horizontal", manual_select=manual_select, key='menu_8', default_index = 0,
+selected = option_menu(None, ["Home", "5-HT receptors", "SERT", "Batch calculation", "HIA", "BBB", "Serotonergic activity", "Selectivity", "Q&A",  "Contact"],
+                        icons=['house', "layers", "layers-fill",'cloud-upload', "capsule-pill",  "capsule",  "activity", "fingerprint", "question-diamond",'envelope-at'],
+                        orientation="horizontal", manual_select=manual_select, key='menu_20', default_index = 0,
                         styles={
-        "container": {"padding": "18!important", "background-color":"#b4bbbf", "width": "auto"},
-        "icon": {"color": "#4e5152", "font-size": "22px", "text-align" : "center"}, 
-        "nav-link": {"font-size": "24px", "text-align": "center", "margin":"0px", "--hover-color": "#757473", "font-color":"#0a0a0a"},
+        "container": {"padding": "21!important", "background-color":"#b4bbbf", "width": "auto"},
+        "icon": {"color": "#4e5152", "font-size": "21px", "text-align" : "center"}, 
+        "nav-link": {"font-size": "25px", "text-align": "center", "margin":"5px", "--hover-color": "#757473", "font-color":"#0a0a0a"},
         "nav-link-selected": {"background-color": "#5d93a3"},
         })
 if selected == "Home":
@@ -271,7 +271,7 @@ if selected == "Home":
     st.write('---')
     st.subheader('License')
     st.write('GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007')
-    st.write('Copyright (C) 2023 Natalia Czub')
+    st.write('Copyright (C) 2024 Natalia Łapińska (Czub)')
     st.write('This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. https://www.gnu.org/licenses/gpl-3.0.html')
     st.write('DISCLAIMER OF LIABILITY')
     st.write("The author of this software shall not be liable for any special, incidental, consequential, or indirect damages resulting from the use, misuse, or inability to use this software, including but not limited to, damages for loss of profits, business interruption, or loss of data. The software is provided 'as is' and the author make no warranties, either express or implied, regarding the software's fitness for a particular purpose or its accuracy and reliability.")
