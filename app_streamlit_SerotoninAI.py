@@ -207,7 +207,7 @@ footer_style = """
     font-size: 16px;
 """
 st.markdown(
-    f'<div style="{footer_style}">Copyright (C) 2023 Natalia Łapińska (Czub)</div>',
+    f'<div style="{footer_style}">Copyright (C) 2024 Natalia Łapińska (Czub)</div>',
     unsafe_allow_html=True
 )
 
