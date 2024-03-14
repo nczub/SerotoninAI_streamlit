@@ -644,12 +644,7 @@ elif selected == "5-HT receptors":
             image = Image.open('images_app/breksipiprazol_app.png')
             st.image(image, caption='Brexpiprazole', use_column_width=True)
         st.write("Recent preclinical findings indicate that 5-HT2A receptor antagonists enhance the antidepressant effects of 5-HT2A uptake inhibitors and increase extracellular serotonin levels. This suggests potential adjunctive use of 5-HT2A receptor antagonists in treatment-resistant depression. The exact mechanism underlying this effect is not fully understood but may involve inhibitory feedback mediated by the 5-HT2A receptor on serotonin neurons.")
-        col1, col2 = st.columns([2,1])
-        with col1:
-            st.write("Interestingly, the 5-HT2A receptor is associated with impulse control. Selective 5-HT2A receptor antagonists consistently reduce impulsivity in animal models and have been confirmed by psycho-pharmacological studies in humans, such as the use of quetiapine, a non-selective 5-HT2A receptor antagonist.")
-        with col2:
-            image = Image.open('images_app/5-HT2A.png')
-            st.image(image, use_column_width=True)
+        st.write("Interestingly, the 5-HT2A receptor is associated with impulse control. Selective 5-HT2A receptor antagonists consistently reduce impulsivity in animal models and have been confirmed by psycho-pharmacological studies in humans, such as the use of quetiapine, a non-selective 5-HT2A receptor antagonist.")
         st.write("These findings raise the possibility that 5-HT2A receptor antagonists/inverse agonists, along with novel agents like ebselen, could be useful in controlling impulse control disorders.")
         
 
