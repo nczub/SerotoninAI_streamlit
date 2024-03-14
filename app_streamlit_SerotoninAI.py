@@ -1983,6 +1983,11 @@ elif selected == "Q&A":
     st.write("---")
     
     with st.container():
+        st.subheader(":small_blue_diamond: Calculations do not work or take too long")
+        st.write("Sometimes it happens that the application does not work properly. If the calculation is correct, after entering SMILES, a spinning circle will appear with the words 'Calculation in progress.' If this circle does not appear, refresh the application and re-enter the query")
+        st.write("---")
+    
+    with st.container():
         st.subheader(":small_blue_diamond: Invalid SMILES")
         st.write("If the SMILES you enter triggers an 'Invalid SMILES' message, pay attention to whether the entered SMILES is correct. Typically, when the program fails to recognize a molecule, the reason is incorrect capitalization. For example, in the case of carbon, it should be represented as 'C' in uppercase, while chlorine should be represented as 'Cl'.")
         
@@ -2014,21 +2019,26 @@ elif selected == "Q&A":
         st.subheader(":small_blue_diamond: Models' structure")
         st.write("For QSAR and QSPR models creation we used **mljar-supervised** tool (https://supervised.mljar.com/).")
         st.write("Here are presented detailed structure of each model:")
-        st.write("- **5-HT1A** - LightGBM")
-        st.write("- **5-HT1B** - Ensemble model (5 x Xgboost, 4 x LightGBM)")
-        st.write("- **5-HT1D** - Ensemble model (5 x Xgboost, 4 x LightGBM, 2 x CatBoost)")
-        st.write("- **5-HT2A** - Xgboost")
-        st.write("- **5-HT2B** - Ensemble model (6 x Xgboost, 2 x LightGBM, 5 x CatBoost)")
-        st.write("- **5-HT2C** - LightGBM")
-        st.write("- **5-HT3** - Ensemble model (2 x Xgboost, 3 x CatBoost, 1 x LightGBM)")
-        st.write("- **5-HT4** - Xgboost")
-        st.write("- **5-HT5A** - Ensemble model (3 x Xgboost, 3 x CatBoost, 1 x EstraTrees, 1 x LightGBM)")
-        st.write("- **5-HT6** - Xgboost")
-        st.write("- **5-HT7** - CatBoost")
-        st.write("- **SERT** - LightGBM")
-        st.write("- **BBB** - Ensemble model (5 x Xgboost, 7 x NeuralNetwork, 2 x LightGBM)")
+        st.write("- **5-HT1A** - LightGBM (last version Sept. 2023)")
+        st.write("- **5-HT1B** - Ensemble model (5 x Xgboost, 4 x LightGBM) (last version Sept. 2023)")
+        st.write("- **5-HT1D** - Ensemble model (5 x Xgboost, 4 x LightGBM, 2 x CatBoost) (last version Sept. 2023)")
+        st.write("- **5-HT2A** - Xgboost (last version Sept. 2023)")
+        st.write("- **5-HT2B** - Ensemble model (6 x Xgboost, 2 x LightGBM, 5 x CatBoost) (last version Sept. 2023)")
+        st.write("- **5-HT2C** - LightGBM (last version Sept. 2023)")
+        st.write("- **5-HT3** - Ensemble model (2 x Xgboost, 3 x CatBoost, 1 x LightGBM) (last version Sept. 2023)")
+        st.write("- **5-HT4** - Xgboost (last version Nov. 2023)")
+        st.write("- **5-HT5A** - Ensemble model (3 x Xgboost, 3 x CatBoost, 1 x EstraTrees, 1 x LightGBM) (last version Sept. 2023)")
+        st.write("- **5-HT6** - Xgboost (last version Sept. 2023)")
+        st.write("- **5-HT7** - CatBoost (last version Sept. 2023)")
+        st.write("- **SERT** - LightGBM (last version Sept. 2023)")
+        st.write("- **BBB** - Ensemble model (5 x Xgboost, 7 x NeuralNetwork, 2 x LightGBM) (last version Sept. 2023)")
         st.write("- **HIA** - AI-based system [Classification: Ensemble model (3 x CatBoost, 1 x RandomForest, 1 x ExtraTrees, 2 x NeuralNetwork); Regression: Ensemble model (5 x RandomForest, 2 x NeuralNetwork)]. AI-based system have been already published: Czub N, Szlęk J, Pacławski A, Klimończyk K, Puccetti M, Mendyk A. Artificial Intelligence-Based Quantitative Structure-Property Relationship Model for Predicting Human Intestinal Absorption of Compounds with Serotonergic Activity. Mol Pharm. 2023;20(5):2545-2555. https://pubs.acs.org/doi/10.1021/acs.molpharmaceut.2c01117.")
-
+        st.write("- **Serotonergic activity** - Ensemble model (5 x Xgboost, 6 x LightGBM, 2 x NeuralNetwork, 2 x CatBoost) (last version Jan. 2024)")
+        st.write("- **Selectivity** - Ensemble model (1 x Baseline, 5 x LightGBM, 5 x DecisionTree, 2 x Xgboost) (last version Jan. 2024)")
+    with st.container():
+        st.write("---")
+        st.subheader(":small_blue_diamond: SMILES type")
+        st.write("During SerotoninAI usage enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.")
 
 elif selected == "Contact":
     st.markdown('<h1 class="text-second-title">Contact</h1>', unsafe_allow_html=True)
