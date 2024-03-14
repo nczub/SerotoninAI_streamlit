@@ -2,7 +2,7 @@
 
 The web page application for affinity prediction for serotonergic targets and properties (Blood-brain barrier penetration and Human intestinal absorption)
 
-![Logo SerotoninAI](https://github.com/nczub/SerotoninAI_streamlit/blob/main/title_SerotoninAI.png?raw=true)
+![Logo SerotoninAI](https://github.com/nczub/SerotoninAI_streamlit/blob/main/serotoninAI_homepage.png)
 
 ## Online Access
 You can find the application at the following link:
