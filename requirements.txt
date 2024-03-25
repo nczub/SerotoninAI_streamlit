@@ -4,7 +4,7 @@ numpy==1.24.3
 pandas==1.5.3
 seaborn==0.12.2
 matplotlib==3.4.3
-scipy==1.8.1
+scipy==1.5.1
 mljar-supervised==1.0.0
 scikit-plot==0.3.7
 mordred==1.2.0
