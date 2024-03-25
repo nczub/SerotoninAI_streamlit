@@ -5,7 +5,7 @@ pandas==1.5.3
 seaborn==0.12.2
 matplotlib==3.4.3
 scipy==1.11.4
-mljar-supervised==1.1.6
+mljar-supervised==1.0.0
 scikit-plot==0.3.7
 mordred==1.2.0
 streamlit-option-menu==0.3.6
