@@ -6,6 +6,6 @@ seaborn
 matplotlib
 mljar-supervised
 mordred
-scipy
+scikit-plot
 streamlit-option-menu
 streamlit-ketcher
