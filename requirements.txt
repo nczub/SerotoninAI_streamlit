@@ -6,7 +6,7 @@ seaborn==0.12.2
 matplotlib==3.4.3
 mljar-supervised==1.1.6
 scikit-plot==0.3.7
-scipy==1.10.5
 mordred==1.2.0
+scipy==1.10.5
 streamlit-option-menu==0.3.6
 streamlit-ketcher==0.0.1
