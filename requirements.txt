@@ -4,8 +4,8 @@ numpy
 pandas
 seaborn
 matplotlib
+scikit-plot
 mljar-supervised
 mordred
-scikit-plot
 streamlit-option-menu
 streamlit-ketcher
