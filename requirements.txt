@@ -8,3 +8,4 @@ matplotlib==3.7.1
 mordred==1.2.0
 streamlit-option-menu==0.3.6
 streamlit-ketcher==0.0.1
+scipy
