@@ -9,7 +9,7 @@ You can find the application at the following link:
 [https://serotoninai.streamlit.app/](https://serotoninai.streamlit.app/)
 
 ## Docker with SerotoninAI
-![https://hub.docker.com/r/serotoninai/serotoninai-app]
+https://hub.docker.com/r/serotoninai/serotoninai-app
 
 ## Installation for Local Development
 
