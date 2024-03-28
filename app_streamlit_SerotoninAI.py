@@ -1682,7 +1682,6 @@ elif selected == "Batch calculation":
     calc.descriptors = [d for d in calc.descriptors if str(d) in descriptors_for_QSAR] 
     st.markdown('<h1 class="text-second-title">Batch mode calculation</h1>', unsafe_allow_html=True)
     st.write('Predictions for all serotonergic targets based on uploaded file')
-    st.write("*Unfortunately, via the online version of the application, it is not possible to obtain predictions for several molecules and several receptors. This is due to Streamlit's resource limitation and cannot be corrected. Therefore, we have prepared a version of the application available for use on the user's computer. All necessary information on the local use of SerotoninAI is available here: https://github.com/nczub/SerotoninAI_streamlit.*")
     uploaded_file = st.file_uploader('CSV file')
     if uploaded_file is not None:
         data_file = pd.read_csv(uploaded_file)
