@@ -53,6 +53,15 @@ I'm Natalia Łapińska (maiden name Czub) and I'm the author of SerotoninAI
 
 - LinkedIn: https://www.linkedin.com/in/natalia-czub/
 
+## Articles
+- SerotoninAI: Serotonergic System Focused, Artificial Intelligence-Based Application for Drug Discovery
+*Natalia Łapińska, Adam Pacławski, Jakub Szlęk, and Aleksander Mendyk*
+https://doi.org/10.1021/acs.jcim.3c01517
+
+-Integrated QSAR Models for Prediction of Serotonergic Activity: Machine Learning Unveiling Activity and Selectivity Patterns of Molecular Descriptors
+*Natalia Łapińska, Adam Pacławski, Jakub Szlęk, and Aleksander Mendyk*
+https://doi.org/10.3390/pharmaceutics16030349
+
 ## License
 
 This project is available under the GNU General Public License v3.0 (GPL-3.0).
