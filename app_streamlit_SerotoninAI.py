@@ -2260,6 +2260,4 @@ elif selected == "Contact":
     st.markdown(""" <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"> """, unsafe_allow_html=True)
     st.markdown('<i class="fab fa-linkedin"></i>  www.linkedin.com/in/natalia-czub', unsafe_allow_html=True)
     st.markdown('<i class="fab fa-github-square"></i>  https://github.com/nczub', unsafe_allow_html=True)
-    st.write('You can also contact using the form below.')
-    
-#This section of code has been removed due to sensitive and private information.
+    st.markdown('<i class="fa-solid fa-message"></i>  lapinska.natalia@inbox.eu', unsafe_allow_html=True)
