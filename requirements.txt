@@ -10,4 +10,3 @@ streamlit-option-menu==0.3.6
 streamlit-ketcher==0.0.1
 scipy==1.11.4
 lightgbm>=4.0.0
-supervised
