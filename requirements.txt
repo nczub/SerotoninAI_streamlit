@@ -4,8 +4,10 @@ mljar-supervised==1.0.0
 numpy==1.24.3
 pandas==1.5.3
 seaborn==0.12.2
-matplotlib==3.4.3
+matplotlib
 mordred==1.2.0
 streamlit-option-menu==0.3.6
 streamlit-ketcher==0.0.1
 scipy==1.11.4
+lightgbm>=4.0.0
+supervised
