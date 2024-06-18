@@ -137,6 +137,29 @@ descriptors_for_QSAR = pd.read_table("descriptors_QSAR.txt", header = None)[0][0
 calc = Calculator(descriptors, ignore_3D=True)
 calc.descriptors = [d for d in calc.descriptors if str(d) in descriptors_for_QSAR] 
 
+
+def normalize_data(data, max_values):
+    return [x / max_val for x, max_val in zip(data, max_values)]
+def plot_radar_chart_one_condition(data1, data3, labels, max_values, label, title):
+    num_vars = len(labels)
+    data1_norm = normalize_data(data1, max_values)
+    data3_norm = normalize_data(data3, max_values)
+    data1_norm += data1_norm[:1]
+    data3_norm += data3_norm[:1]
+    angles = [n / float(num_vars) * 2 * np.pi for n in range(num_vars)]
+    angles += angles[:1]
+    fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
+    line1, = ax.plot(angles, data1_norm, linewidth=1, linestyle='solid', label=label, color='#4282AA')
+    ax.fill(angles, data1_norm, '#4282AA', alpha=0.2)
+    line3, = ax.plot(angles, data3_norm, linewidth=1.5, linestyle='solid', label='Molecule', color='black')
+    ax.set_yticklabels([])
+    ax.set_xticks(angles[:-1])
+    ax.set_xticklabels(labels, color='black')
+    plt.legend(loc='upper right', bbox_to_anchor=(0.1, 0.1))
+    plt.title(title)
+    plt.text(0.1, -0.2, "Values were normalized", ha='left', va='bottom', transform=plt.gca().transAxes, fontsize = 8, color="gray")
+    return fig
+
 #clearning SMILES input button
 def clear_text():
     st.session_state["text"] = ""
@@ -292,13 +315,14 @@ elif selected == "5-HT receptors":
                                                   "5-HT2A receptor","5-HT2B receptor","5-HT2C receptor",
                                                   "5-HT3 receptor", "5-HT4 receptor", "5-HT5A receptor","5-HT6 receptor","5-HT7 receptor"])
     if sub_option == "5-HT1A receptor":
+        st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
         smiles_input = st.text_input("Input SMILES", key="text")
         col1, col2 = st.columns(2)
         if smiles_input:
             try:
                 molecule = Chem.MolFromSmiles(smiles_input)
                 if molecule:
-                    img = Draw.MolToImage(molecule)
+                    img = Draw.MolToImage(molecule, size=(600, 600))
                     with col1:
                         st.image(img, caption='Chemical structure', use_column_width=True)
                 else:
@@ -319,7 +343,6 @@ elif selected == "5-HT receptors":
                         st.markdown(f'<div style="{success_style}">Done!</div>', unsafe_allow_html=True)
                         prediction_float = round(float(predictions), 3)
                         st.write("pKi value for 5-HT1A serotonin receptor: ", f'<span style="color: #5d93a3;">{ prediction_float}</span>', unsafe_allow_html=True)
-                        st.button("Clear SMILES", on_click=clear_text)
                         list_of_important_descriptors = ['BCUTc-1l', 'MAXdO', 'MAXaaaC', 'PEOE_VSA9', 'SMR_VSA3', 'SssCH2', 
                                  'AATS4i', 'SpAbs_DzZ', 'AATS6dv', 'VSA_EState5']
                         min_values = {'BCUTc-1l': -0.7373620145398293, 'MAXdO': 9.099537037037038, 'MAXaaaC': -0.1340347251287001,
@@ -343,7 +366,7 @@ elif selected == "5-HT receptors":
                         num_labels = len(labels)
                         angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
                         angles += angles[:1]
-                        fig = plt.figure(figsize=(8,8))
+                        fig = plt.figure(figsize=(7,7))
                         ax = fig.add_subplot(111, polar=True)
                         color_1 = '#A6A6A6'
                         color_2 = '#4282AA'
@@ -360,9 +383,59 @@ elif selected == "5-HT receptors":
                         plt.tight_layout()
                         st.pyplot(fig)
                         if desc_condition > 6:
-                            st.write("Compound is under applicability domain")
+                            st.write("The compound is under applicability domain, prediction is accurate!")
                         else:
-                            st.write("Compound is not under applicability domain, prediction may be inaccurate")
+                            st.write("The compound is not under applicability domain, prediction may be inaccurate.")
+                            
+                        st.button("Clear SMILES", on_click=clear_text)
+                    st.write(' ')
+                    with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                        rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                        logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                        mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                        hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                        hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                        labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                        labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                        data1 = [5, 10, 500, 5]
+                        data2 = [3, 3, 300, 3, 3]
+                        data3 = [hdonors, hacceptors, mw, logP]
+                        data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                        max_values_RO5 = [5, 10, 500, 5]
+                        max_values_RO3 = [3, 3, 300, 3, 3]
+                        fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                        fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                        font_size_style = "font-size:13px; text-align:center;"
+                        col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                        with col1:
+                            st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                        with col2:
+                            st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                        with col3:
+                            st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                        with col4:
+                            st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                        with col5:
+                            st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.pyplot(fig_RO5)
+                            results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                            if all(results_RO5):
+                                st.write("Lipinski's rule is fulfilled")
+                            elif not any(results_RO5):
+                                st.write("Lipinski's rule is not fulfilled")
+                            else:
+                                st.write("Lipinski's rule is fulfilled partially")
+                        with col2:
+                            st.pyplot(fig_RO3)
+                            results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                            if all(results_RO3):
+                                st.write("The rule of three is fulfilled")
+                            elif not any(results_RO3):
+                                st.write("The rule of three is not fulfilled")
+                            else:
+                                st.write("The rule of three is fulfilled partially")
                 else:
                     st.write("Invalid SMILES")
             except Exception as e:
@@ -385,13 +458,14 @@ elif selected == "5-HT receptors":
         st.write("NLX-112 (formerly known as F13640) is considered a potential treatment for Parkinson's disease patients suffering from L-DOPA-induced dyskinesia. NLX-112 is a full agonist but shows preferential activation of ERK signaling and activates 5-HT1A autoreceptors to inhibit the firing of 5-HT cells.")
         st.write("Another biased agonist of the 5-HT1A receptor, NLX-101 (F15599), has been reported to preferentially activate postsynaptic 5-HT1A receptors and exhibits antidepressant, pro-cognitive, and neuroprotective properties in animal models.")        
     elif sub_option == "5-HT1B receptor":
+        st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
         smiles_input = st.text_input("Input SMILES", key="text")
         col1, col2 = st.columns(2)
         if smiles_input:
             try:
                 molecule = Chem.MolFromSmiles(smiles_input)
                 if molecule:
-                    img = Draw.MolToImage(molecule)
+                    img = Draw.MolToImage(molecule, size=(600, 600))
                     with col1:
                         st.image(img, caption='Chemical structure', use_column_width=True)
                 else:
@@ -412,7 +486,6 @@ elif selected == "5-HT receptors":
                         st.markdown(f'<div style="{success_style}">Done!</div>', unsafe_allow_html=True)
                         prediction_float = round(float(predictions), 3)
                         st.write("pKi value for 5-HT1B serotonin receptor: ", f'<span style="color: #5d93a3;">{ prediction_float}</span>', unsafe_allow_html=True)
-                        st.button("Clear SMILES", on_click=clear_text)
                         list_of_important_descriptors = ['MINaaaC', 'SMR_VSA6', 'SlogP_VSA1', 'NsssN', 'VSA_EState4', 
                                  'SaaaC', 'ABC', 'BCUTZ-1l', 'SlogP_VSA2', 'BCUTse-1l']
                         min_values = {'MINaaaC': 0.0430998207874111, 'SMR_VSA6': 0.0, 'SlogP_VSA1': 0.0, 'NsssN': 0, 'VSA_EState4': -3.877327289138031, 'SaaaC': 0.0,
@@ -434,7 +507,7 @@ elif selected == "5-HT receptors":
                         num_labels = len(labels)
                         angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
                         angles += angles[:1]
-                        fig = plt.figure(figsize=(8,8))
+                        fig = plt.figure(figsize=(7,7))
                         ax = fig.add_subplot(111, polar=True)
                         color_1 = '#A6A6A6'
                         color_2 = '#4282AA'
@@ -451,9 +524,58 @@ elif selected == "5-HT receptors":
                         plt.tight_layout()
                         st.pyplot(fig)
                         if desc_condition > 6:
-                            st.write("Compound is under applicability domain")
+                            st.write("The compound is under applicability domain, prediction is accurate!")
                         else:
-                            st.write("Compound is not under applicability domain, prediction may be inaccurate")                             
+                            st.write("The compound is not under applicability domain, prediction may be inaccurate.")
+                        st.button("Clear SMILES", on_click=clear_text)
+                    st.write(' ')
+                    with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                        rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                        logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                        mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                        hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                        hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                        labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                        labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                        data1 = [5, 10, 500, 5]
+                        data2 = [3, 3, 300, 3, 3]
+                        data3 = [hdonors, hacceptors, mw, logP]
+                        data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                        max_values_RO5 = [5, 10, 500, 5]
+                        max_values_RO3 = [3, 3, 300, 3, 3]
+                        fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                        fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                        font_size_style = "font-size:13px; text-align:center;"
+                        col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                        with col1:
+                            st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                        with col2:
+                            st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                        with col3:
+                            st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                        with col4:
+                            st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                        with col5:
+                            st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.pyplot(fig_RO5)
+                            results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                            if all(results_RO5):
+                                st.write("Lipinski's rule is fulfilled")
+                            elif not any(results_RO5):
+                                st.write("Lipinski's rule is not fulfilled")
+                            else:
+                                st.write("Lipinski's rule is fulfilled partially")
+                        with col2:
+                            st.pyplot(fig_RO3)
+                            results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                            if all(results_RO3):
+                                st.write("The rule of three is fulfilled")
+                            elif not any(results_RO3):
+                                st.write("The rule of three is not fulfilled")
+                            else:
+                                st.write("The rule of three is fulfilled partially")
                 else:
                     st.write("Invalid SMILES")
             except Exception as e:
@@ -461,7 +583,7 @@ elif selected == "5-HT receptors":
         agree_draw_smiles = st.checkbox("Draw chemical structure")
         if agree_draw_smiles:
             smile_code = st_ketcher()
-            st.markdown(f"SMILES: {smile_code}")                  
+            st.markdown(f"SMILES: {smile_code}")
         st.write("---")
         col1, col2 = st.columns([2,1])
         with col1:
@@ -474,13 +596,14 @@ elif selected == "5-HT receptors":
         st.write("Despite the availability of selective 5-HT1B receptor antagonists such as SB224289, progress in 5-HT1B receptor research has been hampered by the lack of highly selective and brain-penetrating 5-HT1B agonists. Nevertheless, the study of 5-HT1B receptors remains crucial in the field of neuropharmacology, particularly because of their involvement in migraine treatment and a broader understanding of various neuropsychiatric conditions.")
 
     elif sub_option == "5-HT1D receptor":
+        st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
         smiles_input = st.text_input("Input SMILES", key="text")
         col1, col2 = st.columns(2)
         if smiles_input:
             try:
                 molecule = Chem.MolFromSmiles(smiles_input)
                 if molecule:
-                    img = Draw.MolToImage(molecule)
+                    img = Draw.MolToImage(molecule, size=(600, 600))
                     with col1:
                         st.image(img, caption='Chemical structure', use_column_width=True)
                 else:
@@ -501,7 +624,6 @@ elif selected == "5-HT receptors":
                         st.markdown(f'<div style="{success_style}">Done!</div>', unsafe_allow_html=True)
                         prediction_float = round(float(predictions), 3)
                         st.write("pKi value for 5-HT1D serotonin receptor: ", f'<span style="color: #5d93a3;">{ prediction_float}</span>', unsafe_allow_html=True)
-                        st.button("Clear SMILES", on_click=clear_text)
                         list_of_important_descriptors = ['BCUTse-1l', 'BCUTZ-1l', 'BalabanJ', 'MAXaaCH', 'n10FARing', 'MAXaasC', 'SlogP_VSA2', 'BCUTi-1l', 'JGI3', 'EState_VSA8']
                         min_values = {'BCUTse-1l': 2.39096093838768, 'BCUTZ-1l': 0.9918795477066924, 'BalabanJ': 4.133332842407474e-07, 'MAXaaCH': 1.0679894687443388,
                         'n10FARing': 0, 'MAXaasC': 0.1587137776339895, 'SlogP_VSA2': 4.9839785209472085,
@@ -523,7 +645,7 @@ elif selected == "5-HT receptors":
                         num_labels = len(labels)
                         angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
                         angles += angles[:1]
-                        fig = plt.figure(figsize=(8,8))
+                        fig = plt.figure(figsize=(7,7))
                         ax = fig.add_subplot(111, polar=True)
                         color_1 = '#A6A6A6'
                         color_2 = '#4282AA'
@@ -540,9 +662,59 @@ elif selected == "5-HT receptors":
                         plt.tight_layout()
                         st.pyplot(fig)
                         if desc_condition > 6:
-                            st.write("Compound is under applicability domain")
+                            st.write("The compound is under applicability domain, prediction is accurate!")
                         else:
-                            st.write("Compound is not under applicability domain, prediction may be inaccurate")
+                            st.write("The compound is not under applicability domain, prediction may be inaccurate.")
+                            
+                        st.button("Clear SMILES", on_click=clear_text)
+                    st.write(' ')
+                    with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                        rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                        logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                        mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                        hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                        hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                        labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                        labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                        data1 = [5, 10, 500, 5]
+                        data2 = [3, 3, 300, 3, 3]
+                        data3 = [hdonors, hacceptors, mw, logP]
+                        data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                        max_values_RO5 = [5, 10, 500, 5]
+                        max_values_RO3 = [3, 3, 300, 3, 3]
+                        fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                        fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                        font_size_style = "font-size:13px; text-align:center;"
+                        col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                        with col1:
+                            st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                        with col2:
+                            st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                        with col3:
+                            st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                        with col4:
+                            st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                        with col5:
+                            st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.pyplot(fig_RO5)
+                            results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                            if all(results_RO5):
+                                st.write("Lipinski's rule is fulfilled")
+                            elif not any(results_RO5):
+                                st.write("Lipinski's rule is not fulfilled")
+                            else:
+                                st.write("Lipinski's rule is fulfilled partially")
+                        with col2:
+                            st.pyplot(fig_RO3)
+                            results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                            if all(results_RO3):
+                                st.write("The rule of three is fulfilled")
+                            elif not any(results_RO3):
+                                st.write("The rule of three is not fulfilled")
+                            else:
+                                st.write("The rule of three is fulfilled partially")
                 else:
                     st.write("Invalid SMILES")
             except Exception as e:
@@ -563,13 +735,14 @@ elif selected == "5-HT receptors":
         
 
     elif sub_option == "5-HT2A receptor":
+        st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
         smiles_input = st.text_input("Input SMILES", key="text")
         col1, col2 = st.columns(2)
         if smiles_input:
             try:
                 molecule = Chem.MolFromSmiles(smiles_input)
                 if molecule:
-                    img = Draw.MolToImage(molecule)
+                    img = Draw.MolToImage(molecule, size=(600, 600))
                     with col1:
                         st.image(img, caption='Chemical structure', use_column_width=True)
                 else:
@@ -590,7 +763,6 @@ elif selected == "5-HT receptors":
                         st.markdown(f'<div style="{success_style}">Done!</div>', unsafe_allow_html=True)
                         prediction_float = round(float(predictions), 3)
                         st.write("pKi value for 5-HT2A serotonin receptor: ", f'<span style="color: #5d93a3;">{ prediction_float}</span>', unsafe_allow_html=True)
-                        st.button("Clear SMILES", on_click=clear_text)
                         list_of_important_descriptors = ["nFRing", "VR1_A", "n6ARing", "SMR_VSA7", "nBase", "BCUTs-1h", "BCUTdv-1l", "BCUTZ-1l", "GATS5i", "BCUTdv-1h"]
                         min_values = {'nFRing': 0, 'VR1_A': 30.671729502867567, 'n6ARing': 0, 'SMR_VSA7': 0.0, 'nBase': 0, 'BCUTs-1h': 2.164333480214669,
                         'BCUTdv-1l': 0.1514613373305368, 'BCUTZ-1l': 5.636495147426821, 'GATS5i': 0.375280485256885, 'BCUTdv-1h': 4.048936865536147}
@@ -610,7 +782,7 @@ elif selected == "5-HT receptors":
                         num_labels = len(labels)
                         angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
                         angles += angles[:1]
-                        fig = plt.figure(figsize=(8,8))
+                        fig = plt.figure(figsize=(7,7))
                         ax = fig.add_subplot(111, polar=True)
                         color_1 = '#A6A6A6'
                         color_2 = '#4282AA'
@@ -627,9 +799,58 @@ elif selected == "5-HT receptors":
                         plt.tight_layout()
                         st.pyplot(fig)
                         if desc_condition > 6:
-                            st.write("Compound is under applicability domain")
+                            st.write("The compound is under applicability domain, prediction is accurate!")
                         else:
-                            st.write("Compound is not under applicability domain, prediction may be inaccurate")
+                            st.write("The compound is not under applicability domain, prediction may be inaccurate.")
+                        st.button("Clear SMILES", on_click=clear_text)
+                    st.write(' ')
+                    with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                        rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                        logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                        mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                        hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                        hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                        labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                        labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                        data1 = [5, 10, 500, 5]
+                        data2 = [3, 3, 300, 3, 3]
+                        data3 = [hdonors, hacceptors, mw, logP]
+                        data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                        max_values_RO5 = [5, 10, 500, 5]
+                        max_values_RO3 = [3, 3, 300, 3, 3]
+                        fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                        fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                        font_size_style = "font-size:13px; text-align:center;"
+                        col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                        with col1:
+                            st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                        with col2:
+                            st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                        with col3:
+                            st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                        with col4:
+                            st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                        with col5:
+                            st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.pyplot(fig_RO5)
+                            results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                            if all(results_RO5):
+                                st.write("Lipinski's rule is fulfilled")
+                            elif not any(results_RO5):
+                                st.write("Lipinski's rule is not fulfilled")
+                            else:
+                                st.write("Lipinski's rule is fulfilled partially")
+                        with col2:
+                            st.pyplot(fig_RO3)
+                            results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                            if all(results_RO3):
+                                st.write("The rule of three is fulfilled")
+                            elif not any(results_RO3):
+                                st.write("The rule of three is not fulfilled")
+                            else:
+                                st.write("The rule of three is fulfilled partially")
                 else:
                     st.write("Invalid SMILES")
             except Exception as e:
@@ -656,13 +877,14 @@ elif selected == "5-HT receptors":
         
 
     elif sub_option == "5-HT2B receptor":
+        st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
         smiles_input = st.text_input("Input SMILES", key="text")
         col1, col2 = st.columns(2)
         if smiles_input:
             try:
                 molecule = Chem.MolFromSmiles(smiles_input)
                 if molecule:
-                    img = Draw.MolToImage(molecule)
+                    img = Draw.MolToImage(molecule, size=(600, 600))
                     with col1:
                         st.image(img, caption='Chemical structure', use_column_width=True)
                 else:
@@ -683,7 +905,6 @@ elif selected == "5-HT receptors":
                         st.markdown(f'<div style="{success_style}">Done!</div>', unsafe_allow_html=True)
                         prediction_float = round(float(predictions), 3)
                         st.write("pKi value for 5-HT2B serotonin receptor: ", f'<span style="color: #5d93a3;">{ prediction_float}</span>', unsafe_allow_html=True)
-                        st.button("Clear SMILES", on_click=clear_text)
                         list_of_important_descriptors = ['VSA_EState4', 'AATS6i', 'IC2', 'ATSC6s', 'AATSC6p', 
                                                         'AMID_O', 'GATS6c', 'AATS7se', 'MDEC-23', 'MATS7se']
                         min_values = {'VSA_EState4': -2.751429417977417, 'AATS6i': 149.59935464493668, 'IC2': 2.4806821149663847, 'ATSC6s': -112.09948979591836,
@@ -705,7 +926,7 @@ elif selected == "5-HT receptors":
                         num_labels = len(labels)
                         angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
                         angles += angles[:1]
-                        fig = plt.figure(figsize=(8,8))
+                        fig = plt.figure(figsize=(7,7))
                         ax = fig.add_subplot(111, polar=True)
                         color_1 = '#A6A6A6'
                         color_2 = '#4282AA'
@@ -722,9 +943,59 @@ elif selected == "5-HT receptors":
                         plt.tight_layout()
                         st.pyplot(fig)
                         if desc_condition > 6:
-                            st.write("Compound is under applicability domain")
+                            st.write("The compound is under applicability domain, prediction is accurate!")
                         else:
-                            st.write("Compound is not under applicability domain, prediction may be inaccurate")
+                            st.write("The compound is not under applicability domain, prediction may be inaccurate.")
+                        st.button("Clear SMILES", on_click=clear_text)
+                    st.write(' ')
+                    with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                        rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                        logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                        mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                        hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                        hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                        labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                        labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                        data1 = [5, 10, 500, 5]
+                        data2 = [3, 3, 300, 3, 3]
+                        data3 = [hdonors, hacceptors, mw, logP]
+                        data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                        max_values_RO5 = [5, 10, 500, 5]
+                        max_values_RO3 = [3, 3, 300, 3, 3]
+                        fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                        fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                        font_size_style = "font-size:13px; text-align:center;"
+                        col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                        with col1:
+                            st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                        with col2:
+                            st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                        with col3:
+                            st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                        with col4:
+                            st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                        with col5:
+                            st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.pyplot(fig_RO5)
+                            results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                            if all(results_RO5):
+                                st.write("Lipinski's rule is fulfilled")
+                            elif not any(results_RO5):
+                                st.write("Lipinski's rule is not fulfilled")
+                            else:
+                                st.write("Lipinski's rule is fulfilled partially")
+                        with col2:
+                            st.pyplot(fig_RO3)
+                            results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                            if all(results_RO3):
+                                st.write("The rule of three is fulfilled")
+                            elif not any(results_RO3):
+                                st.write("The rule of three is not fulfilled")
+                            else:
+                                st.write("The rule of three is fulfilled partially")
+
                 else:
                     st.write("Invalid SMILES")
             except Exception as e:
@@ -743,13 +1014,14 @@ elif selected == "5-HT receptors":
 
     
     elif sub_option == "5-HT2C receptor":
+        st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
         smiles_input = st.text_input("Input SMILES", key="text")
         col1, col2 = st.columns(2)
         if smiles_input:
             try:
                 molecule = Chem.MolFromSmiles(smiles_input)
                 if molecule:
-                    img = Draw.MolToImage(molecule)
+                    img = Draw.MolToImage(molecule, size=(600, 600))
                     with col1:
                         st.image(img, caption='Chemical structure', use_column_width=True)
                 else:
@@ -770,7 +1042,6 @@ elif selected == "5-HT receptors":
                         st.markdown(f'<div style="{success_style}">Done!</div>', unsafe_allow_html=True)
                         prediction_float = round(float(predictions), 3)
                         st.write("pKi value for 5-HT2C serotonin receptor: ", f'<span style="color: #5d93a3;">{ prediction_float}</span>', unsafe_allow_html=True)
-                        st.button("Clear SMILES", on_click=clear_text)
                         list_of_important_descriptors = ['SlogP_VSA2', 'SlogP_VSA1', 'Diameter', 'SMR_VSA6', 'nFAHRing', 
                                                         'nAHRing', 'nFaHRing', 'MDEO-11', 'MDEC-33', 'JGI4']
                         min_values = {'SlogP_VSA2': 0.0, 'SlogP_VSA1': 0.0, 'Diameter': 5, 'SMR_VSA6': 0.0, 'nFAHRing': 0,
@@ -791,7 +1062,7 @@ elif selected == "5-HT receptors":
                         num_labels = len(labels)
                         angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
                         angles += angles[:1]
-                        fig = plt.figure(figsize=(8,8))
+                        fig = plt.figure(figsize=(7,7))
                         ax = fig.add_subplot(111, polar=True)
                         color_1 = '#A6A6A6'
                         color_2 = '#4282AA'
@@ -808,9 +1079,60 @@ elif selected == "5-HT receptors":
                         plt.tight_layout()
                         st.pyplot(fig)
                         if desc_condition > 6:
-                            st.write("Compound is under applicability domain")
+                            st.write("The compound is under applicability domain, prediction is accurate!")
                         else:
-                            st.write("Compound is not under applicability domain, prediction may be inaccurate")
+                            st.write("The compound is not under applicability domain, prediction may be inaccurate.")
+                            
+                        st.button("Clear SMILES", on_click=clear_text)
+                    st.write(' ')
+                    with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                        rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                        logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                        mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                        hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                        hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                        labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                        labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                        data1 = [5, 10, 500, 5]
+                        data2 = [3, 3, 300, 3, 3]
+                        data3 = [hdonors, hacceptors, mw, logP]
+                        data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                        max_values_RO5 = [5, 10, 500, 5]
+                        max_values_RO3 = [3, 3, 300, 3, 3]
+                        fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                        fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                        font_size_style = "font-size:13px; text-align:center;"
+                        col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                        with col1:
+                            st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                        with col2:
+                            st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                        with col3:
+                            st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                        with col4:
+                            st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                        with col5:
+                            st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.pyplot(fig_RO5)
+                            results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                            if all(results_RO5):
+                                st.write("Lipinski's rule is fulfilled")
+                            elif not any(results_RO5):
+                                st.write("Lipinski's rule is not fulfilled")
+                            else:
+                                st.write("Lipinski's rule is fulfilled partially")
+                        with col2:
+                            st.pyplot(fig_RO3)
+                            results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                            if all(results_RO3):
+                                st.write("The rule of three is fulfilled")
+                            elif not any(results_RO3):
+                                st.write("The rule of three is not fulfilled")
+                            else:
+                                st.write("The rule of three is fulfilled partially")
+
                 else:
                     st.write("Invalid SMILES")
             except Exception as e:
@@ -833,13 +1155,14 @@ elif selected == "5-HT receptors":
         
         
     elif sub_option == "5-HT3 receptor":
+        st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
         smiles_input = st.text_input("Input SMILES", key="text")
         col1, col2 = st.columns(2)
         if smiles_input:
             try:
                 molecule = Chem.MolFromSmiles(smiles_input)
                 if molecule:
-                    img = Draw.MolToImage(molecule)
+                    img = Draw.MolToImage(molecule, size=(600, 600))
                     with col1:
                         st.image(img, caption='Chemical structure', use_column_width=True)
                 else:
@@ -860,7 +1183,6 @@ elif selected == "5-HT receptors":
                         st.markdown(f'<div style="{success_style}">Done!</div>', unsafe_allow_html=True)
                         prediction_float = round(float(predictions), 3)
                         st.write("pKi value for 5-HT3 serotonin receptor: ", f'<span style="color: #5d93a3;">{ prediction_float}</span>', unsafe_allow_html=True)
-                        st.button("Clear SMILES", on_click=clear_text)
                         list_of_important_descriptors = ['AATSC8d', 'nFRing', 'nBridgehead', 'NaasN', 'AATS7p', 'AATSC6Z',
                                                         'GATS8s', 'AATS6d', 'MINaaN', 'MAXaaN']
                         min_values = {'AATSC8d': -0.2262323943661972, 'nFRing': 0, 'nBridgehead': 0, 'NaasN': 0, 'AATS7p': 0.6767748409994595,
@@ -881,7 +1203,7 @@ elif selected == "5-HT receptors":
                         num_labels = len(labels)
                         angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
                         angles += angles[:1]
-                        fig = plt.figure(figsize=(8,8))
+                        fig = plt.figure(figsize=(7,7))
                         ax = fig.add_subplot(111, polar=True)
                         color_1 = '#A6A6A6'
                         color_2 = '#4282AA'
@@ -898,9 +1220,58 @@ elif selected == "5-HT receptors":
                         plt.tight_layout()
                         st.pyplot(fig)
                         if desc_condition > 6:
-                            st.write("Compound is under applicability domain")
+                            st.write("The compound is under applicability domain, prediction is accurate!")
                         else:
-                            st.write("Compound is not under applicability domain, prediction may be inaccurate")
+                            st.write("The compound is not under applicability domain, prediction may be inaccurate.")
+                        st.button("Clear SMILES", on_click=clear_text)
+                    st.write(' ')
+                    with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                        rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                        logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                        mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                        hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                        hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                        labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                        labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                        data1 = [5, 10, 500, 5]
+                        data2 = [3, 3, 300, 3, 3]
+                        data3 = [hdonors, hacceptors, mw, logP]
+                        data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                        max_values_RO5 = [5, 10, 500, 5]
+                        max_values_RO3 = [3, 3, 300, 3, 3]
+                        fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                        fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                        font_size_style = "font-size:13px; text-align:center;"
+                        col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                        with col1:
+                            st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                        with col2:
+                            st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                        with col3:
+                            st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                        with col4:
+                            st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                        with col5:
+                            st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.pyplot(fig_RO5)
+                            results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                            if all(results_RO5):
+                                st.write("Lipinski's rule is fulfilled")
+                            elif not any(results_RO5):
+                                st.write("Lipinski's rule is not fulfilled")
+                            else:
+                                st.write("Lipinski's rule is fulfilled partially")
+                        with col2:
+                            st.pyplot(fig_RO3)
+                            results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                            if all(results_RO3):
+                                st.write("The rule of three is fulfilled")
+                            elif not any(results_RO3):
+                                st.write("The rule of three is not fulfilled")
+                            else:
+                                st.write("The rule of three is fulfilled partially")
                 else:
                     st.write("Invalid SMILES")
             except Exception as e:
@@ -908,7 +1279,7 @@ elif selected == "5-HT receptors":
         agree_draw_smiles = st.checkbox("Draw chemical structure")
         if agree_draw_smiles:
             smile_code = st_ketcher()
-            st.markdown(f"SMILES: {smile_code}")                
+            st.markdown(f"SMILES: {smile_code}")    
         st.write("---")
         st.subheader("5-HT3 in pharmacology")
         col1, col2 = st.columns([1,3])
@@ -922,13 +1293,14 @@ elif selected == "5-HT receptors":
         st.write("The 5-HT3 receptors' involvement in various physiological and behavioral processes, including nausea and vomiting control, anxiety, cognitive function, pain processing, and sensitivity to addictive substances, highlights their significance as potential targets for therapeutic interventions. Further research and understanding of the complex functions of 5-HT3 receptors hold promise for the development of novel treatments addressing these conditions.")
         
     elif sub_option == "5-HT4 receptor":
+        st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
         smiles_input = st.text_input("Input SMILES", key="text")
         col1, col2 = st.columns(2)
         if smiles_input:
             try:
                 molecule = Chem.MolFromSmiles(smiles_input)
                 if molecule:
-                    img = Draw.MolToImage(molecule)
+                    img = Draw.MolToImage(molecule, size=(600, 600))
                     with col1:
                         st.image(img, caption='Chemical structure', use_column_width=True)
                 else:
@@ -949,7 +1321,6 @@ elif selected == "5-HT receptors":
                         st.markdown(f'<div style="{success_style}">Done!</div>', unsafe_allow_html=True)
                         prediction_float = round(float(predictions), 3)
                         st.write("pKi value for 5-HT4 serotonin receptor: ", f'<span style="color: #5d93a3;">{ prediction_float}</span>', unsafe_allow_html=True)
-                        st.button("Clear SMILES", on_click=clear_text)
                         list_of_important_descriptors = ['C1SP3', 'SMR_VSA4', 'NssCH2', 'ATSC0c', 'C3SP3', 'ATSC8c', 'AATS3i', 'ATSC1dv', 'AATS4i', 'ATSC4c']
                         min_values ={'C1SP3': 0, 'SMR_VSA4': 0.0,  'NssCH2': 0,  'ATSC0c': 0.2838127021284238,
                          'C3SP3': 0, 'ATSC8c': -1.152247769776361, 'AATS3i': 148.91780824944055, 'ATSC1dv': 4.117167133670763,
@@ -971,7 +1342,7 @@ elif selected == "5-HT receptors":
                         num_labels = len(labels)
                         angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
                         angles += angles[:1]
-                        fig = plt.figure(figsize=(8,8))
+                        fig = plt.figure(figsize=(7,7))
                         ax = fig.add_subplot(111, polar=True)
                         color_1 = '#A6A6A6'
                         color_2 = '#4282AA'
@@ -988,9 +1359,58 @@ elif selected == "5-HT receptors":
                         plt.tight_layout()
                         st.pyplot(fig)
                         if desc_condition > 6:
-                            st.write("Compound is under applicability domain")
+                            st.write("The compound is under applicability domain, prediction is accurate!")
                         else:
-                            st.write("Compound is not under applicability domain, prediction may be inaccurate")
+                            st.write("The compound is not under applicability domain, prediction may be inaccurate.")
+                        st.button("Clear SMILES", on_click=clear_text)
+                    st.write(' ')
+                    with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                        rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                        logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                        mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                        hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                        hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                        labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                        labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                        data1 = [5, 10, 500, 5]
+                        data2 = [3, 3, 300, 3, 3]
+                        data3 = [hdonors, hacceptors, mw, logP]
+                        data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                        max_values_RO5 = [5, 10, 500, 5]
+                        max_values_RO3 = [3, 3, 300, 3, 3]
+                        fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                        fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                        font_size_style = "font-size:13px; text-align:center;"
+                        col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                        with col1:
+                            st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                        with col2:
+                            st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                        with col3:
+                            st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                        with col4:
+                            st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                        with col5:
+                            st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.pyplot(fig_RO5)
+                            results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                            if all(results_RO5):
+                                st.write("Lipinski's rule is fulfilled")
+                            elif not any(results_RO5):
+                                st.write("Lipinski's rule is not fulfilled")
+                            else:
+                                st.write("Lipinski's rule is fulfilled partially")
+                        with col2:
+                            st.pyplot(fig_RO3)
+                            results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                            if all(results_RO3):
+                                st.write("The rule of three is fulfilled")
+                            elif not any(results_RO3):
+                                st.write("The rule of three is not fulfilled")
+                            else:
+                                st.write("The rule of three is fulfilled partially")
                 else:
                     st.write("Invalid SMILES")
             except Exception as e:
@@ -998,7 +1418,7 @@ elif selected == "5-HT receptors":
         agree_draw_smiles = st.checkbox("Draw chemical structure")
         if agree_draw_smiles:
             smile_code = st_ketcher()
-            st.markdown(f"SMILES: {smile_code}")                
+            st.markdown(f"SMILES: {smile_code}")  
         st.write("---")
         st.subheader("5-HT4 in pharmacology")
         st.write("The 5-HT4 receptor primarily resides in the brain, particularly in the hippocampus. It plays a crucial role in cognition, with 5-HT4 receptor agonists demonstrating pro-cognitive effects in various species and memory paradigms.")            
@@ -1008,15 +1428,15 @@ elif selected == "5-HT receptors":
         
 
 
-
     elif sub_option == "5-HT5A receptor":
+        st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
         smiles_input = st.text_input("Input SMILES", key="text")
         col1, col2 = st.columns(2)
         if smiles_input:
             try:
                 molecule = Chem.MolFromSmiles(smiles_input)
                 if molecule:
-                    img = Draw.MolToImage(molecule)
+                    img = Draw.MolToImage(molecule, size=(600, 600))
                     with col1:
                         st.image(img, caption='Chemical structure', use_column_width=True)
                 else:
@@ -1037,7 +1457,6 @@ elif selected == "5-HT receptors":
                         st.markdown(f'<div style="{success_style}">Done!</div>', unsafe_allow_html=True)
                         prediction_float = round(float(predictions), 3)
                         st.write("pKi value for 5-HT5A serotonin receptor: ", f'<span style="color: #5d93a3;">{ prediction_float}</span>', unsafe_allow_html=True)
-                        st.button("Clear SMILES", on_click=clear_text)
                         list_of_important_descriptors = ['nBase', 'n10FRing', 'SpDiam_A', 'BCUTv-1h', 'BCUTZ-1l', 'ATSC3s', 'BCUTc-1l', 
                                                         'BCUTi-1l', 'MINdssC', 'GGI4']
                         min_values = {'nBase': 0, 'n10FRing': 0, 'SpDiam_A': 4.417866110045354, 'BCUTv-1h': 20.860460092488022,
@@ -1060,7 +1479,7 @@ elif selected == "5-HT receptors":
                         num_labels = len(labels)
                         angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
                         angles += angles[:1]
-                        fig = plt.figure(figsize=(8,8))
+                        fig = plt.figure(figsize=(7,7))
                         ax = fig.add_subplot(111, polar=True)
                         color_1 = '#A6A6A6'
                         color_2 = '#4282AA'
@@ -1077,9 +1496,58 @@ elif selected == "5-HT receptors":
                         plt.tight_layout()
                         st.pyplot(fig)
                         if desc_condition > 6:
-                            st.write("Compound is under applicability domain")
+                            st.write("The compound is under applicability domain, prediction is accurate!")
                         else:
-                            st.write("Compound is not under applicability domain, prediction may be inaccurate")
+                            st.write("The compound is not under applicability domain, prediction may be inaccurate.")
+                        st.button("Clear SMILES", on_click=clear_text)
+                    st.write(' ')
+                    with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                        rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                        logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                        mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                        hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                        hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                        labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                        labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                        data1 = [5, 10, 500, 5]
+                        data2 = [3, 3, 300, 3, 3]
+                        data3 = [hdonors, hacceptors, mw, logP]
+                        data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                        max_values_RO5 = [5, 10, 500, 5]
+                        max_values_RO3 = [3, 3, 300, 3, 3]
+                        fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                        fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                        font_size_style = "font-size:13px; text-align:center;"
+                        col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                        with col1:
+                            st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                        with col2:
+                            st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                        with col3:
+                            st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                        with col4:
+                            st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                        with col5:
+                            st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.pyplot(fig_RO5)
+                            results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                            if all(results_RO5):
+                                st.write("Lipinski's rule is fulfilled")
+                            elif not any(results_RO5):
+                                st.write("Lipinski's rule is not fulfilled")
+                            else:
+                                st.write("Lipinski's rule is fulfilled partially")
+                        with col2:
+                            st.pyplot(fig_RO3)
+                            results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                            if all(results_RO3):
+                                st.write("The rule of three is fulfilled")
+                            elif not any(results_RO3):
+                                st.write("The rule of three is not fulfilled")
+                            else:
+                                st.write("The rule of three is fulfilled partially")
                 else:
                     st.write("Invalid SMILES")
             except Exception as e:
@@ -1087,7 +1555,8 @@ elif selected == "5-HT receptors":
         agree_draw_smiles = st.checkbox("Draw chemical structure")
         if agree_draw_smiles:
             smile_code = st_ketcher()
-            st.markdown(f"SMILES: {smile_code}")                
+            st.markdown(f"SMILES: {smile_code}") 
+        st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*')
         st.write("---")
         st.subheader("5-HT5A in pharmacology")
         col1, col2 = st.columns([3,1])
@@ -1100,13 +1569,14 @@ elif selected == "5-HT receptors":
         
 
     elif sub_option == "5-HT6 receptor":
+        st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
         smiles_input = st.text_input("Input SMILES", key="text")
         col1, col2 = st.columns(2)
         if smiles_input:
             try:
                 molecule = Chem.MolFromSmiles(smiles_input)
                 if molecule:
-                    img = Draw.MolToImage(molecule)
+                    img = Draw.MolToImage(molecule, size=(600, 600))
                     with col1:
                         st.image(img, caption='Chemical structure', use_column_width=True)
                 else:
@@ -1127,7 +1597,6 @@ elif selected == "5-HT receptors":
                         st.markdown(f'<div style="{success_style}">Done!</div>', unsafe_allow_html=True)
                         prediction_float = round(float(predictions), 3)
                         st.write("pKi value for 5-HT6 serotonin receptor: ", f'<span style="color: #5d93a3;">{ prediction_float}</span>', unsafe_allow_html=True)
-                        st.button("Clear SMILES", on_click=clear_text)
                         list_of_important_descriptors = ['NddssS', 'BCUTd-1h', 'PEOE_VSA2','PEOE_VSA12', 'PEOE_VSA1', 
                                  'n9FaRing', 'VR1_A', 'MINssCH2', 'JGI5', 'MINsssN']
                         min_values = {'NddssS': 0, 'BCUTd-1h': 3.077886962639631, 'PEOE_VSA2': 0.0, 'PEOE_VSA12': 0.0, 'PEOE_VSA1': 0.0, 'n9FaRing': 0,
@@ -1149,7 +1618,7 @@ elif selected == "5-HT receptors":
                         num_labels = len(labels)
                         angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
                         angles += angles[:1]
-                        fig = plt.figure(figsize=(8,8))
+                        fig = plt.figure(figsize=(7,7))
                         ax = fig.add_subplot(111, polar=True)
                         color_1 = '#A6A6A6'
                         color_2 = '#4282AA'
@@ -1166,9 +1635,58 @@ elif selected == "5-HT receptors":
                         plt.tight_layout()
                         st.pyplot(fig)
                         if desc_condition > 6:
-                            st.write("Compound is under applicability domain")
+                            st.write("The compound is under applicability domain, prediction is accurate!")
                         else:
-                            st.write("Compound is not under applicability domain, prediction may be inaccurate")
+                            st.write("The compound is not under applicability domain, prediction may be inaccurate.")
+                        st.button("Clear SMILES", on_click=clear_text)
+                    st.write(' ')
+                    with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                        rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                        logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                        mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                        hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                        hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                        labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                        labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                        data1 = [5, 10, 500, 5]
+                        data2 = [3, 3, 300, 3, 3]
+                        data3 = [hdonors, hacceptors, mw, logP]
+                        data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                        max_values_RO5 = [5, 10, 500, 5]
+                        max_values_RO3 = [3, 3, 300, 3, 3]
+                        fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                        fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                        font_size_style = "font-size:13px; text-align:center;"
+                        col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                        with col1:
+                            st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                        with col2:
+                            st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                        with col3:
+                            st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                        with col4:
+                            st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                        with col5:
+                            st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.pyplot(fig_RO5)
+                            results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                            if all(results_RO5):
+                                st.write("Lipinski's rule is fulfilled")
+                            elif not any(results_RO5):
+                                st.write("Lipinski's rule is not fulfilled")
+                            else:
+                                st.write("Lipinski's rule is fulfilled partially")
+                        with col2:
+                            st.pyplot(fig_RO3)
+                            results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                            if all(results_RO3):
+                                st.write("The rule of three is fulfilled")
+                            elif not any(results_RO3):
+                                st.write("The rule of three is not fulfilled")
+                            else:
+                                st.write("The rule of three is fulfilled partially")
                 else:
                     st.write("Invalid SMILES")
             except Exception as e:
@@ -1176,7 +1694,7 @@ elif selected == "5-HT receptors":
         agree_draw_smiles = st.checkbox("Draw chemical structure")
         if agree_draw_smiles:
             smile_code = st_ketcher()
-            st.markdown(f"SMILES: {smile_code}")                
+            st.markdown(f"SMILES: {smile_code}")
         st.write("---")
         st.subheader("5-HT6 in pharmacology")
         col1, col2 = st.columns([3,1])
@@ -1191,13 +1709,14 @@ elif selected == "5-HT receptors":
 
     
     elif sub_option == "5-HT7 receptor":
+        st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
         smiles_input = st.text_input("Input SMILES", key="text")
         col1, col2 = st.columns(2)
         if smiles_input:
             try:
                 molecule = Chem.MolFromSmiles(smiles_input)
                 if molecule:
-                    img = Draw.MolToImage(molecule)
+                    img = Draw.MolToImage(molecule, size=(600, 600))
                     with col1:
                         st.image(img, caption='Chemical structure', use_column_width=True)
                 else:
@@ -1218,7 +1737,6 @@ elif selected == "5-HT receptors":
                         st.markdown(f'<div style="{success_style}">Done!</div>', unsafe_allow_html=True)
                         prediction_float = round(float(predictions), 3)
                         st.write("pKi value for 5-HT7 serotonin receptor: ", f'<span style="color: #5d93a3;">{ prediction_float}</span>', unsafe_allow_html=True)
-                        st.button("Clear SMILES", on_click=clear_text)
                         list_of_important_descriptors = ['BCUTd-1h', 'GATS8d', 'PEOE_VSA9', 'AATS6v', 'AATS7v', 'MAXdO', 
                                                         'AATS6d', 'GATS8p', 'AATSC4d', 'Xch-6d']
                         min_values = {'BCUTd-1h': 3.0379937736676954, 'GATS8d': 0.0, 'PEOE_VSA9': 0.0, 'AATS6v': 72.93864269488313,
@@ -1241,7 +1759,7 @@ elif selected == "5-HT receptors":
                         num_labels = len(labels)
                         angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
                         angles += angles[:1]
-                        fig = plt.figure(figsize=(8,8))
+                        fig = plt.figure(figsize=(7,7))
                         ax = fig.add_subplot(111, polar=True)
                         color_1 = '#A6A6A6'
                         color_2 = '#4282AA'
@@ -1258,9 +1776,58 @@ elif selected == "5-HT receptors":
                         plt.tight_layout()
                         st.pyplot(fig)
                         if desc_condition > 6:
-                            st.write("Compound is under applicability domain")
+                            st.write("The compound is under applicability domain, prediction is accurate!")
                         else:
-                            st.write("Compound is not under applicability domain, prediction may be inaccurate")                      
+                            st.write("The compound is not under applicability domain, prediction may be inaccurate.")
+                        st.button("Clear SMILES", on_click=clear_text)
+                    st.write(' ')
+                    with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                        rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                        logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                        mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                        hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                        hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                        labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                        labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                        data1 = [5, 10, 500, 5]
+                        data2 = [3, 3, 300, 3, 3]
+                        data3 = [hdonors, hacceptors, mw, logP]
+                        data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                        max_values_RO5 = [5, 10, 500, 5]
+                        max_values_RO3 = [3, 3, 300, 3, 3]
+                        fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                        fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                        font_size_style = "font-size:13px; text-align:center;"
+                        col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                        with col1:
+                            st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                        with col2:
+                            st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                        with col3:
+                            st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                        with col4:
+                            st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                        with col5:
+                            st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.pyplot(fig_RO5)
+                            results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                            if all(results_RO5):
+                                st.write("Lipinski's rule is fulfilled")
+                            elif not any(results_RO5):
+                                st.write("Lipinski's rule is not fulfilled")
+                            else:
+                                st.write("Lipinski's rule is fulfilled partially")
+                        with col2:
+                            st.pyplot(fig_RO3)
+                            results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                            if all(results_RO3):
+                                st.write("The rule of three is fulfilled")
+                            elif not any(results_RO3):
+                                st.write("The rule of three is not fulfilled")
+                            else:
+                                st.write("The rule of three is fulfilled partially")              
                 else:
                     st.write("Invalid SMILES")
             except Exception as e:
@@ -1268,7 +1835,7 @@ elif selected == "5-HT receptors":
         agree_draw_smiles = st.checkbox("Draw chemical structure")
         if agree_draw_smiles:
             smile_code = st_ketcher()
-            st.markdown(f"SMILES: {smile_code}")                
+            st.markdown(f"SMILES: {smile_code}")   
         st.write("---")
         st.subheader("5-HT7 in pharmacology")
         st.write("The 5-HT7 receptors are abundantly present in the suprachiasmatic nucleus.")
@@ -1286,13 +1853,14 @@ elif selected == "SERT":
     calc = Calculator(descriptors, ignore_3D=True)
     calc.descriptors = [d for d in calc.descriptors if str(d) in descriptors_for_QSAR] 
     st.markdown('<h1 class="text-second-title">Predictions for the serotonin transporter</h1>', unsafe_allow_html=True)
+    st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
     smiles_input = st.text_input("Input SMILES", key="text")
     col1, col2 = st.columns(2)
     if smiles_input:
         try:
             molecule = Chem.MolFromSmiles(smiles_input)
             if molecule:
-                img = Draw.MolToImage(molecule)
+                img = Draw.MolToImage(molecule, size=(600,600))
                 with col1:
                     st.image(img, caption='Chemical structure', use_column_width=True)
             else:
@@ -1313,7 +1881,6 @@ elif selected == "SERT":
                     st.markdown(f'<div style="{success_style}">Done!</div>', unsafe_allow_html=True)
                     prediction_float = round(float(predictions), 3)
                     st.write("pKi value for serotonin transporter: ", f'<span style="color: #5d93a3;">{ prediction_float}</span>', unsafe_allow_html=True)
-                    st.button("Clear SMILES", on_click=clear_text)
                     list_of_important_descriptors = ['SIC2', 'GATS5c', 'IC2', 'nBase', 'ATSC2d', 'CIC1', 
                                  'SLogP', 'n10FaRing', 'SlogP_VSA1', 'PEOE_VSA3']
                     min_values = {'SIC2': 0.4663428534035417, 'GATS5c': 0.1522646188176759, 'IC2': 2.754636215098623, 'nBase': 0,
@@ -1335,7 +1902,7 @@ elif selected == "SERT":
                     num_labels = len(labels)
                     angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
                     angles += angles[:1]
-                    fig = plt.figure(figsize=(8,8))
+                    fig = plt.figure(figsize=(7,7))
                     ax = fig.add_subplot(111, polar=True)
                     color_1 = '#A6A6A6'
                     color_2 = '#4282AA'
@@ -1352,9 +1919,59 @@ elif selected == "SERT":
                     plt.tight_layout()
                     st.pyplot(fig)    
                     if desc_condition > 6:
-                        st.write("Compound is under applicability domain")
+                        st.write("The compound is under applicability domain, prediction is accurate!")
                     else:
-                        st.write("Compound is not under applicability domain, prediction may be inaccurate")
+                        st.write("The compound is not under applicability domain, prediction may be inaccurate")
+                    st.button("Clear SMILES", on_click=clear_text)
+                st.write(' ')
+                with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                    rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                    logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                    mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                    hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                    hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                    labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                    labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                    data1 = [5, 10, 500, 5]
+                    data2 = [3, 3, 300, 3, 3]
+                    data3 = [hdonors, hacceptors, mw, logP]
+                    data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                    max_values_RO5 = [5, 10, 500, 5]
+                    max_values_RO3 = [3, 3, 300, 3, 3]
+                    fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                    fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                    font_size_style = "font-size:13px; text-align:center;"
+                    col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                    with col1:
+                        st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                    with col2:
+                        st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                    with col3:
+                        st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                    with col4:
+                        st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                    with col5:
+                        st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.pyplot(fig_RO5)
+                        results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                        if all(results_RO5):
+                            st.write("Lipinski's rule is fulfilled")
+                        elif not any(results_RO5):
+                            st.write("Lipinski's rule is not fulfilled")
+                        else:
+                            st.write("Lipinski's rule is fulfilled partially")
+                    with col2:
+                        st.pyplot(fig_RO3)
+                        results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                        if all(results_RO3):
+                            st.write("The rule of three is fulfilled")
+                        elif not any(results_RO3):
+                            st.write("The rule of three is not fulfilled")
+                        else:
+                            st.write("The rule of three is fulfilled partially")
+
             else:
                 st.write("Invalid SMILES")
         except Exception as e:
@@ -1376,6 +1993,7 @@ elif selected == "SERT":
             
 elif selected == "HIA":
     st.markdown('<h1 class="text-second-title">Class prediction of human instestinal absorption (HIA)</h1>', unsafe_allow_html=True)
+    st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
     descriptors_for_QSPR = pd.read_table("descriptors_QSPR.txt", header = None)[0][0]
     calc = Calculator(descriptors, ignore_3D=True)
     calc.descriptors = [d for d in calc.descriptors if str(d) in descriptors_for_QSPR] 
@@ -1387,7 +2005,7 @@ elif selected == "HIA":
             try:
                 molecule = Chem.MolFromSmiles(smiles_input)
                 if molecule:
-                    img = Draw.MolToImage(molecule)
+                    img = Draw.MolToImage(molecule, size=(600,600))
                     with col1:
                         st.image(img, caption='Chemical structure', use_column_width=True)
                 else:
@@ -1414,7 +2032,6 @@ elif selected == "HIA":
                                     st.write("Good intestinal permeability")
                                 else:
                                     st.write("Bad intestinal permeability")
-                        st.button("Clear SMILES", on_click=clear_text)
                         list_of_important_descriptors = ['MATS1dv', 'PEOE_VSA7', 'MATS4s', 'RPCG', 'AATSC4p', 'AMID_X', 
                                         'ATSC6i', 'AATSC3d', 'MID_N', 'GATS4i']
                         min_values = {'MATS1dv': -0.1501196994477234, 'PEOE_VSA7': 6.923737199690624, 'MATS4s': -0.2164223259483269,
@@ -1438,7 +2055,7 @@ elif selected == "HIA":
                         num_labels = len(labels)
                         angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
                         angles += angles[:1]
-                        fig = plt.figure(figsize=(8,8))
+                        fig = plt.figure(figsize=(7,7))
                         ax = fig.add_subplot(111, polar=True)
                         color_1 = '#A6A6A6'
                         color_2 = '#4282AA'
@@ -1455,9 +2072,58 @@ elif selected == "HIA":
                         plt.tight_layout()
                         st.pyplot(fig)  
                         if desc_condition > 6:
-                            st.write("Compound is under applicability domain")
+                            st.write("The compound is under applicability domain, prediction is accurate!")
                         else:
-                            st.write("Compound is not under applicability domain, prediction may be inaccurate")
+                            st.write("The compound is not under applicability domain, prediction may be inaccurate.")
+                        st.button("Clear SMILES", on_click=clear_text)
+                    st.write(' ')
+                    with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                        rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                        logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                        mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                        hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                        hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                        labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                        labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                        data1 = [5, 10, 500, 5]
+                        data2 = [3, 3, 300, 3, 3]
+                        data3 = [hdonors, hacceptors, mw, logP]
+                        data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                        max_values_RO5 = [5, 10, 500, 5]
+                        max_values_RO3 = [3, 3, 300, 3, 3]
+                        fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                        fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                        font_size_style = "font-size:13px; text-align:center;"
+                        col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                        with col1:
+                            st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                        with col2:
+                            st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                        with col3:
+                            st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                        with col4:
+                            st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                        with col5:
+                            st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.pyplot(fig_RO5)
+                            results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                            if all(results_RO5):
+                                st.write("Lipinski's rule is fulfilled")
+                            elif not any(results_RO5):
+                                st.write("Lipinski's rule is not fulfilled")
+                            else:
+                                st.write("Lipinski's rule is fulfilled partially")
+                        with col2:
+                            st.pyplot(fig_RO3)
+                            results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                            if all(results_RO3):
+                                st.write("The rule of three is fulfilled")
+                            elif not any(results_RO3):
+                                st.write("The rule of three is not fulfilled")
+                            else:
+                                st.write("The rule of three is fulfilled partially")
                 else:
                     st.write("Invalid SMILES")
             except Exception as e:
@@ -1465,7 +2131,7 @@ elif selected == "HIA":
     agree_draw_smiles = st.checkbox("Draw chemical structure")
     if agree_draw_smiles:
         smile_code = st_ketcher()
-        st.markdown(f"SMILES: {smile_code}")      
+        st.markdown(f"SMILES: {smile_code}")
     with st.container():
         st.write("---")
         st.write('Predictions of HIA based on uploaded file')
@@ -1531,6 +2197,7 @@ elif selected == "HIA":
     
 elif selected == "BBB":
     st.markdown('<h1 class="text-second-title">Class prediction of Blood-Brain Barrier penetration (BBB)</h1>', unsafe_allow_html=True)
+    st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
     descriptors_for_QSPR_BBB = pd.read_table("descriptors_QSPR_BBB.txt", header = None)[0][0]
     calc = Calculator(descriptors, ignore_3D=True)
     calc.descriptors = [d for d in calc.descriptors if str(d) in descriptors_for_QSPR_BBB] 
@@ -1542,7 +2209,7 @@ elif selected == "BBB":
             try:
                 molecule = Chem.MolFromSmiles(smiles_input)
                 if molecule:
-                    img = Draw.MolToImage(molecule)
+                    img = Draw.MolToImage(molecule, size=(600,600))
                     with col1:
                         st.image(img, caption='Chemical structure', use_column_width=True)
                 else:
@@ -1566,7 +2233,6 @@ elif selected == "BBB":
                             else:
                                 st.write('Bad blood-brain penetation')
 
-                        st.button("Clear SMILES", on_click=clear_text)
                         list_of_important_descriptors = ['TopoPSA(NO)', 'MDEC-33', 'SlogP_VSA10', 'MAXsOH', 'AATS1i', 'Xch-5dv', 
                    'MATS2s', 'MINdssC', 'EState_VSA4', 'AATS7d']
                         min_values = {'TopoPSA(NO)': 0.0, 'MDEC-33': 0.0, 'SlogP_VSA10': 0.0, 'MAXsOH': 0.0, 'AATS1i': 0.0, 'Xch-5dv': 0.0,
@@ -1588,7 +2254,7 @@ elif selected == "BBB":
                         num_labels = len(labels)
                         angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
                         angles += angles[:1]
-                        fig = plt.figure(figsize=(8,8))
+                        fig = plt.figure(figsize=(7,7))
                         ax = fig.add_subplot(111, polar=True)
                         color_1 = '#A6A6A6'
                         color_2 = '#4282AA'
@@ -1605,9 +2271,58 @@ elif selected == "BBB":
                         plt.tight_layout()
                         st.pyplot(fig) 
                         if desc_condition > 6:
-                            st.write("Compound is under applicability domain")
+                            st.write("The compound is under applicability domain, prediction is accurate!")
                         else:
-                            st.write("Compound is not under applicability domain, prediction may be inaccurate")
+                            st.write("The compound is not under applicability domain, prediction may be inaccurate")
+                        st.button("Clear SMILES", on_click=clear_text)
+                    st.write(' ')
+                    with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                        rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                        logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                        mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                        hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                        hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                        labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                        labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                        data1 = [5, 10, 500, 5]
+                        data2 = [3, 3, 300, 3, 3]
+                        data3 = [hdonors, hacceptors, mw, logP]
+                        data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                        max_values_RO5 = [5, 10, 500, 5]
+                        max_values_RO3 = [3, 3, 300, 3, 3]
+                        fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                        fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                        font_size_style = "font-size:13px; text-align:center;"
+                        col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                        with col1:
+                            st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                        with col2:
+                            st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                        with col3:
+                            st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                        with col4:
+                            st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                        with col5:
+                            st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.pyplot(fig_RO5)
+                            results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                            if all(results_RO5):
+                                st.write("Lipinski's rule is fulfilled")
+                            elif not any(results_RO5):
+                                st.write("Lipinski's rule is not fulfilled")
+                            else:
+                                st.write("Lipinski's rule is fulfilled partially")
+                        with col2:
+                            st.pyplot(fig_RO3)
+                            results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                            if all(results_RO3):
+                                st.write("The rule of three is fulfilled")
+                            elif not any(results_RO3):
+                                st.write("The rule of three is not fulfilled")
+                            else:
+                                st.write("The rule of three is fulfilled partially")
                 else:
                     st.write("Invalid SMILES")
             except Exception as e:
@@ -1615,7 +2330,7 @@ elif selected == "BBB":
     agree_draw_smiles = st.checkbox("Draw chemical structure")
     if agree_draw_smiles:
         smile_code = st_ketcher()
-        st.markdown(f"SMILES: {smile_code}")      
+        st.markdown(f"SMILES: {smile_code}")   
     with st.container():
         st.write("---")
         st.write('Predictions of BBB penetration based on uploaded file')
@@ -1990,7 +2705,7 @@ elif selected == "Serotonergic activity":
             try:
                 molecule = Chem.MolFromSmiles(smiles_input)
                 if molecule:
-                    img = Draw.MolToImage(molecule)
+                    img = Draw.MolToImage(molecule, size=(600,600))
                     with col1:
                         st.image(img, caption='Chemical structure', use_column_width=True)
                 else:
@@ -2013,8 +2728,6 @@ elif selected == "Serotonergic activity":
                                 st.write("Compound has a serotonergic activity")
                             else:
                                 st.write('Compound may not have serotonergic activity')
-
-                        st.button("Clear SMILES", on_click=clear_text)
                         list_of_important_descriptors = ['nBase', 'MATS1v', 'PEOE_VSA7','SlogP_VSA1', 'AXp-7dv', 'PEOE_VSA9', 'Xch-7dv','AATSC2dv', 'VSA_EState2','ATSC6v']
                         min_values = {'nBase': 0, 'MATS1v': -0.1497204202184233, 'PEOE_VSA7': 0.0, 'SlogP_VSA1': 0.0,
  'AXp-7dv': 0.0040737032751538, 'PEOE_VSA9': 0.0, 'Xch-7dv': 0.0, 'AATSC2dv': -0.7227527873894656,
@@ -2036,7 +2749,7 @@ elif selected == "Serotonergic activity":
                         num_labels = len(labels)
                         angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
                         angles += angles[:1]
-                        fig = plt.figure(figsize=(8,8))
+                        fig = plt.figure(figsize=(7,7))
                         ax = fig.add_subplot(111, polar=True)
                         color_1 = '#A6A6A6'
                         color_2 = '#4282AA'
@@ -2053,9 +2766,58 @@ elif selected == "Serotonergic activity":
                         plt.tight_layout()
                         st.pyplot(fig)    
                         if desc_condition > 6:
-                            st.write("Compound is under applicability domain")
+                            st.write("The compound is under applicability domain, prediction is accurate!")
                         else:
-                            st.write("Compound is not under applicability domain, prediction may be inaccurate")
+                            st.write("The compound is not under applicability domain, prediction may be inaccurate.")
+                        st.button("Clear SMILES", on_click=clear_text)
+                    st.write(' ')
+                    with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                        rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                        logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                        mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                        hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                        hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                        labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                        labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                        data1 = [5, 10, 500, 5]
+                        data2 = [3, 3, 300, 3, 3]
+                        data3 = [hdonors, hacceptors, mw, logP]
+                        data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                        max_values_RO5 = [5, 10, 500, 5]
+                        max_values_RO3 = [3, 3, 300, 3, 3]
+                        fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                        fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                        font_size_style = "font-size:13px; text-align:center;"
+                        col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                        with col1:
+                            st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                        with col2:
+                            st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                        with col3:
+                            st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                        with col4:
+                            st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                        with col5:
+                            st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.pyplot(fig_RO5)
+                            results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                            if all(results_RO5):
+                                st.write("Lipinski's rule is fulfilled")
+                            elif not any(results_RO5):
+                                st.write("Lipinski's rule is not fulfilled")
+                            else:
+                                st.write("Lipinski's rule is fulfilled partially")
+                        with col2:
+                            st.pyplot(fig_RO3)
+                            results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                            if all(results_RO3):
+                                st.write("The rule of three is fulfilled")
+                            elif not any(results_RO3):
+                                st.write("The rule of three is not fulfilled")
+                            else:
+                                st.write("The rule of three is fulfilled partially")
                 else:
                     st.write("Invalid SMILES")
             except Exception as e:
@@ -2069,8 +2831,6 @@ elif selected == "Serotonergic activity":
     st.write('Such a model holds promise in streamlining drug discovery efforts and facilitating personalized approaches by specifically assessing the impact on serotonin receptor function.')
     st.write("Based on the activity model, you can determine whether the molecule is serotonergically active. In the next step, you can check the selectivity to a given serotonin receptor - the **'Selectivity'** tab.")
     st.write("In the case of predictable effective affinity for multiple receptors, one should move on to **'5-HT receptors'** section and, based on these models, check the affinity for all types of serotonin receptors.")
-    
-    
 
 
 elif selected == "Selectivity":
@@ -2086,7 +2846,7 @@ elif selected == "Selectivity":
         try:
             molecule = Chem.MolFromSmiles(smiles_input)
             if molecule:
-                img = Draw.MolToImage(molecule)
+                img = Draw.MolToImage(molecule, size=(600,600))
                 with col1:
                     st.image(img, caption='Chemical structure', use_column_width=True)
             else:
@@ -2131,7 +2891,6 @@ elif selected == "Selectivity":
                     prediction_class = assign_category(prediction)
                     st.markdown(f'<div style="{success_style}">Done!</div>', unsafe_allow_html=True)
                     st.write(f"Compound is selective towards **{prediction_class}** serotonin receptor")
-                    st.button("Clear SMILES", on_click=clear_text)
                     list_of_important_descriptors = ['SddssS', 'Xch-5d', 'AATSC2s', 'MDEC-33', 'ETA_dPsi_B', 'AATS6s', 'SpMAD_DzZ', 'ATSC3c', 'NsssCH', 
                                  'SaasN']
                     min_values = {'SddssS': -11.181565977471235, 'Xch-5d': 0.0,'AATSC2s': -0.1405448574581022, 'MDEC-33': 0.0004432315575864,
@@ -2154,7 +2913,7 @@ elif selected == "Selectivity":
                     num_labels = len(labels)
                     angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
                     angles += angles[:1]
-                    fig = plt.figure(figsize=(8,8))
+                    fig = plt.figure(figsize=(7,7))
                     ax = fig.add_subplot(111, polar=True)
                     color_1 = '#A6A6A6'
                     color_2 = '#4282AA'
@@ -2171,9 +2930,58 @@ elif selected == "Selectivity":
                     plt.tight_layout()
                     st.pyplot(fig)    
                     if desc_condition > 6:
-                        st.write("Compound is under applicability domain")
+                        st.write("The compound is under applicability domain, prediction is accurate!")
                     else:
-                        st.write("Compound is not under applicability domain, prediction may be inaccurate")
+                        st.write("The compound is not under applicability domain, prediction may be inaccurate")
+                    st.button("Clear SMILES", on_click=clear_text)
+                st.write(' ')
+                with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                    rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                    logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                    mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                    hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                    hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                    labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                    labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                    data1 = [5, 10, 500, 5]
+                    data2 = [3, 3, 300, 3, 3]
+                    data3 = [hdonors, hacceptors, mw, logP]
+                    data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                    max_values_RO5 = [5, 10, 500, 5]
+                    max_values_RO3 = [3, 3, 300, 3, 3]
+                    fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                    fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                    font_size_style = "font-size:13px; text-align:center;"
+                    col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                    with col1:
+                        st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                    with col2:
+                        st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                    with col3:
+                        st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                    with col4:
+                        st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                    with col5:
+                        st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.pyplot(fig_RO5)
+                        results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                        if all(results_RO5):
+                            st.write("Lipinski's rule is fulfilled")
+                        elif not any(results_RO5):
+                            st.write("Lipinski's rule is not fulfilled")
+                        else:
+                            st.write("Lipinski's rule is fulfilled partially")
+                    with col2:
+                        st.pyplot(fig_RO3)
+                        results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                        if all(results_RO3):
+                            st.write("The rule of three is fulfilled")
+                        elif not any(results_RO3):
+                            st.write("The rule of three is not fulfilled")
+                        else:
+                            st.write("The rule of three is fulfilled partially")
             else:
                 st.write("Invalid SMILES")
         except Exception as e:
@@ -2186,7 +2994,10 @@ elif selected == "Selectivity":
     st.write('This selectivity allows for a more refined and tailored approach in treating various psychiatric and neurological disorders, such as depression and anxiety, by specifically influencing the serotonin pathways associated with these conditions.')
     st.write('Achieving a high level of selectivity can also reduce the likelihood of adverse reactions, contributing to improved safety profiles and better patient outcomes in pharmacological interventions.')
     st.write("The selectivity model has limitations for compounds that act on more than one serotonin receptor. For a ligand that acts on multiple serotonin receptors, check the affinity value for other types of serotonin receptors - the **'5-HT Receptors'** section.")
-             
+
+        
+
+
     
 elif selected == "Q&A":
     st.markdown('<h1 class="text-second-title">Questions and answers</h1>', unsafe_allow_html=True)
