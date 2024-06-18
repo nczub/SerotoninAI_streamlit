@@ -53,6 +53,8 @@ I'm Natalia Łapińska (maiden name Czub) and I'm the author of SerotoninAI
 
 - LinkedIn: https://www.linkedin.com/in/natalia-czub/
 
+I would love to work with you if you want to collaborate on creating new QSAR or QSPR models.
+
 ## Articles
 - SerotoninAI: Serotonergic System Focused, Artificial Intelligence-Based Application for Drug Discovery
 
