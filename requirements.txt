@@ -1,4 +1,4 @@
-rdkit-pypi
+rdkit-pypi==2022.9.5
 scikit-learn==1.2.2
 mljar-supervised==1.1.0
 numpy==1.24.3
