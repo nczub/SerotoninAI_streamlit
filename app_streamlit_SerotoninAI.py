@@ -130,6 +130,18 @@ binary_model_path = 'FINAL_QSAR_MODELS/serotonergic_activity'
 #selectivity path
 selective_model_path = 'FINAL_QSAR_MODELS/selectivity'
 
+#SERT pIC50
+best_model_path_sert_pIC50 = 'FINAL_QSAR_MODELS/SERT_pIC50_model' 
+best_model_sert_pIC50 = AutoML(best_model_path_sert_pIC50)
+
+#NET
+best_model_path_net = 'FINAL_QSAR_MODELS/NET_pKi_model' 
+best_model_net = AutoML(best_model_path_net)
+
+#SERT pIC50
+best_model_path_net_pIC50 = 'FINAL_QSAR_MODELS/NET_pIC50_model' 
+best_model_net_pIC50 = AutoML(best_model_path_net_pIC50)
+
 
 
 #for mordred descriptors calculations
@@ -240,8 +252,8 @@ if st.session_state.get('switch_button', False):
 else:
     manual_select = None
 
-selected = option_menu(None, ["Home", "5-HT receptors", "SERT", "Batch calculation", "HIA", "BBB", "Serotonergic activity", "Selectivity", "Q&A",  "Contact"],
-                        icons=['house', "layers", "layers-fill",'cloud-upload', "capsule-pill",  "capsule",  "activity", "fingerprint", "question-diamond",'envelope-at'],
+selected = option_menu(None, ["Home", "5-HT receptors", "SERT", "Batch calculation", "HIA", "BBB", "Serotonergic activity", "Selectivity", "Antidepressant activity", "Q&A",  "Contact"],
+                        icons=['house', "layers", "layers-fill",'cloud-upload', "capsule-pill",  "capsule",  "activity", "fingerprint", "universal-access", "question-diamond",'envelope-at'],
                         orientation="horizontal", manual_select=manual_select, key='menu_20', default_index = 0,
                         styles={
         "container": {"padding": "21!important", "background-color":"#b4bbbf", "width": "auto"},
@@ -275,6 +287,12 @@ if selected == "Home":
     st.write(':small_blue_diamond: **BBB**')
     st.write('The blood-brain barrier is a barrier between blood vessels and nervous tissue, designed to protect the nervous system against harmful factors, and to enable the selective transport of substances from the blood to the cerebrospinal fluid.')
     st.write('On this page you can get BBB penetration prediction. This is the last element to predict the key actions and properties of serotonergic compounds.')
+    st.write('')
+    st.write(':small_blue_diamond: **Serotonergic activity**')
+    st.write('The serotonergic activity module provides classification model based on dataset with serotonin receptors. A tested molecule could be assign towards serotonin receptor as active or inactive')
+    st.write('')
+    st.write(':small_blue_diamond: **Selectivity**')
+    st.write('This subpage is a complement module to serotonergic activity. If a tested molecule is active towards serotonin receptors, user could get an information about towards which serotonin receptor is it active')
     st.write('')
     st.write(":small_blue_diamond: **Q&A**")
     st.write("The question and answer subpage allows you to review possible problems when using this application.")
@@ -2995,6 +3013,294 @@ elif selected == "Selectivity":
     st.write('Achieving a high level of selectivity can also reduce the likelihood of adverse reactions, contributing to improved safety profiles and better patient outcomes in pharmacological interventions.')
     st.write("The selectivity model has limitations for compounds that act on more than one serotonin receptor. For a ligand that acts on multiple serotonin receptors, check the affinity value for other types of serotonin receptors - the **'5-HT Receptors'** section.")
 
+elif selected == "Antidepressant activity":
+    st.markdown('<h1 class="text-second-title">Antidepressant activity</h1>', unsafe_allow_html=True)
+    st.write('The most commonly used antidepressants are selective serotonin reuptake inhibitors (SSRIs) and erotonin norepinephrine reuptake inhibitors (SNRIs). This module allows you to check whether the molecule under study can demonstrate one of these antidepressant mechanisms. By obtaining the affinity and inhibition values for serotonin (SERT) and norepinephrine (NET) transporters, the effect of the molecule can be determined.')
+    calc = Calculator(descriptors, ignore_3D=True)
+    st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
+    smiles_input = st.text_input("Input SMILES", key="text")
+    col1, col2, col3 = st.columns([1,3,1])
+    if smiles_input:
+        try:
+            molecule = Chem.MolFromSmiles(smiles_input)
+            if molecule:
+                img = Draw.MolToImage(molecule, size=(600,600))
+                with col2:
+                    st.image(img, caption='Chemical structure', use_column_width=True)
+            else:
+                pass
+        except Exception as e:
+            st.error(f"Wystąpił błąd: {str(e)}")
+    if smiles_input:
+        try:
+            molecule = Chem.MolFromSmiles(smiles_input)
+            if molecule is not None:
+                descriptors_value = calc.pandas([molecule])
+                descriptors_value_df = pd.DataFrame(descriptors_value)
+                for column in descriptors_value_df.select_dtypes(include=['object']).columns:
+                    descriptors_value_df[column] = 0
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.write('**Serotonin transporter**')
+                    with st.spinner('Calculation in progress'):
+                        prediction_sert = best_model_sert.predict(descriptors_value_df)
+                    prediction_float_sert = round(float(prediction_sert), 3)
+                    st.write("pKi value for serotonin transporter: ", f'<span style="color: #5d93a3;">{ prediction_float_sert}</span>', unsafe_allow_html=True)
+                    list_of_important_descriptors = ['SIC2', 'GATS5c', 'IC2', 'nBase', 'ATSC2d', 'CIC1', 
+                                    'SLogP', 'n10FaRing', 'SlogP_VSA1', 'PEOE_VSA3']
+                    min_values = {'SIC2': 0.4663428534035417, 'GATS5c': 0.1522646188176759, 'IC2': 2.754636215098623, 'nBase': 0,
+                        'ATSC2d': -17.029333333333327, 'CIC1': 0.7393028412041107, 'SLogP': -1.0360999999999996,
+                        'n10FaRing': 0, 'SlogP_VSA1': 0.0, 'PEOE_VSA3': 0.0}
+                    max_values = {'SIC2': 0.9484501704693528, 'GATS5c': 1.9718023087752352, 'IC2': 5.48361752790408, 'nBase': 3, 'ATSC2d': 19.849172805216764,
+                        'CIC1': 4.040885762787749, 'SLogP': 11.12039999999999, 'n10FaRing': 2, 'SlogP_VSA1': 48.53088597686407, 'PEOE_VSA3': 30.5236297402646}
+                    normalized_descriptors_df = (descriptors_value_df - pd.Series(min_values)) / (pd.Series(max_values) - pd.Series(min_values))
+                    values_1 = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+                    values_2 = normalized_descriptors_df[list_of_important_descriptors].max().to_list()
+                    values_3 = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                    labels = normalized_descriptors_df[list_of_important_descriptors].columns
+                    desc_condition = sum([val_3 <= val_2 <= val_1 for val_1, val_2, val_3 in zip(values_1, values_2, values_3)])
+                    values_1 += values_1[:1]
+                    values_2 += values_2[:1]
+                    values_2 = [-1 if value < -1 else value for value in values_2]
+                    values_2 = [1.5 if value > 1.5 else value for value in values_2]
+                    values_3 += values_3[:1]
+                    num_labels = len(labels)
+                    angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
+                    angles += angles[:1]
+                    fig = plt.figure(figsize=(4,4))
+                    ax = fig.add_subplot(111, polar=True)
+                    color_1 = '#A6A6A6'
+                    color_2 = '#4282AA'
+                    ax.plot(angles, values_1, color=color_1, label="training set")
+                    ax.fill(angles, values_1, alpha=0.25, color=color_1)
+                    ax.plot(angles, values_3, color="white")
+                    ax.fill(angles, values_3, color='white', alpha=1, edgecolor="white")
+                    ax.plot(angles, values_2, color=color_2, label="tested compound", linewidth=2)
+                    ax.fill(angles, values_2, alpha=0)
+                    ax.set_thetagrids(np.degrees(angles[:-1]), labels)
+                    ax.set_ylim(min(min(values_1), min(values_2), min(values_3)), max(max(values_1), max(values_2), max(values_3)))
+                    #ax.legend()
+                    #plt.text(0.08, -0.09, "Min-max normalization was applied to descriptors' values based on the training set", ha='left', va='bottom', transform=plt.gca().transAxes, fontsize = 8, color="gray")
+                    #plt.tight_layout()
+                    st.pyplot(fig)    
+                    #if desc_condition > 6:
+                        #st.write("The compound is under applicability domain")
+                    #else:
+                        #st.write("The compound is not under applicability domain")
+                    st.write('---')
+                    with st.spinner('Calculation in progress'):
+                        prediction_sert_pIC50 = best_model_sert_pIC50.predict(descriptors_value_df)
+                    prediction_float_sert_pIC50 = round(float(prediction_sert_pIC50), 3)
+                    st.write("pIC50 value for serotonin transporter: ", f'<span style="color: #5d93a3;">{ prediction_float_sert_pIC50}</span>', unsafe_allow_html=True)
+                    list_of_important_descriptors = ['SMR_VSA3', 'SlogP_VSA6', 'SlogP_VSA7', 'BIC3', 'NssCH2', 'SssNH', 'SLogP', 'SlogP_VSA4', 'GATS6d', 'GATS6c']
+                    
+                    min_values = {'SMR_VSA3': 0.0,  'SlogP_VSA6': 0.0,  'SlogP_VSA7': 0.0,  'BIC3': 0.5698126407571117,
+                     'NssCH2': 0,  'SssNH': 0.0,  'SLogP': 0.7266999999999999,  'SlogP_VSA4': 0.0,  'GATS6d': 0.4830432172869147,  'GATS6c': 0.1545832295965297}
+                    
+                    max_values = {'SMR_VSA3': 40.51791337786338,  'SlogP_VSA6': 107.59837234767242,  'SlogP_VSA7': 30.13579988244796,  'BIC3': 0.9266998681118586,
+                     'NssCH2': 18,  'SssNH': 9.095207669346976,  'SLogP': 11.12039999999999,  'SlogP_VSA4': 41.430398868518246,  'GATS6d': 1.4484868421052637,  'GATS6c': 1.913374624748432}
+                    normalized_descriptors_df = (descriptors_value_df - pd.Series(min_values)) / (pd.Series(max_values) - pd.Series(min_values))
+                    values_1 = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+                    values_2 = normalized_descriptors_df[list_of_important_descriptors].max().to_list()
+                    values_3 = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                    labels = normalized_descriptors_df[list_of_important_descriptors].columns
+                    desc_condition = sum([val_3 <= val_2 <= val_1 for val_1, val_2, val_3 in zip(values_1, values_2, values_3)])
+                    values_1 += values_1[:1]
+                    values_2 += values_2[:1]
+                    values_2 = [-1 if value < -1 else value for value in values_2]
+                    values_2 = [1.5 if value > 1.5 else value for value in values_2]
+                    values_3 += values_3[:1]
+                    num_labels = len(labels)
+                    angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
+                    angles += angles[:1]
+                    fig = plt.figure(figsize=(5,5))
+                    ax = fig.add_subplot(111, polar=True)
+                    color_1 = '#A6A6A6'
+                    color_2 = '#4282AA'
+                    ax.plot(angles, values_1, color=color_1, label="training set")
+                    ax.fill(angles, values_1, alpha=0.25, color=color_1)
+                    ax.plot(angles, values_3, color="white")
+                    ax.fill(angles, values_3, color='white', alpha=1, edgecolor="white")
+                    ax.plot(angles, values_2, color=color_2, label="tested compound", linewidth=2)
+                    ax.fill(angles, values_2, alpha=0)
+                    ax.set_thetagrids(np.degrees(angles[:-1]), labels)
+                    ax.set_ylim(min(min(values_1), min(values_2), min(values_3)), max(max(values_1), max(values_2), max(values_3)))
+                    #ax.legend()
+                    #plt.text(0.08, -0.09, "Min-max normalization was applied to descriptors' values based on the training set", ha='left', va='bottom', transform=plt.gca().transAxes, fontsize = 8, color="gray")
+                    #plt.tight_layout()
+                    st.pyplot(fig)    
+                    #if desc_condition > 6:
+                        #st.write("The compound is under applicability domain")
+                    #else:
+                        #st.write("The compound is not under applicability domain")
+                        
+                        
+                with col2:
+                    st.write('**Norepinephrine transporter**')
+                    with st.spinner('Calculation in progress'):
+                        prediction_net = best_model_net.predict(descriptors_value_df)
+                    prediction_float_net = round(float(prediction_net), 3)
+                    st.write("pKi value for norepinephrine transporter: ", f'<span style="color: #5d93a3;">{ prediction_float_net}</span>', unsafe_allow_html=True)
+                    list_of_important_descriptors = ['AATS8d', 'SM1_Dzv', 'SpMAD_Dzse', 'MDEC-33', 'SMR_VSA6', 'MWC04', 
+                                 'MAXsssN', 'MAXssNH', 'SMR_VSA3', 'nBase']
+                    min_values = {'AATS8d': 1.0,  'SM1_Dzv': -16.757768078437078,  'SpMAD_Dzse': 2.8865677208291904,
+                     'MDEC-33': 0.0,  'SMR_VSA6': 0.0,  'MWC04': 0.0, 'MAXsssN': 0.5920370370370369, 'MAXssNH': 1.460900753281983,
+                     'SMR_VSA3': 0.0, 'nBase': 0}
+                    
+                    max_values = {'AATS8d': 3.361111111111111,  'SM1_Dzv': 0.3331545189504377,  'SpMAD_Dzse': 21.216353043322552,
+                     'MDEC-33': 27.47831971482044, 'SMR_VSA6': 92.49634750318086, 'MWC04': 8.325306029752582, 'MAXsssN': 2.738413369939344,
+                     'MAXssNH': 3.9697222222222224, 'SMR_VSA3': 30.17521197665037, 'nBase': 4}
+                    normalized_descriptors_df = (descriptors_value_df - pd.Series(min_values)) / (pd.Series(max_values) - pd.Series(min_values))
+                    values_1 = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+                    values_2 = normalized_descriptors_df[list_of_important_descriptors].max().to_list()
+                    values_3 = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                    labels = normalized_descriptors_df[list_of_important_descriptors].columns
+                    desc_condition = sum([val_3 <= val_2 <= val_1 for val_1, val_2, val_3 in zip(values_1, values_2, values_3)])
+                    values_1 += values_1[:1]
+                    values_2 += values_2[:1]
+                    values_2 = [-1 if value < -1 else value for value in values_2]
+                    values_2 = [1.5 if value > 1.5 else value for value in values_2]
+                    values_3 += values_3[:1]
+                    num_labels = len(labels)
+                    angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
+                    angles += angles[:1]
+                    fig = plt.figure(figsize=(5,5))
+                    ax = fig.add_subplot(111, polar=True)
+                    color_1 = '#A6A6A6'
+                    color_2 = '#4282AA'
+                    ax.plot(angles, values_1, color=color_1, label="training set")
+                    ax.fill(angles, values_1, alpha=0.25, color=color_1)
+                    ax.plot(angles, values_3, color="white")
+                    ax.fill(angles, values_3, color='white', alpha=1, edgecolor="white")
+                    ax.plot(angles, values_2, color=color_2, label="tested compound", linewidth=2)
+                    ax.fill(angles, values_2, alpha=0)
+                    ax.set_thetagrids(np.degrees(angles[:-1]), labels)
+                    ax.set_ylim(min(min(values_1), min(values_2), min(values_3)), max(max(values_1), max(values_2), max(values_3)))
+                    #ax.legend()
+                    #plt.text(0.08, -0.09, "Min-max normalization was applied to descriptors' values based on the training set", ha='left', va='bottom', transform=plt.gca().transAxes, fontsize = 8, color="gray")
+                    #plt.tight_layout()
+                    st.pyplot(fig)    
+                    #if desc_condition > 6:
+                        #st.write("The compound is under applicability domain")
+                    #else:
+                        #st.write("The compound is not under applicability domain")
+                    st.write('---')
+                    with st.spinner('Calculation in progress'):
+                        prediction_net_pIC50 = best_model_net_pIC50.predict(descriptors_value_df)
+                    prediction_float_net_pIC50 = round(float(prediction_net_pIC50), 3)
+                    st.write("pIC50 value for norepinephrine transporter: ", f'<span style="color: #5d93a3;">{ prediction_float_net_pIC50}</span>', unsafe_allow_html=True)
+                    list_of_important_descriptors = ['Xch-5dv', 'SssNH', 'C1SP3', 'CIC2', 'ATSC6d', 'ATSC1se', 'GGI10', 'SIC2', 'nBase', 'CIC4']
+                    min_values = {'Xch-5dv': 0.0,  'SssNH': 0.0,  'C1SP3': 0,  'CIC2': 0.3783783783783754,   'ATSC6d': -30.64,
+                     'ATSC1se': -6.5425102434963565,  'GGI10': 0.0,  'SIC2': 0.4621827948375002,  'nBase': 0,  'CIC4': -2.664535259100376e-15}
+                    
+                    max_values = {'Xch-5dv': 1.0680186509646612,  'SssNH': 30.90888875085164,  'C1SP3': 28,  'CIC2': 4.029106631119773,  'ATSC6d': 16.91964285714286,
+                     'ATSC1se': 1.3549082748308956,  'GGI10': 2.486174880114274,  'SIC2': 0.931086627482226,  'nBase': 3,  'CIC4': 3.089770647933844}
+                    normalized_descriptors_df = (descriptors_value_df - pd.Series(min_values)) / (pd.Series(max_values) - pd.Series(min_values))
+                    values_1 = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+                    values_2 = normalized_descriptors_df[list_of_important_descriptors].max().to_list()
+                    values_3 = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                    labels = normalized_descriptors_df[list_of_important_descriptors].columns
+                    desc_condition = sum([val_3 <= val_2 <= val_1 for val_1, val_2, val_3 in zip(values_1, values_2, values_3)])
+                    values_1 += values_1[:1]
+                    values_2 += values_2[:1]
+                    values_2 = [-1 if value < -1 else value for value in values_2]
+                    values_2 = [1.5 if value > 1.5 else value for value in values_2]
+                    values_3 += values_3[:1]
+                    num_labels = len(labels)
+                    angles = [n / float(num_labels) * 2 * np.pi for n in range(num_labels)]
+                    angles += angles[:1]
+                    fig = plt.figure(figsize=(5,5))
+                    ax = fig.add_subplot(111, polar=True)
+                    color_1 = '#A6A6A6'
+                    color_2 = '#4282AA'
+                    ax.plot(angles, values_1, color=color_1, label="training set")
+                    ax.fill(angles, values_1, alpha=0.25, color=color_1)
+                    ax.plot(angles, values_3, color="white")
+                    ax.fill(angles, values_3, color='white', alpha=1, edgecolor="white")
+                    ax.plot(angles, values_2, color=color_2, label="tested compound", linewidth=2)
+                    ax.fill(angles, values_2, alpha=0)
+                    ax.set_thetagrids(np.degrees(angles[:-1]), labels)
+                    ax.set_ylim(min(min(values_1), min(values_2), min(values_3)), max(max(values_1), max(values_2), max(values_3)))
+                    #ax.legend()
+                    #plt.text(0.08, -0.1, "Min-max normalization was applied to descriptors' values based on the training set", ha='left', va='bottom', transform=plt.gca().transAxes, fontsize = 8, color="gray")
+                    #plt.tight_layout()
+                    st.pyplot(fig)    
+                    #if desc_condition > 6:
+                        #st.write("The compound is under applicability domain")
+                    #else:
+                        #st.write("The compound is not under applicability domain")
+                st.write('**Comment:**')
+                if (prediction_sert >= 7 and prediction_sert_pIC50 >= 7 and prediction_net >= 7 and prediction_net_pIC50 >= 7):
+                    st.write('Molecule is a potential **SSRI** and **SNRI** drug')
+                elif (prediction_sert >= 7 and prediction_sert_pIC50 >= 7):
+                    st.write('Molecule is a potential **SSRI** drug')
+                elif (prediction_sert >= 6 and prediction_sert_pIC50 >= 6 and prediction_net >= 6 and prediction_net_pIC50 >= 6):
+                    st.write('Molecule might have **SSRI** and **SNRI** mechanism of action')
+                elif (prediction_sert >= 6 and prediction_sert_pIC50 >= 6):
+                    st.write('Molecule might have **SSRI** mechanism of action')
+                else:
+                    st.write('The molecule under study does **not** exhibit antidepressant activity by the mechanism of SSRIs and SNRIs.')
+                st.write("*Radial plots represent the application domain based on SHAP analysis. Min-max normalization based on the training set was applied to the descriptor values. The blue curve represents the tested relationship, and the gray area represents the training set.*")
+                         
+                        
+                st.button("Clear SMILES", on_click=clear_text)
+                st.write(' ')
+                with st.expander("**See druglikeness and lead-like properties of a tested molecule**"):
+                    rotatable_bonds = Calculator(descriptors.RotatableBond.RotatableBondsCount())(Chem.MolFromSmiles(smiles_input))[descriptors.RotatableBond.RotatableBondsCount()]
+                    logP = Calculator(descriptors.SLogP.SLogP())(Chem.MolFromSmiles(smiles_input))[descriptors.SLogP.SLogP()]
+                    mw = Calculator(descriptors.Weight.Weight())(Chem.MolFromSmiles(smiles_input))[descriptors.Weight.Weight()]
+                    hdonors = Calculator(descriptors.HydrogenBond.HBondDonor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondDonor()]
+                    hacceptors = Calculator(descriptors.HydrogenBond.HBondAcceptor())(Chem.MolFromSmiles(smiles_input))[descriptors.HydrogenBond.HBondAcceptor()]
+                    labels_RO3 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP', 'Rotatable bonds']
+                    labels_RO5 = ['Hydrogen donors', 'Hydrogen acceptors', 'Molecular weight', 'logP']
+                    data1 = [5, 10, 500, 5]
+                    data2 = [3, 3, 300, 3, 3]
+                    data3 = [hdonors, hacceptors, mw, logP]
+                    data4 = [hdonors, hacceptors, mw, logP, rotatable_bonds]
+                    max_values_RO5 = [5, 10, 500, 5]
+                    max_values_RO3 = [3, 3, 300, 3, 3]
+                    fig_RO5 = plot_radar_chart_one_condition(data1, data3, labels_RO5, max_values_RO5, label = "RO5", title = "Lipiński's rule of five - RO5")
+                    fig_RO3 = plot_radar_chart_one_condition(data2, data4, labels_RO3, max_values_RO3, label = "RO3", title = "Rule of three - RO3")
+                    font_size_style = "font-size:13px; text-align:center;"
+                    col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+                    with col1:
+                        st.write(f'<span style="{font_size_style}">Molecular weight: <span style="color: #5d93a3;">{round(mw, 1)} Da</span></span>', unsafe_allow_html=True)
+                    with col2:
+                        st.write(f'<span style="{font_size_style}">CLogP: <span style="color: #5d93a3;">{round(logP, 2)}</span></span>', unsafe_allow_html=True)
+                    with col3:
+                        st.write(f'<span style="{font_size_style}">Rotatable bonds: <span style="color: #5d93a3;">{rotatable_bonds}</span></span>', unsafe_allow_html=True)
+                    with col4:
+                        st.write(f'<span style="{font_size_style}">Hydrogen donors: <span style="color: #5d93a3;">{hdonors}</span></span>', unsafe_allow_html=True)
+                    with col5:
+                        st.write(f'<span style="{font_size_style}">Hydrogen acceptors: <span style="color: #5d93a3;">{hacceptors}</span></span>', unsafe_allow_html=True)
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.pyplot(fig_RO5)
+                        results_RO5 = [data3[i] <= data1[i] for i in range(len(data3))]
+                        if all(results_RO5):
+                            st.write("Lipinski's rule is fulfilled")
+                        elif not any(results_RO5):
+                            st.write("Lipinski's rule is not fulfilled")
+                        else:
+                            st.write("Lipinski's rule is fulfilled partially")
+                    with col2:
+                        st.pyplot(fig_RO3)
+                        results_RO3 = [data4[i] <= data2[i] for i in range(len(data4))]
+                        if all(results_RO3):
+                            st.write("The rule of three is fulfilled")
+                        elif not any(results_RO3):
+                            st.write("The rule of three is not fulfilled")
+                        else:
+                            st.write("The rule of three is fulfilled partially")
+
+            else:
+                st.write("Invalid SMILES")
+        except Exception as e:
+            st.write("Error:", e)
+    agree_draw_smiles = st.checkbox("Draw chemical structure")
+    if agree_draw_smiles:
+        smile_code = st_ketcher()
+        st.markdown(f"SMILES: {smile_code}")          
         
 
 
