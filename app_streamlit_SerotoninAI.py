@@ -3375,7 +3375,7 @@ elif selected == "Contact":
     st.markdown('<h1 class="text-second-title">Contact</h1>', unsafe_allow_html=True)
     st.write("My name is **Natalia Łapińska** (maiden name Czub) and I am the author of ***SerotoninAI***. I hope this application will help develop therapies for new drugs affecting the central nervous system. ")
     st.write('A few words about me, I am a Polish woman 🇵🇱 who fell in love with the world of artificial intelligence and the positive opportunities it gives us to improve all areas of research.')
-    st.write("Wanting to define myself, one term is not enough. Here's a list of the ones that best fit scientist :microscope:, pharmacist 💊, almost PhD 👩‍🎓, Python programmer :snake:, cheminformatics :female-technologist:, data scientist 📊 and AI specialist🔥.")
+    st.write("Wanting to define myself, one term is not enough. Here's a list of the ones that best fit scientist :microscope:, pharmacist 💊, PhD 👩‍🎓, Python programmer :snake:, cheminformatics :female-technologist:, data scientist 📊 and AI specialist🔥.")
     st.write("If you want to develop AI-based drug discovery together with me, I invite you to contact me!")
     st.markdown(""" <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"> """, unsafe_allow_html=True)
     st.markdown('<i class="fab fa-linkedin"></i>  www.linkedin.com/in/natalia-czub', unsafe_allow_html=True)
