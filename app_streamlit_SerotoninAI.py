@@ -134,13 +134,17 @@ selective_model_path = 'FINAL_QSAR_MODELS/selectivity'
 best_model_path_sert_pIC50 = 'FINAL_QSAR_MODELS/SERT_pIC50_model' 
 best_model_sert_pIC50 = AutoML(best_model_path_sert_pIC50)
 
-#NET
+#NET pKi
 best_model_path_net = 'FINAL_QSAR_MODELS/NET_pKi_model' 
 best_model_net = AutoML(best_model_path_net)
 
-#SERT pIC50
+#NET pIC50
 best_model_path_net_pIC50 = 'FINAL_QSAR_MODELS/NET_pIC50_model' 
 best_model_net_pIC50 = AutoML(best_model_path_net_pIC50)
+
+#SERT pKi
+best_model_path_sert_pKi = 'FINAL_QSAR_MODELS/SERT_pKi_model' 
+best_model_sert_pKi = AutoML(best_model_path_sert_pKi)
 
 
 
@@ -3046,7 +3050,7 @@ elif selected == "Antidepressant activity":
                 with col1:
                     st.write('**Serotonin transporter**')
                     with st.spinner('Calculation in progress'):
-                        prediction_sert = best_model_sert.predict(descriptors_value_df)
+                        prediction_sert = best_model_sert_pKi.predict(descriptors_value_df)
                     prediction_float_sert = round(float(prediction_sert), 3)
                     st.write("pKi value for serotonin transporter: ", f'<span style="color: #5d93a3;">{ prediction_float_sert}</span>', unsafe_allow_html=True)
                     list_of_important_descriptors = ['SIC2', 'GATS5c', 'IC2', 'nBase', 'ATSC2d', 'CIC1', 
