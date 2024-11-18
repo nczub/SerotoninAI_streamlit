@@ -3243,7 +3243,7 @@ elif selected == "Antidepressant activity":
                     st.write('Molecule might have **SSRI** mechanism of action')
                 else:
                     st.write('The molecule under study does **not** exhibit antidepressant activity by the mechanism of SSRIs and SNRIs.')
-                st.write("*Radial plots represent the application domain based on SHAP analysis. Min-max normalization based on the training set was applied to the descriptor values. The blue curve represents the tested relationship, and the gray area represents the training set.*")
+                st.write("*Radial plots represent the application domain based on SHAP analysis. Min-max normalization based on the training set was applied to the descriptor values. The blue curve represents the tested compound, and the gray area represents the training set.*")
                          
                         
                 st.button("Clear SMILES", on_click=clear_text)
