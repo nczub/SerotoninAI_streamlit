@@ -3022,7 +3022,7 @@ elif selected == "Selectivity":
 
 elif selected == "Antidepressant activity":
     st.markdown('<h1 class="text-second-title">Antidepressant activity</h1>', unsafe_allow_html=True)
-    st.write('The most commonly used antidepressants are selective serotonin reuptake inhibitors (SSRIs) and erotonin norepinephrine reuptake inhibitors (SNRIs). This module allows you to check whether the molecule under study can demonstrate one of these antidepressant mechanisms. By obtaining the affinity and inhibition values for serotonin (SERT) and norepinephrine (NET) transporters, the effect of the molecule can be determined.')
+    st.write('The most commonly used antidepressants are selective serotonin reuptake inhibitors (SSRIs) and serotonin norepinephrine reuptake inhibitors (SNRIs). This module allows you to check whether the molecule under study can demonstrate one of these antidepressant mechanisms. By obtaining the affinity and inhibition values for serotonin (SERT) and norepinephrine (NET) transporters, the effect of the molecule can be determined.')
     calc = Calculator(descriptors, ignore_3D=True)
     st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
     smiles_input = st.text_input("Input SMILES", key="text")
@@ -3053,13 +3053,11 @@ elif selected == "Antidepressant activity":
                         prediction_sert = best_model_sert_pKi.predict(descriptors_value_df)
                     prediction_float_sert = round(float(prediction_sert), 3)
                     st.write("pKi value for serotonin transporter: ", f'<span style="color: #5d93a3;">{ prediction_float_sert}</span>', unsafe_allow_html=True)
-                    list_of_important_descriptors = ['SIC2', 'GATS5c', 'IC2', 'nBase', 'ATSC2d', 'CIC1', 
-                                    'SLogP', 'n10FaRing', 'SlogP_VSA1', 'PEOE_VSA3']
-                    min_values = {'SIC2': 0.4663428534035417, 'GATS5c': 0.1522646188176759, 'IC2': 2.754636215098623, 'nBase': 0,
-                        'ATSC2d': -17.029333333333327, 'CIC1': 0.7393028412041107, 'SLogP': -1.0360999999999996,
-                        'n10FaRing': 0, 'SlogP_VSA1': 0.0, 'PEOE_VSA3': 0.0}
-                    max_values = {'SIC2': 0.9484501704693528, 'GATS5c': 1.9718023087752352, 'IC2': 5.48361752790408, 'nBase': 3, 'ATSC2d': 19.849172805216764,
-                        'CIC1': 4.040885762787749, 'SLogP': 11.12039999999999, 'n10FaRing': 2, 'SlogP_VSA1': 48.53088597686407, 'PEOE_VSA3': 30.5236297402646}
+                    list_of_important_descriptors = ['AATSC8se', 'MDEC-33', 'AATS8se', 'ETA_dPsi_B', 'MINaasC', 'MAXaasC', 'AATSC8c', 'MATS8c', 'JGT10', 'SssO']
+                    min_values = {'AATSC8se': -0.1281765706447187, 'MDEC-33': 0.0016076401178295, 'AATS8se': 6.9795325373134345, 'ETA_dPsi_B': 0.0,
+                                  'MINaasC': -1.481747921390778, 'MAXaasC': -0.6203240740740739, 'AATSC8c': -0.0061541711064122, 'MATS8c': -0.8589981952460497, 'JGT10': 0.1001095621754017, 'SssO': 0.0}
+                    max_values = {'AATSC8se': 0.0344872698041044, 'MDEC-33': 24.32461804222784, 'AATS8se': 9.239941955555556, 'ETA_dPsi_B': 0.0469226594301221,
+                                  'MINaasC': 1.5905092592592596, 'MAXaasC': 1.6304629629629632, 'AATSC8c': 0.0082764706005067, 'MATS8c': 0.5907435127341207,'JGT10': 0.6832981078904992, 'SssO': 32.64784654394404}
                     normalized_descriptors_df = (descriptors_value_df - pd.Series(min_values)) / (pd.Series(max_values) - pd.Series(min_values))
                     values_1 = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
                     values_2 = normalized_descriptors_df[list_of_important_descriptors].max().to_list()
