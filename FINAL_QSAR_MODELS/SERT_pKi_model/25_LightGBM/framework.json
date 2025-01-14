@@ -1,0 +1,690 @@
+{
+    "uid": "91a55b2f-8641-4262-9feb-05902f19b4b8",
+    "name": "25_LightGBM",
+    "preprocessing": [
+        {
+            "remove_columns": [
+                "NsSH",
+                "SsSH"
+            ],
+            "scale_y": {
+                "scale": [
+                    1.2805125765416279
+                ],
+                "mean": [
+                    7.05345782005688
+                ],
+                "var": [
+                    1.6397124586812786
+                ],
+                "n_samples_seen": 6387,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_normal"
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "NsSH": [
+                        "remove_column"
+                    ],
+                    "SsSH": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "NsSH",
+                "SsSH"
+            ],
+            "scale_y": {
+                "scale": [
+                    1.2750624827967916
+                ],
+                "mean": [
+                    7.0467946667270756
+                ],
+                "var": [
+                    1.6257843350359185
+                ],
+                "n_samples_seen": 6387,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_normal"
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "NsSH": [
+                        "remove_column"
+                    ],
+                    "SsSH": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "NsSH",
+                "SsSH"
+            ],
+            "scale_y": {
+                "scale": [
+                    1.2843922822597904
+                ],
+                "mean": [
+                    7.046705833009779
+                ],
+                "var": [
+                    1.6496635347285133
+                ],
+                "n_samples_seen": 6387,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_normal"
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "NsSH": [
+                        "remove_column"
+                    ],
+                    "SsSH": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "NsSH",
+                "SsSH"
+            ],
+            "scale_y": {
+                "scale": [
+                    1.2789858334046331
+                ],
+                "mean": [
+                    7.044470167185597
+                ],
+                "var": [
+                    1.635804762049744
+                ],
+                "n_samples_seen": 6387,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_normal"
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "NsSH": [
+                        "remove_column"
+                    ],
+                    "SsSH": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "NsSH",
+                "SsSH"
+            ],
+            "scale_y": {
+                "scale": [
+                    1.2792295996236793
+                ],
+                "mean": [
+                    7.050349940832961
+                ],
+                "var": [
+                    1.636428368553359
+                ],
+                "n_samples_seen": 6387,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_normal"
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "NsSH": [
+                        "remove_column"
+                    ],
+                    "SsSH": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "NsSH",
+                "SsSH"
+            ],
+            "scale_y": {
+                "scale": [
+                    1.2826640329686374
+                ],
+                "mean": [
+                    7.049370331582026
+                ],
+                "var": [
+                    1.64522702147137
+                ],
+                "n_samples_seen": 6387,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_normal"
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "NsSH": [
+                        "remove_column"
+                    ],
+                    "SsSH": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "NsSH",
+                "SsSH"
+            ],
+            "scale_y": {
+                "scale": [
+                    1.2768603104385379
+                ],
+                "mean": [
+                    7.046890684450807
+                ],
+                "var": [
+                    1.6303722523731994
+                ],
+                "n_samples_seen": 6387,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_normal"
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "NsSH": [
+                        "remove_column"
+                    ],
+                    "SsSH": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "NsSH",
+                "SsSH"
+            ],
+            "scale_y": {
+                "scale": [
+                    1.2751958070313152
+                ],
+                "mean": [
+                    7.050513898933287
+                ],
+                "var": [
+                    1.6261243462702473
+                ],
+                "n_samples_seen": 6388,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_normal"
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "NsSH": [
+                        "remove_column"
+                    ],
+                    "SsSH": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "NsSH",
+                "SsSH"
+            ],
+            "scale_y": {
+                "scale": [
+                    1.275788535461783
+                ],
+                "mean": [
+                    7.044811288756468
+                ],
+                "var": [
+                    1.6276363872157211
+                ],
+                "n_samples_seen": 6388,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_normal"
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "NsSH": [
+                        "remove_column"
+                    ],
+                    "SsSH": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_normal"
+                ],
+                "ml_task": "regression"
+            }
+        },
+        {
+            "remove_columns": [
+                "NsSH",
+                "SsSH"
+            ],
+            "scale_y": {
+                "scale": [
+                    1.28111573212088
+                ],
+                "mean": [
+                    7.04900683658424
+                ],
+                "var": [
+                    1.6412575190876184
+                ],
+                "n_samples_seen": 6388,
+                "n_features_in": 1,
+                "columns": [
+                    "target"
+                ],
+                "scale_method": "scale_normal"
+            },
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {
+                    "NsSH": [
+                        "remove_column"
+                    ],
+                    "SsSH": [
+                        "remove_column"
+                    ]
+                },
+                "target_preprocessing": [
+                    "na_exclude",
+                    "scale_normal"
+                ],
+                "ml_task": "regression"
+            }
+        }
+    ],
+    "learners": [
+        {
+            "library_version": "4.5.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "5857c1f0-716e-4f26-9172-10194375bf59",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 802097,
+                "objective": "regression",
+                "num_leaves": 15,
+                "learning_rate": 0.2,
+                "feature_fraction": 0.9,
+                "bagging_fraction": 0.5,
+                "min_data_in_leaf": 5,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_0"
+        },
+        {
+            "library_version": "4.5.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "e6fc8175-0264-47a4-be0e-8473566d95bb",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 802097,
+                "objective": "regression",
+                "num_leaves": 15,
+                "learning_rate": 0.2,
+                "feature_fraction": 0.9,
+                "bagging_fraction": 0.5,
+                "min_data_in_leaf": 5,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_1"
+        },
+        {
+            "library_version": "4.5.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "645feee6-a9ee-4ea6-a5a1-3c8d8d5e7305",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 802097,
+                "objective": "regression",
+                "num_leaves": 15,
+                "learning_rate": 0.2,
+                "feature_fraction": 0.9,
+                "bagging_fraction": 0.5,
+                "min_data_in_leaf": 5,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_2"
+        },
+        {
+            "library_version": "4.5.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "d1f46c23-1bc5-4c75-a3c2-7c909eaf8eb2",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 802097,
+                "objective": "regression",
+                "num_leaves": 15,
+                "learning_rate": 0.2,
+                "feature_fraction": 0.9,
+                "bagging_fraction": 0.5,
+                "min_data_in_leaf": 5,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_3"
+        },
+        {
+            "library_version": "4.5.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "915753aa-401f-4153-970d-33203f09d4b5",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 802097,
+                "objective": "regression",
+                "num_leaves": 15,
+                "learning_rate": 0.2,
+                "feature_fraction": 0.9,
+                "bagging_fraction": 0.5,
+                "min_data_in_leaf": 5,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_4"
+        },
+        {
+            "library_version": "4.5.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "34505e6b-ccfd-4e50-9e6a-d630b29661fe",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 802097,
+                "objective": "regression",
+                "num_leaves": 15,
+                "learning_rate": 0.2,
+                "feature_fraction": 0.9,
+                "bagging_fraction": 0.5,
+                "min_data_in_leaf": 5,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_5"
+        },
+        {
+            "library_version": "4.5.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "13b3c232-e83c-4d00-b40a-6c083c4239f9",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 802097,
+                "objective": "regression",
+                "num_leaves": 15,
+                "learning_rate": 0.2,
+                "feature_fraction": 0.9,
+                "bagging_fraction": 0.5,
+                "min_data_in_leaf": 5,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_6"
+        },
+        {
+            "library_version": "4.5.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "a650f5b8-fa83-4902-b7f3-8f170ef9a171",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 802097,
+                "objective": "regression",
+                "num_leaves": 15,
+                "learning_rate": 0.2,
+                "feature_fraction": 0.9,
+                "bagging_fraction": 0.5,
+                "min_data_in_leaf": 5,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_7"
+        },
+        {
+            "library_version": "4.5.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "d09f96ee-e3ba-49ef-80ec-bded75da836f",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 802097,
+                "objective": "regression",
+                "num_leaves": 15,
+                "learning_rate": 0.2,
+                "feature_fraction": 0.9,
+                "bagging_fraction": 0.5,
+                "min_data_in_leaf": 5,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_8"
+        },
+        {
+            "library_version": "4.5.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "d5cb0333-cad0-41c5-8213-be539fdd89d6",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "seed": 802097,
+                "objective": "regression",
+                "num_leaves": 15,
+                "learning_rate": 0.2,
+                "feature_fraction": 0.9,
+                "bagging_fraction": 0.5,
+                "min_data_in_leaf": 5,
+                "metric": "rmse",
+                "custom_eval_metric_name": null,
+                "explain_level": 0
+            },
+            "name": "learner_fold_9"
+        }
+    ],
+    "params": {
+        "additional": {
+            "max_rounds": 10000,
+            "early_stopping_rounds": 50,
+            "max_rows_limit": null,
+            "max_cols_limit": null
+        },
+        "preprocessing": {
+            "columns_preprocessing": {
+                "NsSH": [
+                    "remove_column"
+                ],
+                "SsSH": [
+                    "remove_column"
+                ]
+            },
+            "target_preprocessing": [
+                "na_exclude",
+                "scale_normal"
+            ],
+            "ml_task": "regression"
+        },
+        "validation_strategy": {
+            "validation_type": "custom",
+            "X_path": "mljar_AutoML_Compete_2025_01_08_15_43_03/X.data",
+            "y_path": "mljar_AutoML_Compete_2025_01_08_15_43_03/y.data",
+            "results_path": "mljar_AutoML_Compete_2025_01_08_15_43_03",
+            "cv_path": "mljar_AutoML_Compete_2025_01_08_15_43_03/cv.data"
+        },
+        "learner": {
+            "model_type": "LightGBM",
+            "ml_task": "regression",
+            "n_jobs": -1,
+            "seed": 802097,
+            "objective": "regression",
+            "num_leaves": 15,
+            "learning_rate": 0.2,
+            "feature_fraction": 0.9,
+            "bagging_fraction": 0.5,
+            "min_data_in_leaf": 5,
+            "metric": "rmse",
+            "custom_eval_metric_name": null,
+            "explain_level": 0
+        },
+        "automl_random_state": 802091,
+        "ml_task": "regression",
+        "explain_level": 0,
+        "name": "25_LightGBM",
+        "status": "initialized",
+        "final_loss": null,
+        "train_time": null,
+        "data_type": "original",
+        "max_time_for_learner": 17280.0
+    },
+    "saved": [
+        "25_LightGBM/learner_fold_0.lightgbm",
+        "25_LightGBM/learner_fold_1.lightgbm",
+        "25_LightGBM/learner_fold_2.lightgbm",
+        "25_LightGBM/learner_fold_3.lightgbm",
+        "25_LightGBM/learner_fold_4.lightgbm",
+        "25_LightGBM/learner_fold_5.lightgbm",
+        "25_LightGBM/learner_fold_6.lightgbm",
+        "25_LightGBM/learner_fold_7.lightgbm",
+        "25_LightGBM/learner_fold_8.lightgbm",
+        "25_LightGBM/learner_fold_9.lightgbm"
+    ],
+    "predictions_fname": "25_LightGBM/predictions_validation.csv",
+    "metric_name": "rmse",
+    "final_loss": "0.5197686783653696",
+    "train_time": 68.55313158035278,
+    "is_stacked": false,
+    "joblib_version": "1.4.2"
+}
