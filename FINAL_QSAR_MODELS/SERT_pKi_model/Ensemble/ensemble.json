@@ -1,0 +1,84 @@
+{
+    "name": "Ensemble",
+    "ml_task": "regression",
+    "optimize_metric": "rmse",
+    "selected_models": [
+        {
+            "model": "103_LightGBM_GoldenFeatures_SelectedFeatures",
+            "repeat": 5.0
+        },
+        {
+            "model": "104_LightGBM_GoldenFeatures_SelectedFeatures",
+            "repeat": 11.0
+        },
+        {
+            "model": "110_NeuralNetwork",
+            "repeat": 8.0
+        },
+        {
+            "model": "112_NeuralNetwork_SelectedFeatures",
+            "repeat": 1.0
+        },
+        {
+            "model": "113_NeuralNetwork",
+            "repeat": 7.0
+        },
+        {
+            "model": "22_LightGBM_GoldenFeatures_SelectedFeatures",
+            "repeat": 2.0
+        },
+        {
+            "model": "25_LightGBM",
+            "repeat": 6.0
+        },
+        {
+            "model": "31_CatBoost_SelectedFeatures",
+            "repeat": 15.0
+        },
+        {
+            "model": "56_NeuralNetwork",
+            "repeat": 1.0
+        },
+        {
+            "model": "65_Xgboost_GoldenFeatures_SelectedFeatures",
+            "repeat": 26.0
+        },
+        {
+            "model": "66_Xgboost_GoldenFeatures_SelectedFeatures",
+            "repeat": 1.0
+        },
+        {
+            "model": "67_LightGBM_GoldenFeatures_SelectedFeatures",
+            "repeat": 4.0
+        },
+        {
+            "model": "68_LightGBM_GoldenFeatures_SelectedFeatures",
+            "repeat": 27.0
+        },
+        {
+            "model": "70_CatBoost_SelectedFeatures",
+            "repeat": 4.0
+        },
+        {
+            "model": "78_Xgboost",
+            "repeat": 1.0
+        },
+        {
+            "model": "83_NeuralNetwork",
+            "repeat": 1.0
+        },
+        {
+            "model": "85_NeuralNetwork_SelectedFeatures",
+            "repeat": 2.0
+        },
+        {
+            "model": "99_LightGBM_GoldenFeatures_SelectedFeatures",
+            "repeat": 7.0
+        }
+    ],
+    "predictions_fname": "Ensemble/predictions_ensemble.csv",
+    "metric_name": "rmse",
+    "final_loss": 0.4742286890393307,
+    "train_time": 44.95428395271301,
+    "is_stacked": false
+}
