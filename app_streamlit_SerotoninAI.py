@@ -3053,11 +3053,12 @@ elif selected == "Antidepressant activity":
                         prediction_sert = best_model_sert_pKi.predict(descriptors_value_df)
                     prediction_float_sert = round(float(prediction_sert), 3)
                     st.write("pKi value for serotonin transporter: ", f'<span style="color: #5d93a3;">{ prediction_float_sert}</span>', unsafe_allow_html=True)
-                    list_of_important_descriptors = ['AATSC8se', 'MDEC-33', 'AATS8se', 'ETA_dPsi_B', 'MINaasC', 'MAXaasC', 'AATSC8c', 'MATS8c', 'JGT10', 'SssO']
-                    min_values = {'AATSC8se': -0.1281765706447187, 'MDEC-33': 0.0016076401178295, 'AATS8se': 6.9795325373134345, 'ETA_dPsi_B': 0.0,
-                                  'MINaasC': -1.481747921390778, 'MAXaasC': -0.6203240740740739, 'AATSC8c': -0.0061541711064122, 'MATS8c': -0.8589981952460497, 'JGT10': 0.1001095621754017, 'SssO': 0.0}
-                    max_values = {'AATSC8se': 0.0344872698041044, 'MDEC-33': 24.32461804222784, 'AATS8se': 9.239941955555556, 'ETA_dPsi_B': 0.0469226594301221,
-                                  'MINaasC': 1.5905092592592596, 'MAXaasC': 1.6304629629629632, 'AATSC8c': 0.0082764706005067, 'MATS8c': 0.5907435127341207,'JGT10': 0.6832981078904992, 'SssO': 32.64784654394404}
+                    list_of_important_descriptors = ['SssNH', 'nBase', 'GATS5c', 'SLogP', 'ATS1se', 'NaaCH', 'GGI7', 'BIC2', 'JGI4', 'SsssCH']
+                    min_values = {'SssNH': 0.0, 'nBase': 0,  'GATS5c': 0.1522646188176759,  'SLogP': -1.0360999999999996, 
+                                  'ATS1se': 145.11786200000003, 'NaaCH': 0,  'GGI7': 0.0, 'BIC2': 0.4608511313429809, 
+                                  'JGI4': 0.008395061728395, 'SsssCH': -19.959990016276304}
+                    max_values = {'SssNH': 9.319169954738726,  'nBase': 3, 'GATS5c': 1.9718023087752352, 'SLogP': 11.12039999999999, 
+                                  'ATS1se': 1212.3312639999997, 'NaaCH': 20, 'GGI7': 2.4271541950113376, 'BIC2': 0.8849043865222799, 'JGI4': 0.0826666666666666, 'SsssCH': 9.651061401654836}
                     normalized_descriptors_df = (descriptors_value_df - pd.Series(min_values)) / (pd.Series(max_values) - pd.Series(min_values))
                     values_1 = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
                     values_2 = normalized_descriptors_df[list_of_important_descriptors].max().to_list()
@@ -3146,12 +3147,12 @@ elif selected == "Antidepressant activity":
                         prediction_net = best_model_net.predict(descriptors_value_df)
                     prediction_float_net = round(float(prediction_net), 3)
                     st.write("pKi value for norepinephrine transporter: ", f'<span style="color: #5d93a3;">{ prediction_float_net}</span>', unsafe_allow_html=True)
-                    list_of_important_descriptors = ['SssNH', 'GGI10', 'SMR_VSA3', 'GATS6i', 'nBase', 'ATS3d', 'ATSC4Z', 'GGI9', 'AATS2i', 'ATSC6d']
-                    min_values = {'SssNH': 0.0, 'GGI10': 0.0, 'SMR_VSA3': 0.0, 'GATS6i': 0.5982662263725699, 'nBase': 0.0, 'ATS3d': 111.0,
-                                  'ATSC4Z': -1042.9094693028098, 'GGI9': 0.0, 'AATS2i': 143.6726155033914, 'ATSC6d': -27.67281814686659}
-                    
-                    max_values = {'SssNH': 9.319169954738726, 'GGI10': 1.0222467095194367, 'SMR_VSA3': 34.84571513279319, 'GATS6i': 1.5667793916261674,
-                                  'nBase': 3.0, 'ATS3d': 1210.0, 'ATSC4Z': 1815.961300725612, 'GGI9': 1.2143750000000002, 'AATS2i': 171.48830266118517, 'ATSC6d': 14.625562130177514}
+                    list_of_important_descriptors = ['ATS5d', 'GGI10', 'nBase', 'AATS8d', 'Xch-5d', 'SMR_VSA6', 'AATS6p', 'SssNH', 'AATS5v', 'GATS6i']
+                    min_values = {'ATS5d': 55.0,  'GGI10': 0.0, 'nBase': 0, 'AATS8d': 1.0,  'Xch-5d': 0.0, 'SMR_VSA6': 0.0, 
+                                  'AATS6p': 0.7920254497103912, 'SssNH': 0.0, 'AATS5v': 91.879231427418, 'GATS6i': 0.5025918077732605}
+                    max_values = {'ATS5d': 1353.0, 'GGI10': 1.0222467095194367, 'nBase': 4, 'AATS8d': 3.361111111111111, 
+                                  'Xch-5d': 1.205548426216163, 'SMR_VSA6': 70.1253371415992, 'AATS6p': 2.8380075331061247, 
+                                  'SssNH': 12.297306107772584, 'AATS5v': 265.56755477917613, 'GATS6i': 1.5667793916261674}
                     normalized_descriptors_df = (descriptors_value_df - pd.Series(min_values)) / (pd.Series(max_values) - pd.Series(min_values))
                     values_1 = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
                     values_2 = normalized_descriptors_df[list_of_important_descriptors].max().to_list()
