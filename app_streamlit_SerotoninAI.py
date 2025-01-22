@@ -1909,13 +1909,12 @@ elif selected == "SERT":
                     st.markdown(f'<div style="{success_style}">Done!</div>', unsafe_allow_html=True)
                     prediction_float = round(float(predictions), 3)
                     st.write("pKi value for serotonin transporter: ", f'<span style="color: #5d93a3;">{ prediction_float}</span>', unsafe_allow_html=True)
-                    list_of_important_descriptors = ['SIC2', 'GATS5c', 'IC2', 'nBase', 'ATSC2d', 'CIC1', 
-                                 'SLogP', 'n10FaRing', 'SlogP_VSA1', 'PEOE_VSA3']
-                    min_values = {'SIC2': 0.4663428534035417, 'GATS5c': 0.1522646188176759, 'IC2': 2.754636215098623, 'nBase': 0,
-                    'ATSC2d': -17.029333333333327, 'CIC1': 0.7393028412041107, 'SLogP': -1.0360999999999996,
-                    'n10FaRing': 0, 'SlogP_VSA1': 0.0, 'PEOE_VSA3': 0.0}
-                    max_values = {'SIC2': 0.9484501704693528, 'GATS5c': 1.9718023087752352, 'IC2': 5.48361752790408, 'nBase': 3, 'ATSC2d': 19.849172805216764,
-                    'CIC1': 4.040885762787749, 'SLogP': 11.12039999999999, 'n10FaRing': 2, 'SlogP_VSA1': 48.53088597686407, 'PEOE_VSA3': 30.5236297402646}
+                    list_of_important_descriptors = ['SssNH', 'nBase', 'GATS5c', 'SLogP', 'ATS1se', 'NaaCH', 'GGI7', 'BIC2', 'JGI4', 'SsssCH']
+                    min_values = {'SssNH': 0.0, 'nBase': 0,  'GATS5c': 0.1522646188176759,  'SLogP': -1.0360999999999996, 
+                                  'ATS1se': 145.11786200000003, 'NaaCH': 0,  'GGI7': 0.0, 'BIC2': 0.4608511313429809, 'JGI4': 0.008395061728395, 'SsssCH': -19.959990016276304}
+                    max_values = {'SssNH': 9.319169954738726,  'nBase': 3, 'GATS5c': 1.9718023087752352, 'SLogP': 11.12039999999999, 
+                                  'ATS1se': 1212.3312639999997, 'NaaCH': 20, 'GGI7': 2.4271541950113376, 'BIC2': 0.8849043865222799, 
+                                  'JGI4': 0.0826666666666666, 'SsssCH': 9.651061401654836}
                     normalized_descriptors_df = (descriptors_value_df - pd.Series(min_values)) / (pd.Series(max_values) - pd.Series(min_values))
                     values_1 = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
                     values_2 = normalized_descriptors_df[list_of_important_descriptors].max().to_list()
@@ -3058,10 +3057,10 @@ elif selected == "Antidepressant activity":
                     st.write("pKi value for serotonin transporter: ", f'<span style="color: #5d93a3;">{ prediction_float_sert}</span>', unsafe_allow_html=True)
                     list_of_important_descriptors = ['SssNH', 'nBase', 'GATS5c', 'SLogP', 'ATS1se', 'NaaCH', 'GGI7', 'BIC2', 'JGI4', 'SsssCH']
                     min_values = {'SssNH': 0.0, 'nBase': 0,  'GATS5c': 0.1522646188176759,  'SLogP': -1.0360999999999996, 
-                                  'ATS1se': 145.11786200000003, 'NaaCH': 0,  'GGI7': 0.0, 'BIC2': 0.4608511313429809, 
-                                  'JGI4': 0.008395061728395, 'SsssCH': -19.959990016276304}
+                                  'ATS1se': 145.11786200000003, 'NaaCH': 0,  'GGI7': 0.0, 'BIC2': 0.4608511313429809, 'JGI4': 0.008395061728395, 'SsssCH': -19.959990016276304}
                     max_values = {'SssNH': 9.319169954738726,  'nBase': 3, 'GATS5c': 1.9718023087752352, 'SLogP': 11.12039999999999, 
-                                  'ATS1se': 1212.3312639999997, 'NaaCH': 20, 'GGI7': 2.4271541950113376, 'BIC2': 0.8849043865222799, 'JGI4': 0.0826666666666666, 'SsssCH': 9.651061401654836}
+                                  'ATS1se': 1212.3312639999997, 'NaaCH': 20, 'GGI7': 2.4271541950113376, 'BIC2': 0.8849043865222799, 
+                                  'JGI4': 0.0826666666666666, 'SsssCH': 9.651061401654836}
                     normalized_descriptors_df = (descriptors_value_df - pd.Series(min_values)) / (pd.Series(max_values) - pd.Series(min_values))
                     values_1 = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
                     values_2 = normalized_descriptors_df[list_of_important_descriptors].max().to_list()
