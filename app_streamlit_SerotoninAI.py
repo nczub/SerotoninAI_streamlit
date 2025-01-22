@@ -1879,7 +1879,6 @@ elif selected == "5-HT receptors":
      
 elif selected == "SERT":
     calc = Calculator(descriptors, ignore_3D=True)
-    calc.descriptors = [d for d in calc.descriptors if str(d) in descriptors_for_QSAR] 
     st.markdown('<h1 class="text-second-title">Predictions for the serotonin transporter</h1>', unsafe_allow_html=True)
     st.write('*Please enter SMILES without making any changes, as the models have been trained based on the basic SMILES representation found in databases such as DrugBank, ChEMBL, and ZINC.*', font_size=5)
     smiles_input = st.text_input("Input SMILES", key="text")
