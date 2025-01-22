@@ -3370,9 +3370,9 @@ elif selected == "Q&A":
         st.write("- **Serotonergic activity** - Ensemble model (5 x Xgboost, 6 x LightGBM, 2 x NeuralNetwork, 2 x CatBoost) (last version Jan. 2024)")
         st.write("- **Selectivity** - Ensemble model (1 x Baseline, 5 x LightGBM, 5 x DecisionTree, 2 x Xgboost) (last version Jan. 2024)")
         st.write("- **SERT pKi** - available in modules 'SERT' and 'Antidepressant activity' Ensemble model (3 x Xgboost, 7 x LightGBM, 6 x Neural Network, 2 x Catboost) (last version Jan. 2025)")
-        st.write("- **SERT pIC50** - Ensemble model (Xgboost, 4 x LightGBM, 4 x Neural Networ) (last version Nov. 2025)")
+        st.write("- **SERT pIC50** - Ensemble model (Xgboost, 4 x LightGBM, 4 x Neural Networ) (last version Nov. 2024)")
         st.write("- **NET pKi** - Ensemble model (3 x Xgboost, 2 x LightGBM, 3 x Neural Network, Catboost)(last version Jan. 2025)")
-        st.write("- **NET pIC50** - Ensemble model (2 x Xgboost, 5 x LightGBM, Neural Network, 3 x CatBoost) (last version Nov. 2025)")
+        st.write("- **NET pIC50** - Ensemble model (2 x Xgboost, 5 x LightGBM, Neural Network, 3 x CatBoost) (last version Nov. 2024)")
     with st.container():
         st.write("---")
         st.subheader(":small_blue_diamond: SMILES type")
