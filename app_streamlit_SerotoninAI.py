@@ -108,7 +108,7 @@ best_model_path_5HT7 = 'FINAL_QSAR_MODELS/model_5-HT7/mljar_AutoML_Compete_2023_
 best_model_5HT7 = AutoML(best_model_path_5HT7)
 
 #SERT
-best_model_path_sert = 'FINAL_QSAR_MODELS/model_SERT/mljar_AutoML_Compete_2023_07_25_10_22_08' 
+best_model_path_sert = 'FINAL_QSAR_MODELS/SERT_pKi_model' 
 best_model_sert = AutoML(best_model_path_sert)
 
 #HIA models
@@ -246,7 +246,7 @@ footer_style = """
     font-size: 16px;
 """
 st.markdown(
-    f'<div style="{footer_style}">Copyright (C) 2024 Natalia Łapińska (Czub)</div>',
+    f'<div style="{footer_style}">Copyright (C) 2025 Natalia Łapińska</div>',
     unsafe_allow_html=True
 )
 
@@ -299,7 +299,10 @@ if selected == "Home":
     st.write('This subpage is a complementary module for serotonergic activity. If the molecule under test is active against serotonin receptors, the user can get information about which serotonin receptor it is active against.')
     st.write('')
     st.write(':small_blue_diamond: **Antidepressant activity**')
-    st.write('Depression is a common mood disorder that affects about 5% of the population. This module focuses on finding molecules that inhibit serotonin and norepinephrine transporters, which are the mechanisms of action of the most commonly used drugs such as SSRIs and SNRIs.')
+    st.write('Depression is a common mood disorder that affects about 5% of the population. The module focuses on predicting the mechanisms of action of two commonly used classes of antidepressants: selective serotonin reuptake inhibitors (SSRIs) and serotonin-norepinephrine reuptake inhibitors (SNRIs). The module includes models that predict affinity values (pKi) and inhibitory concentrations (pIC50) for SERT and NET.')
+    st.write('')
+    st.write(':small_blue_diamond: **Lipinski's rule and the rule of three**')
+    st.write('Each prediction also provides information on compliance with Lipinski's rule and the rule of three, which are considered gold standards in drug design. These results are visible after obtaining the predictions and applicability domain, by expanding the 'See druglikeness and lead-like properties of a tested molecule' tab below.')
     st.write('')
     st.write(":small_blue_diamond: **Q&A**")
     st.write("The question and answer subpage allows you to review possible problems when using this application.")
@@ -3344,6 +3347,7 @@ elif selected == "Q&A":
         st.write("- ZINC https://zinc.docking.org/ ")
         st.write("- ChEMBL https://www.ebi.ac.uk/chembl/")
         st.write("- OCHEM https://ochem.eu/home/show.do")
+        st.write(" - PubChem https://pubchem.ncbi.nlm.nih.gov/")
         st.write("- Data available in this article: Miao, R., Xia, LY., Chen, HH. et al. Improved Classification of Blood-Brain-Barrier Drugs Using Deep Learning. Sci Rep 9, 8802 (2019). https://doi.org/10.1038/s41598-019-44773-4")
     with st.container():
         st.write("---")
@@ -3361,11 +3365,14 @@ elif selected == "Q&A":
         st.write("- **5-HT5A** - Ensemble model (3 x Xgboost, 3 x CatBoost, 1 x EstraTrees, 1 x LightGBM) (last version Sept. 2023)")
         st.write("- **5-HT6** - Xgboost (last version Sept. 2023)")
         st.write("- **5-HT7** - CatBoost (last version Sept. 2023)")
-        st.write("- **SERT** - LightGBM (last version Sept. 2023)")
         st.write("- **BBB** - Ensemble model (5 x Xgboost, 7 x NeuralNetwork, 2 x LightGBM) (last version Sept. 2023)")
         st.write("- **HIA** - AI-based system [Classification: Ensemble model (3 x CatBoost, 1 x RandomForest, 1 x ExtraTrees, 2 x NeuralNetwork); Regression: Ensemble model (5 x RandomForest, 2 x NeuralNetwork)]. AI-based system have been already published: Czub N, Szlęk J, Pacławski A, Klimończyk K, Puccetti M, Mendyk A. Artificial Intelligence-Based Quantitative Structure-Property Relationship Model for Predicting Human Intestinal Absorption of Compounds with Serotonergic Activity. Mol Pharm. 2023;20(5):2545-2555. https://pubs.acs.org/doi/10.1021/acs.molpharmaceut.2c01117.")
         st.write("- **Serotonergic activity** - Ensemble model (5 x Xgboost, 6 x LightGBM, 2 x NeuralNetwork, 2 x CatBoost) (last version Jan. 2024)")
         st.write("- **Selectivity** - Ensemble model (1 x Baseline, 5 x LightGBM, 5 x DecisionTree, 2 x Xgboost) (last version Jan. 2024)")
+        st.write("- **SERT pKi** - available in modules 'SERT' and 'Antidepressant activity' Ensemble model (3 x Xgboost, 7 x LightGBM, 6 x Neural Network, 2 x Catboost) (last version Jan. 2025)")
+        st.write("- **SERT pIC50** - Ensemble model (Xgboost, 4 x LightGBM, 4 x Neural Networ) (last version Nov. 2025)")
+        st.write("- **NET pKi** - Ensemble model (3 x Xgboost, 2 x LightGBM, 3 x Neural Network, Catboost)(last version Jan. 2025)")
+        st.write("- **NET pIC50** - Ensemble model (2 x Xgboost, 5 x LightGBM, Neural Network, 3 x CatBoost) (last version Nov. 2025)")
     with st.container():
         st.write("---")
         st.subheader(":small_blue_diamond: SMILES type")
